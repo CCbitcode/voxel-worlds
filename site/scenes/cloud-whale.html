@@ -1,0 +1,4055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#e8f2f7">
+<title>云鲸星轮 · The Cloud Whale &amp; the Astral Wheel</title>
+<meta name="description" content="一头驮着星象城邦的巨型体素云鲸，在翻滚云海之上航行。可切换昼夜、自由漫游并旋转缩放欣赏。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a2943'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23d9c089' stroke-width='1.4'/%3E%3Cpath d='M16 7v18M7 16h18M9.6 9.6l12.8 12.8M22.4 9.6L9.6 22.4' stroke='%23d9c089' stroke-width='0.8'/%3E%3Ccircle cx='16' cy='16' r='1.6' fill='%23d9c089'/%3E%3C/svg%3E">
+<script>
+  window.__SCENE_READY__ = false;
+  window.__PAGE_ERRORS__ = [];
+  window.addEventListener('error', function (event) {
+    var message = (event && event.message ? event.message : 'Unknown module error');
+    if (event && event.filename) message += ' @ ' + event.filename + ':' + event.lineno;
+    if (event && event.error && event.error.stack) message += ' | ' + event.error.stack;
+    window.__PAGE_ERRORS__.push(message);
+    var fb = document.getElementById('fallback');
+    if (!window.__SCENE_READY__ && fb) {
+      fb.classList.add('show');
+      var ld = document.getElementById('loader');
+      if (ld) ld.classList.add('hide');
+      var p = fb.querySelector('p');
+      if (p) p.textContent = message;
+    }
+  }, true);
+  window.addEventListener('unhandledrejection', function (event) {
+    var msg = 'PROMISE ' + ((event.reason && event.reason.stack) || event.reason);
+    window.__PAGE_ERRORS__.push(msg);
+    var fb = document.getElementById('fallback');
+    if (!window.__SCENE_READY__ && fb) {
+      fb.classList.add('show');
+      var ld = document.getElementById('loader');
+      if (ld) ld.classList.add('hide');
+      var p = fb.querySelector('p');
+      if (p) p.textContent = msg;
+    }
+  });
+  window.setTimeout(function () {
+    if (!window.__SCENE_READY__) {
+      var note = document.querySelector('.loader-note');
+      if (note) note.textContent = '正在等待星轮苏醒 · 若长时间停留请刷新';
+    }
+  }, 9000);
+  window.setTimeout(function () {
+    if (!window.__SCENE_READY__) {
+      var fb = document.getElementById('fallback');
+      if (fb && !fb.classList.contains('show')) {
+        fb.classList.add('show');
+        var p = fb.querySelector('p');
+        if (p) p.textContent = '星轮连接超时。请确认浏览器已开启 WebGL 并可以访问 jsDelivr CDN，然后刷新页面。';
+      }
+      var ld = document.getElementById('loader');
+      if (ld) ld.classList.add('hide');
+    }
+  }, 16000);
+</script>
+<style>
+  :root{
+    --ink:#0a2943;
+    --ink-2:#3c637f;
+    --ink-3:#7593a8;
+    --paper:rgba(249,246,238,.82);
+    --paper-solid:#f7f3e9;
+    --paper-glass:rgba(252,250,245,.72);
+    --line:rgba(19,69,101,.16);
+    --line-strong:rgba(19,69,101,.3);
+    --accent:#1f557e;
+    --accent-soft:#7ba7c4;
+    --gold:#af8d52;
+    --glow:#cfefff;
+    --shadow:0 20px 55px rgba(15,48,75,.16);
+    --shadow-soft:0 8px 24px rgba(15,48,75,.1);
+    --radius:14px;
+    --serif:"STKaiti","KaiTi","Kaiti SC","Songti SC","STSong","Noto Serif SC",serif;
+    --serif-2:"Songti SC","STSong","Noto Serif SC","SimSun",serif;
+    --sans:"Microsoft YaHei UI","PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;
+    --latin:"Bodoni MT","Didot","Times New Roman",serif;
+    --ease:cubic-bezier(.22,.75,.22,1);
+  }
+  body[data-theme="night"]{
+    --ink:#edf6ff;
+    --ink-2:#c0d5e9;
+    --ink-3:#9cb5cf;
+    --paper:rgba(7,18,35,.76);
+    --paper-solid:#09172b;
+    --paper-glass:rgba(8,21,41,.7);
+    --line:rgba(177,214,255,.18);
+    --line-strong:rgba(177,214,255,.32);
+    --accent:#b7ddff;
+    --accent-soft:#7c9ec1;
+    --gold:#e6c584;
+    --glow:#d9f4ff;
+    --shadow:0 24px 60px rgba(0,4,14,.42);
+    --shadow-soft:0 10px 28px rgba(0,4,14,.32);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;}
+  body{
+    background:#9cc9df;
+    color:var(--ink);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    transition:color 1.4s var(--ease),background 1.4s var(--ease);
+    overscroll-behavior:none;
+  }
+  button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer;}
+  a{color:inherit;}
+  svg{display:block;}
+  #app{position:fixed;inset:0;isolation:isolate;overflow:hidden;}
+  #stage{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:grab;filter:saturate(1.08) contrast(1.02);transition:filter 1.4s var(--ease);}
+  body[data-theme="night"] #stage{filter:saturate(1.14) contrast(1.03);}
+  #stage:active{cursor:grabbing;}
+  #vignette{
+    position:absolute;inset:0;pointer-events:none;z-index:2;
+    background:
+      linear-gradient(180deg,rgba(14,52,74,.25) 0%,rgba(14,52,74,.04) 21%,transparent 42%,transparent 68%,rgba(7,27,43,.38) 100%),
+      radial-gradient(140% 110% at 50% 45%,transparent 58%,rgba(3,25,41,.22) 100%);
+    transition:opacity 1.5s var(--ease),background 1.5s var(--ease);
+  }
+  body[data-theme="night"] #vignette{
+    background:
+      linear-gradient(180deg,rgba(2,8,20,.62) 0%,rgba(3,11,25,.12) 25%,transparent 50%,transparent 65%,rgba(1,5,13,.56) 100%),
+      radial-gradient(130% 105% at 50% 48%,transparent 55%,rgba(0,3,12,.4) 100%);
+  }
+  #hud{position:absolute;inset:0;z-index:5;pointer-events:none;}
+  header{
+    position:absolute;top:26px;left:30px;right:30px;
+    display:flex;justify-content:space-between;align-items:flex-start;gap:22px;
+  }
+  .brand{
+    display:flex;align-items:center;gap:15px;pointer-events:auto;
+    padding:9px 20px 9px 9px;
+    border-radius:18px;
+    background:linear-gradient(110deg,rgba(250,247,240,.68),rgba(250,247,240,.16));
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-soft);
+    filter:drop-shadow(0 2px 16px rgba(255,255,255,.14));
+    transition:filter 1.2s var(--ease),background 1.2s var(--ease),border-color 1.2s var(--ease),box-shadow 1.2s var(--ease);
+  }
+  body[data-theme="night"] .brand{
+    background:linear-gradient(110deg,rgba(5,15,29,.76),rgba(5,15,29,.28));
+    filter:drop-shadow(0 2px 18px rgba(0,0,0,.35));
+  }
+  .brand-seal{
+    width:52px;height:52px;position:relative;flex:none;color:var(--ink);
+    border:1px solid var(--line-strong);border-radius:50%;
+    display:grid;place-items:center;
+    background:rgba(250,248,242,.32);
+    box-shadow:inset 0 0 0 4px rgba(255,255,255,.08);
+    transition:background 1.2s var(--ease),border-color 1.2s var(--ease),color 1.2s var(--ease);
+  }
+  body[data-theme="night"] .brand-seal{background:rgba(8,24,44,.4);}
+  .brand-seal::after{
+    content:"";position:absolute;inset:4px;border:1px dashed var(--line);
+    border-radius:50%;animation:sealTurn 44s linear infinite;
+  }
+  .brand-seal svg{width:28px;height:28px;opacity:.82;}
+  @keyframes sealTurn{to{transform:rotate(360deg);}}
+  .title-block{display:flex;flex-direction:column;gap:3px;padding-top:1px;}
+  .eyebrow{
+    display:flex;align-items:center;gap:9px;
+    font-family:var(--latin);font-size:9.5px;letter-spacing:.27em;
+    color:var(--ink-2);font-weight:600;text-transform:uppercase;
+    transition:color 1.2s var(--ease);
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:currentColor;opacity:.55;}
+  h1{
+    margin:0;font-family:var(--serif);font-weight:500;font-size:38px;
+    line-height:1.08;letter-spacing:.1em;color:var(--ink);
+    text-shadow:0 1px 18px rgba(255,255,255,.32);
+    transition:color 1.2s var(--ease),text-shadow 1.2s var(--ease);
+  }
+  body[data-theme="night"] h1{text-shadow:0 2px 26px rgba(0,16,40,.7);}
+  .subtitle{
+    margin-top:2px;font-family:var(--latin);font-size:10px;letter-spacing:.2em;
+    color:var(--ink-2);opacity:.82;transition:color 1.2s var(--ease);
+  }
+  .subtitle .dot{display:inline-block;width:3px;height:3px;border-radius:50%;background:var(--gold);vertical-align:middle;margin:0 8px 2px;}
+  .top-tools{display:flex;align-items:center;gap:8px;pointer-events:auto;padding-top:3px;}
+  .glass{
+    background:var(--paper);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow-soft);
+    backdrop-filter:none;
+    transition:background 1.2s var(--ease),border-color 1.2s var(--ease),box-shadow 1.2s var(--ease);
+  }
+  .mode-switch{
+    display:flex;padding:4px;border-radius:999px;gap:2px;height:40px;align-items:center;
+  }
+  .mode-btn{
+    position:relative;height:30px;padding:0 12px;border-radius:999px;
+    display:flex;align-items:center;gap:6px;
+    font-size:11.5px;letter-spacing:.08em;color:var(--ink-2);
+    transition:color .45s var(--ease),background .45s var(--ease),opacity .45s var(--ease);
+    white-space:nowrap;
+  }
+  .mode-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;}
+  .mode-btn.active{background:var(--ink);color:var(--paper-solid);box-shadow:0 4px 14px rgba(8,34,53,.18);}
+  body[data-theme="night"] .mode-btn.active{background:#dcecff;color:#07172b;box-shadow:0 4px 18px rgba(141,203,255,.15);}
+  .icon-btn{
+    width:40px;height:40px;border-radius:50%;
+    display:grid;place-items:center;color:var(--ink-2);
+    transition:color .3s,transform .3s var(--ease),background 1.2s var(--ease);
+  }
+  .icon-btn:hover{transform:translateY(-1px);color:var(--ink);}
+  .icon-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.4;}
+  .icon-btn.is-on{color:var(--ink);}
+  .icon-btn.is-on::after{content:"";position:absolute;width:4px;height:4px;border-radius:50%;background:var(--gold);transform:translate(14px,14px);}
+  .icon-btn{position:relative;}
+  .view-dock{
+    position:absolute;right:30px;top:50%;transform:translateY(-46%);
+    display:flex;flex-direction:column;gap:3px;padding:7px 5px;border-radius:18px;
+    pointer-events:auto;width:60px;align-items:stretch;
+  }
+  .view-btn{
+    position:relative;height:51px;border-radius:12px;display:flex;
+    flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    color:var(--ink-2);transition:color .35s var(--ease),background .35s var(--ease);
+  }
+  .view-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;}
+  .view-btn span{font-size:9.5px;letter-spacing:.14em;line-height:1;}
+  .view-btn:hover{color:var(--ink);background:rgba(255,255,255,.2);}
+  .view-btn.active{color:var(--ink);background:rgba(255,255,255,.34);}
+  body[data-theme="night"] .view-btn.active{background:rgba(170,214,255,.1);}
+  .view-btn.active::before{
+    content:"";position:absolute;left:-5px;top:50%;transform:translateY(-50%);
+    width:2px;height:16px;border-radius:2px;background:var(--gold);
+  }
+  .telemetry{
+    position:absolute;left:30px;top:50%;transform:translateY(-44%);
+    width:176px;pointer-events:none;
+    display:flex;flex-direction:column;gap:14px;
+    color:var(--ink-2);
+    padding:16px 16px 15px;
+    background:linear-gradient(155deg,rgba(252,249,242,.78),rgba(249,245,236,.38));
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow-soft);
+    transition:background 1.2s var(--ease),border-color 1.2s var(--ease),box-shadow 1.2s var(--ease);
+  }
+  body[data-theme="night"] .telemetry{background:linear-gradient(155deg,rgba(6,17,32,.76),rgba(6,17,32,.3));}
+  .telemetry-head{
+    display:flex;align-items:center;gap:7px;font-family:var(--latin);
+    font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);
+  }
+  .telemetry-head::after{content:"";flex:1;height:1px;background:var(--line);}
+  .t-row{display:flex;flex-direction:column;gap:3px;}
+  .t-label{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);}
+  .t-value{font-family:var(--serif-2);font-size:13px;letter-spacing:.08em;color:var(--ink);}
+  .t-value b{font-family:var(--latin);font-weight:500;font-size:16px;letter-spacing:.02em;margin-right:2px;}
+  .t-rule{width:100%;height:1px;background:var(--line);position:relative;}
+  .t-rule::before{content:"";position:absolute;left:0;top:-2px;width:5px;height:5px;border-radius:50%;background:var(--gold);}
+  .statusbar{
+    position:absolute;left:30px;right:30px;bottom:24px;
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+    pointer-events:none;
+  }
+  .status-left,.status-right{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:7px 12px;
+    box-shadow:var(--shadow-soft);
+    transition:background 1.2s var(--ease),border-color 1.2s var(--ease);
+  }
+  .status-left{display:flex;align-items:center;gap:12px;color:var(--ink-2);}
+  .sound-off{display:flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.1em;}
+  .pulse-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(175,141,82,.4);animation:pulse 3.2s ease-out infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(175,141,82,.35);}60%{box-shadow:0 0 0 8px rgba(175,141,82,0);}100%{box-shadow:0 0 0 0 rgba(175,141,82,0);}}
+  .hint-bar{
+    display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;
+    color:var(--ink-2);font-size:9.5px;letter-spacing:.08em;
+    padding:7px 13px;border-radius:999px;
+  }
+  .hint{display:flex;align-items:center;gap:6px;white-space:nowrap;}
+  .hint + .hint::before{content:"";width:1px;height:10px;background:var(--line);margin:0 4px;}
+  kbd{
+    display:inline-flex;min-width:17px;height:17px;padding:0 4px;border-radius:4px;
+    border:1px solid var(--line);background:rgba(255,255,255,.22);
+    align-items:center;justify-content:center;
+    font-family:var(--sans);font-size:8px;letter-spacing:.03em;line-height:1;
+    transition:background 1.2s,border-color 1.2s;
+  }
+  .status-right{display:flex;align-items:center;gap:9px;color:var(--ink-2);font-size:9.5px;letter-spacing:.12em;white-space:nowrap;}
+  .status-right .sun-mini{width:14px;height:14px;border:1px solid var(--line-strong);border-radius:50%;position:relative;display:inline-block;}
+  .status-right .sun-mini::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--gold);opacity:.85;}
+  .status-right .clock{font-family:var(--latin);font-size:11px;letter-spacing:.07em;color:var(--ink);}
+  #aboutPanel{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-48%);
+    width:min(560px,calc(100vw - 40px));z-index:20;padding:28px 30px 26px;
+    border-radius:18px;opacity:0;visibility:hidden;pointer-events:none;
+    transition:opacity .4s var(--ease),transform .5s var(--ease),visibility .4s;
+  }
+  #aboutPanel.open{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%);}
+  .about-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;}
+  .about-kicker{font-family:var(--latin);font-size:9px;letter-spacing:.27em;color:var(--ink-3);text-transform:uppercase;}
+  .about-title{font-family:var(--serif);font-size:25px;letter-spacing:.08em;margin:7px 0 8px;font-weight:500;}
+  .about-copy{font-size:12px;line-height:1.9;color:var(--ink-2);margin:0 0 18px;max-width:440px;letter-spacing:.025em;}
+  .about-close{width:30px;height:30px;border-radius:50%;flex:none;display:grid;place-items:center;border:1px solid var(--line);color:var(--ink-2);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--line);padding-top:16px;}
+  .about-stat{display:flex;flex-direction:column;gap:4px;padding-right:10px;}
+  .about-stat small{font-size:8.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-3);}
+  .about-stat strong{font-family:var(--serif-2);font-weight:400;font-size:12px;letter-spacing:.06em;color:var(--ink);}
+  .about-foot{margin-top:18px;padding-top:13px;border-top:1px solid var(--line);display:flex;justify-content:space-between;font-size:8.5px;letter-spacing:.13em;color:var(--ink-3);text-transform:uppercase;}
+  #loader{
+    position:absolute;inset:0;z-index:80;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:
+      radial-gradient(80% 80% at 50% 35%,rgba(240,252,247,.92),rgba(215,235,238,.97) 50%,rgba(190,219,227,.99) 100%);
+    color:#0b2f4b;
+    transition:opacity 1.2s var(--ease),visibility 1.2s;
+  }
+  body[data-theme="night"] #loader{background:radial-gradient(80% 80% at 50% 35%,#0e2338,#081525 65%,#050d17 100%);color:#e4f3ff;}
+  #loader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+  .loader-wheel{
+    width:112px;height:112px;position:relative;margin-bottom:26px;
+    border:1px solid rgba(20,64,92,.22);border-radius:50%;
+  }
+  body[data-theme="night"] .loader-wheel{border-color:rgba(193,231,255,.26);}
+  .loader-wheel::before,.loader-wheel::after{
+    content:"";position:absolute;border-radius:50%;
+  }
+  .loader-wheel::before{inset:11px;border:1px dashed rgba(22,76,106,.33);animation:sealTurn 12s linear infinite;}
+  .loader-wheel::after{inset:31px;border:1px solid rgba(22,76,106,.35);animation:sealTurn 4.8s linear infinite reverse;}
+  .loader-star{
+    position:absolute;left:50%;top:50%;width:8px;height:8px;background:#af8d52;
+    transform:translate(-50%,-50%) rotate(45deg);box-shadow:0 0 22px rgba(175,141,82,.7);
+    animation:loaderPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes loaderPulse{0%,100%{transform:translate(-50%,-50%) rotate(45deg) scale(.8);opacity:.65;}50%{transform:translate(-50%,-50%) rotate(45deg) scale(1.3);opacity:1;}}
+  .loader-spokes{position:absolute;inset:0;animation:sealTurn 20s linear infinite;}
+  .loader-spokes i{position:absolute;left:50%;top:9px;width:1px;height:8px;background:currentColor;opacity:.33;transform-origin:0 47px;}
+  .loader-title{font-family:var(--serif);font-size:24px;letter-spacing:.22em;margin-left:.22em;font-weight:500;}
+  .loader-sub{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(20,61,88,.58);margin-top:8px;font-family:var(--latin);}
+  body[data-theme="night"] .loader-sub{color:rgba(216,240,255,.5);}
+  .loader-bar{width:160px;height:1px;background:rgba(20,61,88,.15);margin-top:32px;overflow:hidden;position:relative;}
+  body[data-theme="night"] .loader-bar{background:rgba(206,238,255,.15);}
+  .loader-bar i{position:absolute;height:100%;width:42%;left:-42%;background:#7a9fae;animation:loaderBar 2.2s ease-in-out infinite;}
+  @keyframes loaderBar{0%{left:-42%;}50%{width:58%;}100%{left:100%;width:12%;}}
+  .loader-note{position:absolute;bottom:30px;letter-spacing:.14em;font-size:8.5px;color:rgba(20,61,88,.45);text-transform:uppercase;}
+  body[data-theme="night"] .loader-note{color:rgba(216,240,255,.32);}
+  .fallback{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    z-index:90;text-align:center;padding:30px 34px;display:none;width:min(440px,90vw);
+  }
+  .fallback.show{display:block;}
+  .fallback h2{font-family:var(--serif);font-weight:500;letter-spacing:.12em;}
+  .fallback p{font-size:12px;line-height:1.8;color:var(--ink-2);}
+  .credit{
+    position:absolute;left:50%;bottom:59px;transform:translateX(-50%);
+    font-family:var(--latin);font-size:7.5px;letter-spacing:.2em;color:var(--ink-2);
+    text-transform:uppercase;opacity:.62;pointer-events:none;white-space:nowrap;
+    padding:4px 11px;border-radius:999px;
+    background:rgba(248,245,237,.42);border:1px solid var(--line);
+  }
+  body[data-theme="night"] .credit{background:rgba(5,15,29,.36);}
+  button:focus-visible{outline:1px solid var(--gold);outline-offset:3px;}
+  @media(min-width:1900px){
+    header{top:34px;left:38px;right:38px;}
+    .brand{gap:19px;}
+    .brand-seal{width:62px;height:62px;}
+    .brand-seal svg{width:33px;height:33px;}
+    h1{font-size:46px;}
+    .eyebrow{font-size:10.5px;}
+    .subtitle{font-size:11px;}
+    .mode-switch{height:44px;padding:4px;}
+    .mode-btn{height:34px;padding:0 14px;font-size:12.5px;}
+    .icon-btn{width:44px;height:44px;}
+    .view-dock{right:38px;width:66px;}
+    .view-btn{height:57px;}
+    .telemetry{left:38px;width:198px;padding:19px 18px 17px;gap:16px;}
+    .t-value{font-size:14px;}
+    .t-value b{font-size:18px;}
+    .statusbar{left:38px;right:38px;bottom:28px;}
+    .hint-bar{font-size:10.5px;padding:8px 16px;}
+  }
+  @media(max-width:1080px){
+    .telemetry{display:none;}
+    .view-dock{right:22px;width:54px;}
+    header{left:22px;right:22px;}
+    .statusbar{left:22px;right:22px;}
+  }
+  @media(max-width:820px){
+    header{top:16px;left:16px;right:16px;gap:10px;}
+    .brand{gap:10px;padding:7px 13px 7px 7px;border-radius:15px;}
+    .brand-seal{width:40px;height:40px;}
+    .brand-seal svg{width:22px;height:22px;}
+    h1{font-size:27px;letter-spacing:.08em;}
+    .eyebrow{font-size:7.5px;letter-spacing:.19em;}
+    .subtitle{display:none;}
+    .top-tools{gap:4px;}
+    .mode-switch{height:36px;padding:3px;}
+    .mode-btn{height:28px;padding:0 9px;font-size:10px;}
+    .mode-btn svg{width:12px;height:12px;}
+    .icon-btn{width:36px;height:36px;}
+    .view-dock{top:auto;left:50%;right:auto;bottom:98px;transform:translateX(-50%);flex-direction:row;width:auto;padding:4px;border-radius:99px;gap:2px;}
+    .view-btn{width:40px;height:38px;flex:0 0 40px;border-radius:99px;}
+    .view-btn span{display:none;}
+    .view-btn svg{width:16px;height:16px;}
+    .view-btn.active::before{left:50%;top:auto;bottom:-4px;width:12px;height:2px;transform:translateX(-50%);}
+    .statusbar{bottom:14px;left:14px;right:14px;justify-content:center;}
+    .status-left,.status-right{display:none;}
+    .hint-bar{border:0;box-shadow:none;background:rgba(248,245,237,.42);padding:7px 10px;}
+    body[data-theme="night"] .hint-bar{background:rgba(5,15,29,.46);}
+    .hint.desk-only{display:none;}
+    .credit{display:none;}
+    #aboutPanel{padding:23px 21px;}
+    .about-grid{grid-template-columns:1fr;}
+  }
+  @media(max-width:360px){
+    #aboutBtn{display:none;}
+  }
+  @media(max-width:520px){
+    .eyebrow{display:none;}
+    .mode-btn span.txt{display:none;}
+    .mode-btn{padding:0 9px;}
+    .mode-btn.active{padding:0 11px;}
+    #fullBtn{display:none;}
+    .top-tools{gap:2px;}
+    .about-top .about-title{font-size:22px;}
+    .hint:nth-child(2){display:none;}
+    .brand{padding:6px 11px 6px 6px;gap:8px;}
+    h1{font-size:24px;}
+    .eyebrow{font-size:7px;letter-spacing:.13em;}
+    .view-dock{bottom:88px;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  }
+</style>
+</head>
+<body data-theme="day">
+<div id="app">
+  <canvas id="stage" aria-label="Interactive voxel scene: a giant sky whale carrying an astral wheel city"></canvas>
+  <div id="vignette"></div>
+  <div id="hud">
+    <header>
+      <div class="brand" aria-label="云鲸星轮">
+        <div class="brand-seal" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <circle cx="16" cy="16" r="10.5"/>
+            <circle cx="16" cy="16" r="6.2" stroke-dasharray="1.4 2"/>
+            <path d="M16 4.8v22.4M4.8 16h22.4M8.1 8.1l15.8 15.8M23.9 8.1L8.1 23.9"/>
+            <circle cx="16" cy="16" r="1.35" fill="currentColor" stroke="none"/>
+            <circle cx="16" cy="5.4" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="title-block">
+          <div class="eyebrow">Astral Atlas <span>·</span> Voxel No. 01</div>
+          <h1>云鲸星轮</h1>
+          <div class="subtitle">THE CLOUD WHALE <span class="dot"></span> THE GREAT ASTROLABE</div>
+        </div>
+      </div>
+      <div class="top-tools">
+        <div class="mode-switch glass" role="group" aria-label="昼夜切换">
+          <button class="mode-btn active" data-mode="day" aria-pressed="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.1"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+            <span class="txt">晨光</span>
+          </button>
+          <button class="mode-btn" data-mode="night" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M19.5 14.2A8 8 0 0 1 9.8 4.5a8.1 8.1 0 1 0 9.7 9.7Z"/><path d="M16.5 4.2v2M15.5 5.2h2"/></svg>
+            <span class="txt">星夜</span>
+          </button>
+        </div>
+        <button id="autoBtn" class="icon-btn glass is-on" title="自动巡游（O）" aria-label="自动巡游" aria-pressed="true">
+          <svg viewBox="0 0 24 24"><path d="M20 11.2a8 8 0 1 0-2.1 5.9"/><path d="M20 5.5v5.7h-5.6"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <button id="aboutBtn" class="icon-btn glass" title="关于此景（I）" aria-label="关于此景" aria-expanded="false">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><path d="M12 10.7v5.1"/><circle cx="12" cy="7.8" r=".8" fill="currentColor" stroke="none"/></svg>
+        </button>
+        <button id="fullBtn" class="icon-btn glass" title="全屏（F11）" aria-label="全屏">
+          <svg viewBox="0 0 24 24"><path d="M9 4H4v5M15 4h5v5M20 15v5h-5M4 15v5h5"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <aside class="view-dock glass" aria-label="观察机位">
+      <button class="view-btn active" data-view="overview" title="全景视角（1）">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.4"/><path d="M3.6 12h16.8M12 3.6c2.3 2.4 3.5 5.3 3.5 8.4S14.3 18 12 20.4C9.7 18 8.5 15.1 8.5 12S9.7 6 12 3.6Z"/></svg>
+        <span>全景</span>
+      </button>
+      <button class="view-btn" data-view="wheel" title="星轮视角（2）">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.8"/><circle cx="12" cy="12" r="3.1"/><path d="M12 4.2v4.7M12 15.1v4.7M4.2 12h4.7M15.1 12h4.7M6.6 6.6l3.3 3.3M14.1 14.1l3.3 3.3M17.4 6.6l-3.3 3.3M9.9 14.1l-3.3 3.3"/></svg>
+        <span>星轮</span>
+      </button>
+      <button class="view-btn" data-view="tower" title="塔楼视角（3）">
+        <svg viewBox="0 0 24 24"><path d="M4.1 9.6 12 5.4l7.9 4.2M5.6 12.2 12 8.8l6.4 3.4M7.1 14.9 12 12.3l4.9 2.6M8.7 17.5l3.3-1.8 3.3 1.8M12 4.1v15.2M8.8 19.2h6.4"/></svg>
+        <span>塔楼</span>
+      </button>
+      <button class="view-btn" data-view="cloud" title="云海视角（4）">
+        <svg viewBox="0 0 24 24"><path d="M6 18.2h11.8a3.4 3.4 0 0 0 .4-6.8 5.4 5.4 0 0 0-10.4-1.1A4 4 0 0 0 6 18.2Z"/><path d="M4.4 21h15.2"/></svg>
+        <span>云海</span>
+      </button>
+      <button class="view-btn" data-view="top" title="鸟瞰视角（5）">
+        <svg viewBox="0 0 24 24"><path d="M12 3.8 20 9l-8 5.2L4 9l8-5.2Z"/><path d="M4.8 13.1 12 17.8l7.2-4.7M6.8 16.5 12 19.8l5.2-3.3"/></svg>
+        <span>鸟瞰</span>
+      </button>
+    </aside>
+
+    <div class="telemetry" aria-hidden="true">
+      <div class="telemetry-head">Flight Record</div>
+      <div class="t-row">
+        <span class="t-label">Astral wheel</span>
+        <span class="t-value"><b>23</b>m / 十二宫</span>
+      </div>
+      <div class="t-rule"></div>
+      <div class="t-row">
+        <span class="t-label">Voxel count</span>
+        <span class="t-value" id="voxelValue"><b>--</b> cubes</span>
+      </div>
+      <div class="t-rule"></div>
+      <div class="t-row">
+        <span class="t-label">Altitude</span>
+        <span class="t-value"><b>2180</b>m / 云海</span>
+      </div>
+    </div>
+
+    <div class="statusbar">
+      <div class="status-left">
+        <div class="sound-off"><span class="pulse-dot"></span>LIVE DIORAMA · 实时生成</div>
+      </div>
+      <div class="hint-bar glass">
+        <div class="hint"><span>拖拽</span>旋转</div>
+        <div class="hint desk-only"><span>滚轮</span>缩放</div>
+        <div class="hint desk-only"><span>右键</span>平移</div>
+        <div class="hint desk-only"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd>漫游</div>
+        <div class="hint"><kbd>N</kbd>昼夜</div>
+        <div class="hint desk-only"><kbd>O</kbd>巡游</div>
+      </div>
+      <div class="status-right">
+        <span class="sun-mini"></span>
+        <span id="timeLabel">晨光 / 06:42</span>
+        <span class="clock">云海之上</span>
+      </div>
+    </div>
+
+    <div class="credit">GENERATIVE VOXEL DIORAMA · BUILT WITH THREE.JS</div>
+
+    <section id="aboutPanel" class="glass" aria-label="关于云鲸星轮">
+      <div class="about-top">
+        <div>
+          <div class="about-kicker">An atlas of the improbable</div>
+          <h2 class="about-title">一场浮在云上的天文梦</h2>
+        </div>
+        <button class="about-close" id="aboutClose" aria-label="关闭">
+          <svg width="12" height="12" viewBox="0 0 12 12" style="stroke:currentColor;fill:none;stroke-width:1.2"><path d="m1.5 1.5 9 9M10.5 1.5l-9 9"/></svg>
+        </button>
+      </div>
+      <p class="about-copy">巨鲸驮着一座以星象为心脏的城邦，在云海之上缓慢航行。镂空星轮与双塔互为日晷，鲸背上的民居、风车、花园和飞艇，是这场航行里细小的生活注脚。</p>
+      <div class="about-grid">
+        <div class="about-stat"><small>星轮 / Astral wheel</small><strong>双层镂空星轮 · 十二宫刻度 · 光环齿轮</strong></div>
+        <div class="about-stat"><small>双塔 / Twin pagodas</small><strong>五重木构楼阁 · 翘角飞檐 · 窗灯与金顶</strong></div>
+        <div class="about-stat"><small>动态 / Living scene</small><strong>昼夜循环 · 浮空飞艇 · 流星 · 云潮与飞鸟</strong></div>
+        <div class="about-stat"><small>操作 / Controls</small><strong>拖拽旋转 · 滚轮缩放 · 右键平移 · WASD 漫游 · 1–5 机位 · R 归位</strong></div>
+      </div>
+      <div class="about-foot"><span>Cloud whale · Astral wheel</span><span>Procedurally assembled</span></div>
+    </section>
+
+    <div id="fallback" class="fallback glass">
+      <h2>星轮尚未点亮</h2>
+      <p>Three.js 模块或 WebGL 未能初始化。请确认浏览器已开启硬件加速并连接到 CDN，然后刷新页面。</p>
+    </div>
+
+    <div id="loader">
+      <div class="loader-wheel" aria-hidden="true">
+        <div class="loader-spokes">
+          <i style="transform:rotate(0deg)"></i><i style="transform:rotate(30deg)"></i><i style="transform:rotate(60deg)"></i>
+          <i style="transform:rotate(90deg)"></i><i style="transform:rotate(120deg)"></i><i style="transform:rotate(150deg)"></i>
+          <i style="transform:rotate(180deg)"></i><i style="transform:rotate(210deg)"></i><i style="transform:rotate(240deg)"></i>
+          <i style="transform:rotate(270deg)"></i><i style="transform:rotate(300deg)"></i><i style="transform:rotate(330deg)"></i>
+        </div>
+        <div class="loader-star"></div>
+      </div>
+      <div class="loader-title">云鲸星轮</div>
+      <div class="loader-sub">Carving the celestial city · 正在雕琢鲸背城邦</div>
+      <div class="loader-bar"><i></i></div>
+      <div class="loader-note">Please wait · 云海正在聚拢</div>
+    </div>
+  </div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "../vendor/three160/build/three.module.js",
+    "three/addons/": "../vendor/three160/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+/* ============================================================
+   云鲸星轮 — a single-file generative voxel diorama
+   Everything below is assembled from cubes, light and a little wind.
+   ============================================================ */
+
+const $ = function (sel) { return document.querySelector(sel); };
+const $$ = function (sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); };
+const TAU = Math.PI * 2;
+const clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+const lerp = function (a, b, t) { return a + (b - a) * t; };
+const smooth = function (t) { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const damp = function (a, b, lambda, dt) { return lerp(a, b, 1 - Math.exp(-lambda * dt)); };
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rng = mulberry32(20261020);
+const rr = function (a, b) { return a + rng() * (b - a); };
+const ri = function (a, b) { return Math.floor(a + rng() * (b - a + 1)); };
+function hash2(x, y) {
+  const h = Math.sin(x * 127.1 + y * 311.7 + 47.17) * 43758.5453123;
+  return h - Math.floor(h);
+}
+function hash3(x, y, z) {
+  const h = Math.sin(x * 12.9898 + y * 78.233 + z * 37.719) * 43758.5453;
+  return h - Math.floor(h);
+}
+
+const PAL = {
+  skyTopDay: 0x1f66ad,
+  skyMidDay: 0x5bb1de,
+  skyLowDay: 0x94cee7,
+  skyTopNight: 0x030916,
+  skyMidNight: 0x11243f,
+  skyLowNight: 0x2b456c,
+  fogDay: 0xb7d7e5,
+  fogNight: 0x0d1a2c,
+  sunDay: 0xffe6be,
+  sunNight: 0xa9c9ef,
+  stone: 0x677d80,
+  stoneLight: 0x9ca9a1,
+  stoneDark: 0x3e5559,
+  inkStone: 0x263e45,
+  jade: 0x5f8d7c,
+  moss: 0x7f9b6f,
+  mossDark: 0x4d705a,
+  plaster: 0xeadbc1,
+  plasterLight: 0xf4ead8,
+  wood: 0x5a3b31,
+  woodDark: 0x32251f,
+  vermilion: 0xb44b3f,
+  vermilionDark: 0x7f312e,
+  roof: 0x214955,
+  roofTeal: 0x2c5f65,
+  roofLight: 0x457b79,
+  gold: 0xc1a05c,
+  goldLight: 0xe3c47f,
+  brass: 0x8e7239,
+  wheelSteel: 0x2a5c6d,
+  wheelDeep: 0x153b4c,
+  wheelEdge: 0x7ba1a2,
+  star: 0xdaf8ff,
+  starBlue: 0x8be6ff,
+  starGold: 0xffd994,
+  blossom: 0xf2b7bc,
+  blossomLight: 0xffd8d2,
+  leaf: 0x4d8369,
+  leafLight: 0x7da481,
+  leafDeep: 0x2f5f53,
+  cloud: 0xf7faf7,
+  cloudWarm: 0xfff5e7,
+  cloudShade: 0xd8e6eb,
+  glowWarm: 0xffc06f,
+  glowSoft: 0xffe3a8,
+  glowGold: 0xffd98f,
+  glowCyan: 0x9df3ff,
+  glowPink: 0xffa8c2,
+  balloonCream: 0xf0dfbd,
+  balloonRed: 0xb85249,
+  balloonTeal: 0x3e8588,
+  balloonInk: 0x27445c
+};
+
+/* ---------- shared canvas textures ---------- */
+function canvasTexture(w, h, painter) {
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  const ctx = c.getContext('2d');
+  painter(ctx, w, h);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 4;
+  return tex;
+}
+
+const glowTexture = canvasTexture(128, 128, function (ctx, w, h) {
+  const g = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
+  g.addColorStop(0, 'rgba(255,255,255,1)');
+  g.addColorStop(0.16, 'rgba(255,255,255,0.92)');
+  g.addColorStop(0.42, 'rgba(255,255,255,0.28)');
+  g.addColorStop(1, 'rgba(255,255,255,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, w, h);
+});
+
+const softCloudTexture = canvasTexture(256, 160, function (ctx, w, h) {
+  ctx.clearRect(0, 0, w, h);
+  for (let i = 0; i < 18; i++) {
+    const x = w * (0.16 + rng() * 0.68);
+    const y = h * (0.35 + rng() * 0.32);
+    const rad = 18 + rng() * 58;
+    const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+    g.addColorStop(0, 'rgba(255,255,255,' + (0.1 + rng() * 0.14) + ')');
+    g.addColorStop(0.5, 'rgba(255,255,255,' + (0.04 + rng() * 0.06) + ')');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, rad, 0, TAU); ctx.fill();
+  }
+});
+
+const haloTexture = canvasTexture(256, 256, function (ctx, w, h) {
+  const g = ctx.createRadialGradient(w / 2, h / 2, 0, w / 2, h / 2, w / 2);
+  g.addColorStop(0, 'rgba(255,248,223,1)');
+  g.addColorStop(0.12, 'rgba(255,237,190,0.96)');
+  g.addColorStop(0.34, 'rgba(255,216,146,0.26)');
+  g.addColorStop(0.68, 'rgba(255,215,160,0.07)');
+  g.addColorStop(1, 'rgba(255,210,150,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+});
+
+const moonTexture = canvasTexture(256, 256, function (ctx, w, h) {
+  ctx.clearRect(0, 0, w, h);
+  const cells = 24;
+  const cell = w / cells;
+  const craters = [
+    [0.36, 0.35, 0.12], [0.61, 0.56, 0.09], [0.46, 0.68, 0.065],
+    [0.68, 0.32, 0.045], [0.29, 0.6, 0.05], [0.54, 0.22, 0.038]
+  ];
+  for (let y = 0; y < cells; y++) {
+    for (let x = 0; x < cells; x++) {
+      const nx = (x + 0.5) / cells;
+      const ny = (y + 0.5) / cells;
+      const dist = Math.hypot(nx - 0.5, ny - 0.5);
+      if (dist > 0.465) continue;
+      let shade = 226 + Math.floor(hash2(x * 2.3, y * 4.7) * 24);
+      for (let k = 0; k < craters.length; k++) {
+        const c = craters[k];
+        if (Math.hypot(nx - c[0], ny - c[1]) < c[2]) shade -= 25 + k * 2;
+      }
+      if (dist > 0.43) shade -= 20;
+      ctx.fillStyle = 'rgb(' + shade + ',' + (shade + 3) + ',' + Math.min(255, shade + 14) + ')';
+      ctx.fillRect(x * cell, y * cell, cell + 0.5, cell + 0.5);
+    }
+  }
+});
+moonTexture.magFilter = THREE.NearestFilter;
+moonTexture.minFilter = THREE.NearestFilter;
+
+const zodiacTexture = canvasTexture(1024, 1024, function (ctx, w, h) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.translate(w / 2, h / 2);
+  const glyphs = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+
+  /* a deep astrolabe band so the characters can be read against the sky */
+  const band = ctx.createRadialGradient(0, 0, 300, 0, 0, 512);
+  band.addColorStop(0.0, 'rgba(5,18,32,0)');
+  band.addColorStop(0.59, 'rgba(5,18,32,0)');
+  band.addColorStop(0.66, 'rgba(4,17,31,0.42)');
+  band.addColorStop(0.8, 'rgba(3,15,29,0.58)');
+  band.addColorStop(0.93, 'rgba(3,15,29,0.36)');
+  band.addColorStop(1.0, 'rgba(3,15,29,0)');
+  ctx.fillStyle = band;
+  ctx.beginPath();
+  ctx.arc(0, 0, 512, 0, TAU);
+  ctx.fill();
+  /* faint star dust and a web of astrolabe lines */
+  for (let i = 0; i < 150; i++) {
+    const a = rng() * TAU;
+    const rad = 333 + Math.pow(rng(), 0.65) * 166;
+    const size = rng() > 0.88 ? 2.2 : 1.0;
+    ctx.globalAlpha = 0.2 + rng() * 0.55;
+    ctx.fillStyle = rng() > 0.82 ? 'rgba(255,217,151,1)' : 'rgba(206,244,255,1)';
+    ctx.beginPath();
+    ctx.arc(Math.cos(a) * rad, Math.sin(a) * rad, size, 0, TAU);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 0.36;
+  ctx.strokeStyle = 'rgba(255,222,155,0.9)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 12; i++) {
+    const a = i / 12 * TAU;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a) * 338, Math.sin(a) * 338);
+    ctx.lineTo(Math.cos(a) * 472, Math.sin(a) * 472);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+
+  ctx.strokeStyle = 'rgba(255,224,159,0.78)';
+  ctx.fillStyle = 'rgba(255,232,180,0.94)';
+  ctx.lineWidth = 3.5;
+  [338, 356, 452].forEach(function (rad, idx) {
+    ctx.globalAlpha = idx === 1 ? 0.45 : 0.82;
+    ctx.beginPath();
+    ctx.arc(0, 0, rad, 0, TAU);
+    ctx.stroke();
+  });
+  ctx.globalAlpha = 1;
+  for (let i = 0; i < 72; i++) {
+    const a = i / 72 * TAU - Math.PI / 2;
+    const major = i % 6 === 0;
+    ctx.globalAlpha = major ? 1 : 0.48;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a) * 456, Math.sin(a) * 456);
+    ctx.lineTo(Math.cos(a) * (major ? 500 : 476), Math.sin(a) * (major ? 500 : 476));
+    ctx.stroke();
+  }
+  for (let i = 0; i < 12; i++) {
+    const a = i / 12 * TAU - Math.PI / 2;
+    const rad = 403;
+    ctx.save();
+    ctx.translate(Math.cos(a) * rad, Math.sin(a) * rad);
+    ctx.rotate(a + Math.PI / 2);
+    ctx.globalAlpha = 0.44;
+    ctx.strokeStyle = 'rgba(255,220,148,0.9)';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.arc(0, 0, 30, 0, TAU);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(255,237,190,1)';
+    ctx.shadowColor = 'rgba(255,196,102,0.9)';
+    ctx.shadowBlur = 12;
+    ctx.font = '600 58px "KaiTi","STKaiti","Songti SC",serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(glyphs[i], 0, 2);
+    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 0.78;
+    ctx.fillStyle = 'rgba(255,227,165,1)';
+    ctx.beginPath();
+    ctx.arc(0, -49, 3.4, 0, TAU);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(-18, -35, 1.8, 0, TAU);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(17, -36, 1.6, 0, TAU);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,224,159,0.62)';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.moveTo(0, -45); ctx.lineTo(-18, -35); ctx.lineTo(-7, -25);
+    ctx.moveTo(0, -45); ctx.lineTo(17, -36); ctx.lineTo(8, -25);
+    ctx.stroke();
+    ctx.restore();
+  }
+  ctx.globalAlpha = 0.75;
+  ctx.strokeStyle = 'rgba(255,226,165,0.68)';
+  ctx.lineWidth = 2;
+  for (let i = 0; i < 36; i++) {
+    const a1 = i / 36 * TAU;
+    const a2 = (i + 1) / 36 * TAU;
+    ctx.beginPath();
+    ctx.moveTo(Math.cos(a1) * 323, Math.sin(a1) * 323);
+    ctx.lineTo(Math.cos(a2) * 323, Math.sin(a2) * 323);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+});
+zodiacTexture.anisotropy = 8;
+
+function bannerTexture(glyph, main, bg) {
+  return canvasTexture(160, 512, function (ctx, w, h) {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = bg;
+    ctx.fillRect(8, 0, w - 16, h - 6);
+    ctx.fillStyle = 'rgba(255,230,180,0.75)';
+    ctx.fillRect(8, 0, w - 16, 5);
+    ctx.fillRect(8, h - 11, w - 16, 5);
+    ctx.strokeStyle = 'rgba(255,226,165,0.46)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(18, 16, w - 36, h - 40);
+    ctx.fillStyle = main;
+    ctx.font = '500 82px "KaiTi","STKaiti","Songti SC",serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(glyph, w / 2, h * 0.44);
+    ctx.font = '500 22px "Songti SC","SimSun",serif';
+    ctx.fillStyle = 'rgba(255,233,195,0.75)';
+    ctx.fillText('星 海 无 涯', w / 2, h * 0.78);
+    const tail = h - 6;
+    for (let x = 8; x < w - 8; x += 12) {
+      ctx.beginPath();
+      ctx.moveTo(x, tail);
+      ctx.lineTo(x + 6, h);
+      ctx.lineTo(x + 12, tail);
+      ctx.fillStyle = bg;
+      ctx.fill();
+    }
+  });
+}
+
+/* ---------- renderer, camera, post ---------- */
+const canvas = document.getElementById('stage');
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true,
+    alpha: false,
+    powerPreference: 'high-performance',
+    stencil: false
+  });
+} catch (err) {
+  document.getElementById('fallback').classList.add('show');
+  document.getElementById('loader').classList.add('hide');
+  throw err;
+}
+const pixelRatio = Math.min(window.devicePixelRatio || 1, window.innerWidth < 820 ? 1.55 : 1.75);
+renderer.setPixelRatio(pixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.04;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.info.autoReset = false;
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(PAL.fogDay, 0.00105);
+
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.5, 1600);
+camera.position.set(117, 73, 157);
+
+const controls = new OrbitControls(camera, canvas);
+controls.target.set(0, 17.5, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.055;
+controls.rotateSpeed = 0.62;
+controls.zoomSpeed = 0.78;
+controls.panSpeed = 0.72;
+controls.screenSpacePanning = true;
+controls.minDistance = 22;
+controls.maxDistance = 320;
+controls.minPolarAngle = 0.08;
+controls.maxPolarAngle = Math.PI * 0.535;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.23;
+controls.update();
+
+const composerTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+  type: THREE.HalfFloatType,
+  format: THREE.RGBAFormat
+});
+const composer = new EffectComposer(renderer, composerTarget);
+composer.setPixelRatio(pixelRatio);
+composer.setSize(window.innerWidth, window.innerHeight);
+const renderPass = new RenderPass(scene, camera);
+const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight), 0.34, 0.46, 1.08
+);
+const outputPass = new OutputPass();
+composer.addPass(renderPass);
+composer.addPass(bloomPass);
+composer.addPass(outputPass);
+
+/* ---------- environment reflection: a tiny hand-painted sky ---------- */
+function makeEnvironmentTexture() {
+  const w = 512, h = 256;
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  const ctx = c.getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, '#2f7cbc');
+  grad.addColorStop(0.42, '#a9d2e3');
+  grad.addColorStop(0.54, '#fff1d7');
+  grad.addColorStop(0.66, '#9db6b9');
+  grad.addColorStop(1, '#354f5f');
+  ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+  const sun = ctx.createRadialGradient(w * 0.22, h * 0.4, 0, w * 0.22, h * 0.4, 76);
+  sun.addColorStop(0, 'rgba(255,250,231,1)');
+  sun.addColorStop(0.16, 'rgba(255,238,193,0.8)');
+  sun.addColorStop(1, 'rgba(255,230,190,0)');
+  ctx.fillStyle = sun; ctx.fillRect(0, 0, w, h);
+  ctx.globalAlpha = 0.17; ctx.fillStyle = '#ffffff';
+  for (let i = 0; i < 16; i++) {
+    const x = (i * 83 + 41) % w;
+    const y = h * (0.42 + (i % 5) * 0.025);
+    ctx.beginPath(); ctx.ellipse(x, y, 35 + (i % 4) * 15, 5 + (i % 3) * 2, 0, 0, TAU); ctx.fill();
+  }
+  const tex = new THREE.CanvasTexture(c);
+  tex.mapping = THREE.EquirectangularReflectionMapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+const envSource = makeEnvironmentTexture();
+const pmrem = new THREE.PMREMGenerator(renderer);
+pmrem.compileEquirectangularShader();
+const envRT = pmrem.fromEquirectangular(envSource);
+scene.environment = envRT.texture;
+envSource.dispose();
+pmrem.dispose();
+
+/* ---------- materials ---------- */
+const MAT = {
+  solid: new THREE.MeshStandardMaterial({
+    color: 0xffffff, roughness: 0.79, metalness: 0.015, flatShading: true, envMapIntensity: 0.45
+  }),
+  whale: new THREE.MeshStandardMaterial({
+    color: 0xffffff, roughness: 0.52, metalness: 0.04, flatShading: true, envMapIntensity: 0.7
+  }),
+  metal: new THREE.MeshStandardMaterial({
+    color: 0xffffff, roughness: 0.3, metalness: 0.72, flatShading: true, envMapIntensity: 1.15
+  }),
+  cloud: new THREE.MeshStandardMaterial({
+    color: 0xffffff, roughness: 1, metalness: 0, flatShading: true,
+    emissive: new THREE.Color(0x0f2130), emissiveIntensity: 0.16, envMapIntensity: 0.2
+  }),
+  glow: new THREE.MeshBasicMaterial({
+    color: new THREE.Color(1.5, 1.5, 1.5), toneMapped: false, fog: true
+  })
+};
+const matSolid = MAT.solid;
+const matWhale = MAT.whale;
+const matMetal = MAT.metal;
+const matCloud = MAT.cloud;
+const matGlow = MAT.glow;
+
+const unitCube = new THREE.BoxGeometry(1, 1, 1);
+const dummy = new THREE.Object3D();
+const tmpColor = new THREE.Color();
+const tmpColorB = new THREE.Color();
+
+class VoxBatch {
+  constructor(label) {
+    this.label = label || 'voxels';
+    this.byMaterial = new Map();
+    this.count = 0;
+  }
+  add(material, color, x, y, z, sx, sy, sz, rx, ry, rz) {
+    let list = this.byMaterial.get(material);
+    if (!list) { list = []; this.byMaterial.set(material, list); }
+    list.push({
+      x: x, y: y, z: z,
+      sx: sx === undefined ? 1 : sx,
+      sy: sy === undefined ? 1 : sy,
+      sz: sz === undefined ? 1 : sz,
+      rx: rx || 0, ry: ry || 0, rz: rz || 0,
+      color: new THREE.Color(color)
+    });
+    this.count++;
+    return this;
+  }
+  addMany(material, color, items) {
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i];
+      this.add(material, color, it[0], it[1], it[2], it[3], it[4], it[5], it[6], it[7], it[8]);
+    }
+    return this;
+  }
+  build(options) {
+    options = options || {};
+    const group = new THREE.Group();
+    group.name = this.label;
+    this.byMaterial.forEach(function (list, material) {
+      if (!list.length) return;
+      const mesh = new THREE.InstancedMesh(unitCube, material, list.length);
+      for (let i = 0; i < list.length; i++) {
+        const item = list[i];
+        dummy.position.set(item.x, item.y, item.z);
+        dummy.rotation.set(item.rx, item.ry, item.rz);
+        dummy.scale.set(item.sx, item.sy, item.sz);
+        dummy.updateMatrix();
+        mesh.setMatrixAt(i, dummy.matrix);
+        mesh.setColorAt(i, item.color);
+      }
+      mesh.instanceMatrix.needsUpdate = true;
+      if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+      mesh.castShadow = options.castShadow === undefined ? true : options.castShadow;
+      mesh.receiveShadow = options.receiveShadow === undefined ? true : options.receiveShadow;
+      mesh.frustumCulled = false;
+      mesh.renderOrder = options.renderOrder || 0;
+      group.add(mesh);
+    });
+    return group;
+  }
+  meshCount() {
+    let c = 0;
+    this.byMaterial.forEach(function (list) { c += list.length; });
+    return c;
+  }
+}
+
+const softGlowMaterials = [];
+function addGlowSprite(parent, color, size, x, y, z, opacity) {
+  const texture = glowTexture;
+  const mat = new THREE.SpriteMaterial({
+    map: texture,
+    color: color,
+    transparent: true,
+    opacity: opacity === undefined ? 0.75 : opacity,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    depthTest: true,
+    fog: false
+  });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(size, size, 1);
+  sprite.position.set(x, y, z);
+  parent.add(sprite);
+  softGlowMaterials.push({ mat: mat, base: mat.opacity });
+  return sprite;
+}
+
+function addLabelPlane(parent, texture, width, height, x, y, z, ry) {
+  const mat = new THREE.MeshBasicMaterial({
+    map: texture, transparent: true, opacity: 0.9, side: THREE.DoubleSide,
+    depthWrite: false, toneMapped: false, fog: true
+  });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(width, height), mat);
+  mesh.position.set(x, y, z);
+  mesh.rotation.y = ry || 0;
+  parent.add(mesh);
+  return mesh;
+}
+
+/* ---------- light & sky ---------- */
+const hemiLight = new THREE.HemisphereLight(0xd6f1ff, 0x3e6370, 0.82);
+scene.add(hemiLight);
+const sunLight = new THREE.DirectionalLight(0xffe5c1, 3.75);
+sunLight.position.set(94, 82, -104);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.set(2048, 2048);
+sunLight.shadow.camera.left = -72;
+sunLight.shadow.camera.right = 72;
+sunLight.shadow.camera.top = 70;
+sunLight.shadow.camera.bottom = -70;
+sunLight.shadow.camera.near = 1;
+sunLight.shadow.camera.far = 300;
+sunLight.shadow.bias = -0.00018;
+sunLight.shadow.normalBias = 0.65;
+sunLight.shadow.radius = 2.4;
+sunLight.target.position.set(0, 15, 0);
+scene.add(sunLight);
+scene.add(sunLight.target);
+
+const fillLight = new THREE.DirectionalLight(0xafd9f3, 0.82);
+fillLight.position.set(66, 38, 88);
+fillLight.target.position.set(0, 14, 0);
+scene.add(fillLight);
+scene.add(fillLight.target);
+
+const bounceLight = new THREE.DirectionalLight(0x7fb4d9, 0.26);
+bounceLight.position.set(-15, -30, 55);
+bounceLight.target.position.set(0, 6, 0);
+scene.add(bounceLight);
+scene.add(bounceLight.target);
+
+const daylightState = {
+  night: 0,
+  target: 0,
+  transitioning: false
+};
+
+const dayFogColor = new THREE.Color(PAL.fogDay);
+const nightFogColor = new THREE.Color(PAL.fogNight);
+const hemiSkyDay = new THREE.Color(0xd9f3ff);
+const hemiSkyNight = new THREE.Color(0x26354c);
+const hemiGroundDay = new THREE.Color(0x4e727d);
+const hemiGroundNight = new THREE.Color(0x0a1220);
+const sunColorDay = new THREE.Color(0xffe1b5);
+const sunColorNight = new THREE.Color(0x9fc3f2);
+const skyTopDay = new THREE.Color(PAL.skyTopDay);
+const skyTopNight = new THREE.Color(PAL.skyTopNight);
+const skyMidDay = new THREE.Color(PAL.skyMidDay);
+const skyMidNight = new THREE.Color(PAL.skyMidNight);
+const skyLowDay = new THREE.Color(PAL.skyLowDay);
+const skyLowNight = new THREE.Color(PAL.skyLowNight);
+const sunPositionDay = new THREE.Vector3(0.56, 0.46, -0.69).normalize();
+const sunPositionNight = new THREE.Vector3(-0.73, 0.18, -0.64).normalize();
+
+const skyUniforms = {
+  uTop: { value: skyTopDay.clone() },
+  uMid: { value: skyMidDay.clone() },
+  uLow: { value: skyLowDay.clone() },
+  uSunColor: { value: sunColorDay.clone() },
+  uSunDir: { value: sunPositionDay.clone() },
+  uNight: { value: 0 },
+  uHaze: { value: 1 }
+};
+const skyVert = [
+  'varying vec3 vWorldPosition;',
+  'void main(){',
+  '  vec4 world = modelMatrix * vec4(position, 1.0);',
+  '  vWorldPosition = world.xyz;',
+  '  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
+  '  gl_Position.z = gl_Position.w;',
+  '}'
+].join('\n');
+const skyFrag = [
+  'uniform vec3 uTop;',
+  'uniform vec3 uMid;',
+  'uniform vec3 uLow;',
+  'uniform vec3 uSunColor;',
+  'uniform vec3 uSunDir;',
+  'uniform float uNight;',
+  'uniform float uHaze;',
+  'varying vec3 vWorldPosition;',
+  'void main(){',
+  '  vec3 dir = normalize(vWorldPosition - cameraPosition);',
+  '  float h = dir.y;',
+  '  vec3 col = mix(uLow, uMid, smoothstep(-0.06, 0.22, h));',
+  '  col = mix(col, uTop, smoothstep(0.18, 0.84, h));',
+  '  float sunDot = max(dot(dir, normalize(uSunDir)), 0.0);',
+  '  float halo = pow(sunDot, 5.0) * 0.24 + pow(sunDot, 42.0) * 0.64 + pow(sunDot, 220.0) * 0.6;',
+  '  col += uSunColor * halo * (0.62 + uNight * 0.3);',
+  '  float horizon = exp(-abs(h) * 7.5);',
+  '  col = mix(col, uLow, horizon * 0.26);',
+  '  col += uSunColor * pow(sunDot, 18.0) * 0.11;',
+  '  float dither = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898,78.233))) * 43758.5453);',
+  '  col += (dither - 0.5) / 255.0;',
+  '  gl_FragColor = vec4(col, 1.0);',
+  '}'
+].join('\n');
+const skyDome = new THREE.Mesh(
+  new THREE.SphereGeometry(820, 48, 24),
+  new THREE.ShaderMaterial({
+    uniforms: skyUniforms,
+    vertexShader: skyVert,
+    fragmentShader: skyFrag,
+    side: THREE.BackSide,
+    depthWrite: false,
+    fog: false
+  })
+);
+skyDome.frustumCulled = false;
+scene.add(skyDome);
+
+const sunGroup = new THREE.Group();
+sunGroup.position.copy(sunPositionDay).multiplyScalar(650);
+const sunHalo = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: haloTexture, color: 0xffe2b1, transparent: true, opacity: 0.92,
+  blending: THREE.AdditiveBlending, depthWrite: false, depthTest: true, fog: false
+}));
+sunHalo.scale.set(190, 190, 1);
+sunGroup.add(sunHalo);
+const sunDisc = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: glowTexture, color: 0xfff3d0, transparent: true, opacity: 1,
+  blending: THREE.AdditiveBlending, depthWrite: false, depthTest: true, fog: false
+}));
+sunDisc.scale.set(54, 54, 1);
+sunGroup.add(sunDisc);
+scene.add(sunGroup);
+
+const moonGroup = new THREE.Group();
+moonGroup.position.copy(sunPositionNight).multiplyScalar(660);
+const moonHalo = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: glowTexture, color: 0x9fc8ff, transparent: true, opacity: 0,
+  blending: THREE.AdditiveBlending, depthWrite: false, depthTest: true, fog: false
+}));
+moonHalo.scale.set(200, 200, 1);
+moonGroup.add(moonHalo);
+const moonDisc = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: moonTexture, color: 0xe7f2ff, transparent: true, opacity: 0,
+  depthWrite: false, depthTest: true, fog: false
+}));
+moonDisc.scale.set(54, 54, 1);
+moonGroup.add(moonDisc);
+scene.add(moonGroup);
+
+/* stars */
+function makeStarGeometry(count, radius, gaussianBand) {
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const basisA = new THREE.Vector3(1, 0.08, 0.18).normalize();
+  const basisB = new THREE.Vector3(-0.22, 0.32, -1).normalize();
+  const normal = new THREE.Vector3(0.2, 0.86, 0.3).normalize();
+  for (let i = 0; i < count; i++) {
+    let v = new THREE.Vector3();
+    if (gaussianBand) {
+      const a = rng() * TAU;
+      const b = (rng() + rng() + rng() - 1.5) * 0.18;
+      v.copy(basisA).multiplyScalar(Math.cos(a));
+      v.addScaledVector(basisB, Math.sin(a));
+      v.addScaledVector(normal, b * 1.5).normalize();
+    } else {
+      const y = rr(-0.08, 0.98);
+      const theta = rng() * TAU;
+      const r = Math.sqrt(Math.max(0, 1 - y * y));
+      v.set(Math.cos(theta) * r, y, Math.sin(theta) * r);
+    }
+    v.multiplyScalar(radius * rr(0.92, 1.02));
+    positions[i * 3] = v.x;
+    positions[i * 3 + 1] = v.y;
+    positions[i * 3 + 2] = v.z;
+    const tint = rng();
+    const c = new THREE.Color(tint > 0.91 ? 0xffe6ba : tint > 0.72 ? 0xbfe4ff : 0xdfefff);
+    c.multiplyScalar(rr(0.72, 1.42));
+    colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  return geo;
+}
+const starMatBig = new THREE.PointsMaterial({
+  size: 5.1, map: glowTexture, transparent: true, opacity: 0,
+  vertexColors: true, blending: THREE.AdditiveBlending,
+  depthWrite: false, depthTest: true, sizeAttenuation: true, fog: false, toneMapped: false
+});
+const starMatSmall = new THREE.PointsMaterial({
+  size: 2.15, map: glowTexture, transparent: true, opacity: 0,
+  vertexColors: true, blending: THREE.AdditiveBlending,
+  depthWrite: false, depthTest: true, sizeAttenuation: true, fog: false, toneMapped: false
+});
+const starsBig = new THREE.Points(makeStarGeometry(520, 620, false), starMatBig);
+const starsSmall = new THREE.Points(makeStarGeometry(1600, 640, false), starMatSmall);
+starsBig.frustumCulled = false; starsSmall.frustumCulled = false;
+scene.add(starsBig); scene.add(starsSmall);
+const galaxyMat = new THREE.PointsMaterial({
+  size: 2.05, map: glowTexture, transparent: true, opacity: 0,
+  vertexColors: true, blending: THREE.AdditiveBlending,
+  depthWrite: false, depthTest: true, sizeAttenuation: true, fog: false, toneMapped: false
+});
+const galaxy = new THREE.Points(makeStarGeometry(1500, 630, true), galaxyMat);
+galaxy.frustumCulled = false;
+scene.add(galaxy);
+const starGroup = new THREE.Group();
+starGroup.add(starsBig); starGroup.add(starsSmall); starGroup.add(galaxy);
+scene.add(starGroup);
+
+/* a few warm/cool window lights, intensifying after dusk */
+const towerLightL = new THREE.PointLight(0xffb15f, 0, 34, 1.8);
+towerLightL.position.set(-17, 20, 5);
+scene.add(towerLightL);
+const towerLightR = new THREE.PointLight(0xffc27a, 0, 34, 1.8);
+towerLightR.position.set(17, 17, 5);
+scene.add(towerLightR);
+const coreLight = new THREE.PointLight(0x9fe9ff, 0, 44, 1.7);
+coreLight.position.set(0, 21, 4.5);
+scene.add(coreLight);
+const townLight = new THREE.PointLight(0xffc481, 0, 28, 1.8);
+townLight.position.set(27, 12, 5);
+scene.add(townLight);
+
+
+/* ============================================================
+   WHALE BODY — an implicit creature, sampled into cubes
+   ============================================================ */
+const whaleRoot = new THREE.Group();
+whaleRoot.name = 'Cloud whale and her city';
+scene.add(whaleRoot);
+
+const whaleBatch = new VoxBatch('whale skin');
+const whaleGlowBatch = new VoxBatch('whale star markings');
+const staticBatch = new VoxBatch('whale-back city');
+const decoSprites = [];
+const cityLanternPositions = [];
+const animatedBits = {
+  windmill: null,
+  balloons: [],
+  birds: [],
+  butterflies: [],
+  rocks: [],
+  meteors: [],
+  wheelRings: [],
+  flags: [],
+  ropeLines: [],
+  petalSystems: []
+};
+const DECK_Y = 8.8;
+const WHEEL_Y = 20.8;
+const WHEEL_Z = 1.35;
+let whaleTopAt = function () { return 4; };
+
+const insideWhale = function (x, y, z) {
+  const a = (x / 35.2) * (x / 35.2) + ((y + 1.1) / 7.5) * ((y + 1.1) / 7.5) + (z / 10.35) * (z / 10.35);
+  if (a <= 1) return true;
+  const b = ((x - 24) / 14.7) * ((x - 24) / 14.7) + ((y - 0.15) / 7.15) * ((y - 0.15) / 7.15) + (z / 9.35) * (z / 9.35);
+  if (b <= 1) return true;
+  const c = ((x - 18) / 20.4) * ((x - 18) / 20.4) + ((y + 4.0) / 4.8) * ((y + 4.0) / 4.8) + (z / 8.55) * (z / 8.55);
+  if (c <= 1) return true;
+  const d = ((x - 3) / 23.0) * ((x - 3) / 23.0) + ((y - 0.9) / 7.4) * ((y - 0.9) / 7.4) + (z / 9.25) * (z / 9.25);
+  if (d <= 1) return true;
+  const e = ((x + 35) / 11.3) * ((x + 35) / 11.3) + ((y + 0.2) / 3.0) * ((y + 0.2) / 3.0) + (z / 4.25) * (z / 4.25);
+  if (e <= 1) return true;
+  const f = ((x + 41.5) / 5.8) * ((x + 41.5) / 5.8) + ((y + 0.2) / 2.0) * ((y + 0.2) / 2.0) + (z / 3.15) * (z / 3.15);
+  return f <= 1;
+};
+
+const OCC = new Set();
+const OCC_KEY = function (x, y, z) { return (x + 72) * 65536 + (y + 40) * 256 + (z + 40); };
+for (let x = -51; x <= 42; x++) {
+  for (let y = -13; y <= 12; y++) {
+    for (let z = -15; z <= 15; z++) {
+      if (insideWhale(x, y, z)) OCC.add(OCC_KEY(x, y, z));
+    }
+  }
+}
+whaleTopAt = function (x, z) {
+  const xi = Math.round(x), zi = Math.round(z);
+  for (let y = 13; y >= -13; y--) {
+    if (OCC.has(OCC_KEY(xi, y, zi))) return y + 0.5;
+  }
+  return -4;
+};
+
+const whaleBackPalette = [0x184b63, 0x1a5068, 0x1c546b, 0x194d65];
+const whaleSidePalette = [0x1f6078, 0x23667f, 0x1d5c74, 0x256b82];
+const whaleBellyPalette = [0xc7e1da, 0xc0dbd6, 0xd0e7df, 0xc8e2dc];
+const whaleLinePalette = [0x19485e, 0x1d5266];
+const glowSpotPalette = [0xaeefff, 0xffe2aa, 0xd8fbff, 0x9ce9f7];
+const surfaceCells = [];
+
+for (let x = -50; x <= 41; x++) {
+  for (let y = -12; y <= 11; y++) {
+    for (let z = -14; z <= 14; z++) {
+      if (!OCC.has(OCC_KEY(x, y, z))) continue;
+      const edge =
+        !OCC.has(OCC_KEY(x + 1, y, z)) || !OCC.has(OCC_KEY(x - 1, y, z)) ||
+        !OCC.has(OCC_KEY(x, y + 1, z)) || !OCC.has(OCC_KEY(x, y - 1, z)) ||
+        !OCC.has(OCC_KEY(x, y, z + 1)) || !OCC.has(OCC_KEY(x, y, z - 1));
+      if (!edge) continue;
+      const n = hash3(x * 0.91, y * 0.77, z * 1.13);
+      let color;
+      const flank = Math.abs(z) > 5.5;
+      const jawBoundary = -1.35 + (x - 10) * 0.027;
+      const inJawBand = x > 10 && Math.abs(z) > 2.4;
+      if (inJawBand && Math.abs(y - jawBoundary) < 0.62) {
+        color = 0x164457;
+      } else if (inJawBand && y < jawBoundary && y > -8.5) {
+        const jawShade = whaleBellyPalette[(Math.abs(x * 3 + z * 7) | 0) % whaleBellyPalette.length];
+        const groove = Math.floor((y + 12) * 1.7) % 4 === 0;
+        color = groove ? 0x9bbdb9 : jawShade;
+      } else if (y < -4.7) {
+        color = whaleBellyPalette[(Math.abs(x * 3 + z * 5 + y * 2) | 0) % whaleBellyPalette.length];
+        if (hash2(x * 2.1, z * 3.7) > 0.85) color = 0xeaf4eb;
+      } else if (y < -0.8) {
+        color = whaleSidePalette[(Math.abs(x * 2 + z * 7 + y) | 0) % whaleSidePalette.length];
+        if (flank && hash2(x * 1.23, z * 4.7) > 0.91) color = 0x3f8b9c;
+      } else if (flank) {
+        color = whaleSidePalette[(Math.abs(x * 4 + z * 9 + y * 2) | 0) % whaleSidePalette.length];
+      } else {
+        color = whaleBackPalette[(Math.abs(x * 5 + z * 11) | 0) % whaleBackPalette.length];
+        if (Math.abs(z) < 2 && y > 4) color = whaleLinePalette[(x + 100) % whaleLinePalette.length];
+      }
+      if (y > -3.3 && y < 4.7 && Math.abs(z) > 6 && hash2(x * 0.8, z * 3.2) > 0.972) {
+        color = 0x71b9c4;
+      }
+      whaleBatch.add(matWhale, color, x, y, z, 1.015, 1.015, 1.015);
+      surfaceCells.push([x, y, z]);
+    }
+  }
+}
+
+/* scattered bioluminescent marks on the hide */
+for (let i = 0; i < 54; i++) {
+  const p = surfaceCells[Math.floor(rng() * surfaceCells.length)];
+  if (!p) continue;
+  if (p[1] < -4.6 || p[1] > 7.2) continue;
+  const dirs = [];
+  if (!OCC.has(OCC_KEY(p[0] + 1, p[1], p[2]))) dirs.push([1, 0, 0]);
+  if (!OCC.has(OCC_KEY(p[0] - 1, p[1], p[2]))) dirs.push([-1, 0, 0]);
+  if (!OCC.has(OCC_KEY(p[0], p[1] + 1, p[2]))) dirs.push([0, 1, 0]);
+  if (!OCC.has(OCC_KEY(p[0], p[1] - 1, p[2]))) dirs.push([0, -1, 0]);
+  if (!OCC.has(OCC_KEY(p[0], p[1], p[2] + 1))) dirs.push([0, 0, 1]);
+  if (!OCC.has(OCC_KEY(p[0], p[1], p[2] - 1))) dirs.push([0, 0, -1]);
+  if (!dirs.length) continue;
+  const dir = dirs[Math.floor(rng() * dirs.length)];
+  const col = glowSpotPalette[(rng() * glowSpotPalette.length) | 0];
+  const s = 0.22 + rng() * 0.28;
+  whaleGlowBatch.add(matGlow, col,
+    p[0] + dir[0] * 0.56, p[1] + dir[1] * 0.56, p[2] + dir[2] * 0.56,
+    s, s, s);
+}
+
+/* face: eyes and the long smile */
+function findSideZ(x, y, side) {
+  for (let z = 15; z >= 0; z--) {
+    if (OCC.has(OCC_KEY(x, y, side * z))) return side * z;
+  }
+  return null;
+}
+function addWhaleFace(side) {
+  /* a large, kind eye: dark socket, pale lid, bright iris */
+  const eyeX = 29.2;
+  const eyeY = 2.15;
+  /* an almond, not a porthole: dark rim, bright iris, tiny catchlight */
+  const eyeCells = [
+    [-0.9, 0], [0, 0], [0.9, 0],
+    [-0.45, 0.54], [0.45, 0.54],
+    [-0.45, -0.54], [0.45, -0.54]
+  ];
+  for (let i = 0; i < eyeCells.length; i++) {
+    const x = eyeX + eyeCells[i][0];
+    const y = eyeY + eyeCells[i][1];
+    const z = findSideZ(Math.round(x), Math.round(y), side);
+    if (z === null) continue;
+    const outer = Math.abs(eyeCells[i][0]) > 0.6 || eyeCells[i][1] !== 0;
+    whaleBatch.add(matWhale, outer ? 0x1d4758 : 0x071923, x, y, z + side * 0.66,
+      0.76, 0.56, 0.25);
+  }
+  for (let i = 0; i < 3; i++) {
+    const x = eyeX - 0.9 + i * 0.9;
+    const y = eyeY + 1.15 + Math.sin(i / 2 * Math.PI) * 0.18;
+    const z = findSideZ(Math.round(x), Math.round(y), side);
+    if (z === null) continue;
+    whaleBatch.add(matWhale, 0x9dc6bd, x, y, z + side * 0.62, 0.86, 0.2, 0.22);
+  }
+  const zEye = findSideZ(Math.round(eyeX + 0.2), Math.round(eyeY), side);
+  if (zEye !== null) {
+    whaleGlowBatch.add(matGlow, 0x9df8ff, eyeX + 0.2, eyeY + 0.02, zEye + side * 0.76, 0.58, 0.44, 0.16);
+    whaleBatch.add(matWhale, 0x06141b, eyeX + 0.28, eyeY + 0.01, zEye + side * 0.86, 0.22, 0.24, 0.12);
+    whaleBatch.add(matWhale, 0xfbffef, eyeX + 0.02, eyeY + 0.18, zEye + side * 0.93, 0.12, 0.11, 0.08);
+    whaleGlowBatch.add(matGlow, 0xffe4a8, eyeX - 1.0, eyeY + 0.46, zEye + side * 0.72, 0.15, 0.15, 0.1);
+  }
+  /* the long, gently upturned mouth crease */
+  for (let i = 0; i < 13; i++) {
+    const x = 13.8 + i * 1.62;
+    const y = -3.55 + Math.sin(i / 12 * Math.PI) * 0.24 + (i > 9 ? (i - 9) * 0.22 : 0);
+    const z = findSideZ(Math.round(x), Math.round(y), side);
+    if (z === null) continue;
+    whaleBatch.add(matWhale, 0x06212d, x, y, z + side * 0.68, 1.62, 0.24, 0.3);
+    whaleBatch.add(matWhale, 0xa8cec2, x, y + 0.31, z + side * 0.66, 1.38, 0.1, 0.14);
+    if (i % 3 === 0) {
+      whaleGlowBatch.add(matGlow, 0xffdd9f, x + 0.5, y - 0.2, z + side * 0.72, 0.17, 0.17, 0.1);
+    }
+  }
+  /* pale baleen jaw plates, rendered as a soft patch on the flank */
+  const jawPalette = [0xd2e8dd, 0xc4ded8, 0xdeefe5, 0xb9d8d2];
+  for (let xi = 0; xi < 10; xi++) {
+    const x = 16.8 + xi * 1.85;
+    for (let yi = 0; yi < 3; yi++) {
+      const y = -4.35 - yi * 1.08 - Math.sin(xi / 9 * Math.PI) * 0.28;
+      const z = findSideZ(Math.round(x), Math.round(y), side);
+      if (z === null) continue;
+      const shade = jawPalette[(xi + yi) % jawPalette.length];
+      whaleBatch.add(matWhale, shade, x, y, z + side * 0.72, 0.95, 0.84, 0.24);
+      if (yi === 1 && xi % 2 === 0) {
+        whaleBatch.add(matWhale, 0x6f9691, x + 0.6, y - 0.1, z + side * 0.82, 0.09, 0.68, 0.12);
+      }
+    }
+  }
+  /* a small constellation-like blush behind the eye */
+  const blush = [[24.4, 4.6], [23.1, 4.1], [24.0, 3.4], [22.8, 3.0], [23.8, 2.2]];
+  for (let i = 0; i < blush.length; i++) {
+    const z = findSideZ(Math.round(blush[i][0]), Math.round(blush[i][1]), side);
+    if (z === null) continue;
+    whaleGlowBatch.add(matGlow, i % 2 ? PAL.starGold : PAL.starBlue,
+      blush[i][0], blush[i][1], z + side * 0.7, 0.28, 0.28, 0.12);
+  }
+}
+addWhaleFace(1);
+addWhaleFace(-1);
+
+/* eyespots and gold barnacles around the head */
+for (let i = 0; i < 20; i++) {
+  const x = 14 + rng() * 23;
+  const y = -5 + rng() * 7;
+  const side = rng() > 0.5 ? 1 : -1;
+  const z = findSideZ(Math.round(x), Math.round(y), side);
+  if (z === null) continue;
+  const s = 0.18 + rng() * 0.24;
+  whaleGlowBatch.add(matGlow, rng() > 0.5 ? PAL.starGold : PAL.starBlue, x, y, z + side * 0.6, s, s, s);
+}
+
+const whaleBodyMesh = whaleBatch.build({ castShadow: true, receiveShadow: true });
+whaleRoot.add(whaleBodyMesh);
+const whaleGlowMesh = whaleGlowBatch.build({ castShadow: false, receiveShadow: false });
+whaleRoot.add(whaleGlowMesh);
+
+/* pectoral fins — built around a hinge so they can breathe */
+function buildFin(side) {
+  const batch = new VoxBatch('pectoral fin ' + side);
+  const pivotX = 10.8;
+  const pivotY = -4.0;
+  const pivotZ = side * 7.6;
+  for (let iz = 0; iz < 9; iz++) {
+    const t = iz / 8;
+    const xCenter = -t * 4.4 - 0.8;
+    const yCenter = -t * 1.9 + 0.15;
+    const halfX = 2.6 - t * 1.15;
+    const thickness = 0.9 - t * 0.35;
+    for (let ix = -4; ix <= 3; ix++) {
+      const fx = ix / 3.6;
+      if (Math.abs(fx) > 1) continue;
+      const lengthFade = Math.sqrt(Math.max(0.05, 1 - fx * fx));
+      const yOff = (rng() > 0.5 ? 1 : -1) * thickness * lengthFade * 0.5;
+      const col = t < 0.25
+        ? (side > 0 ? 0x2f7688 : 0x276e80)
+        : (t > 0.72 ? 0xb9d9d3 : 0x1d5c74);
+      batch.add(matWhale, col,
+        xCenter + ix * halfX / 3.6 + side * 0.12,
+        yCenter + yOff,
+        side * (1.2 + t * 8.6),
+        0.92, Math.max(0.32, thickness - Math.abs(fx) * 0.3), 0.92);
+    }
+  }
+  const group = batch.build({ castShadow: true, receiveShadow: true });
+  group.position.set(pivotX, pivotY, pivotZ);
+  whaleRoot.add(group);
+  return group;
+}
+const finLeft = buildFin(-1);
+const finRight = buildFin(1);
+
+/* tail — a lifted, living crescent of blue voxels */
+function buildTail() {
+  const batch = new VoxBatch('tail flukes');
+  /* the curved peduncle rises from the tail stock */
+  for (let i = 0; i <= 18; i++) {
+    const t = i / 18;
+    const lx = 2.2 - t * 9.2;
+    const ly = 0.15 + Math.pow(t, 1.25) * 7.8;
+    const width = 1.7 - t * 0.75;
+    for (let zc = -1; zc <= 1; zc++) {
+      const zOffset = zc * width * 0.62;
+      const taper = 1 - Math.abs(zc) * 0.22;
+      const col = t > 0.72 ? (zc === 0 ? 0x2b7890 : 0x21677e) : (zc === 0 ? 0x1c5a72 : 0x174e65);
+      batch.add(matWhale, col, lx, ly, zOffset,
+        1.15, 1.0 * taper, 1.1 * taper);
+    }
+    if (i % 3 === 0) {
+      batch.add(matWhale, 0x8fc4bd, lx - 0.35, ly + 0.5, 0, 0.9, 0.14, 0.7);
+    }
+  }
+  /* broad flukes with a clear central notch */
+  for (let side = -1; side <= 1; side += 2) {
+    for (let iz = 0; iz < 10; iz++) {
+      const zAbs = 1.25 + iz * 1.18;
+      for (let ix = 0; ix < 7; ix++) {
+        const back = ix * 0.96;
+        const y = 7.95 + Math.pow(iz / 9, 1.3) * 0.85 + 0.08 * Math.sin(back * 0.8);
+        const col = zAbs > 8.5
+          ? 0xa9d0c7
+          : (side > 0 ? (rng() > 0.72 ? 0x2d7890 : 0x194f68) : (rng() > 0.72 ? 0x2b7287 : 0x174a61));
+        batch.add(matWhale, col,
+          -6.9 - back, y, side * zAbs,
+          1.1, 0.55, 1.06);
+        if (zAbs > 6.6 && rng() > 0.6) {
+          batch.add(matGlow, 0xa6e9e8, -6.9 - back, y + 0.38, side * zAbs, 0.17, 0.17, 0.17);
+        }
+      }
+    }
+  }
+  batch.add(matWhale, 0x2b7890, -6.8, 8.05, 0, 3.4, 1.1, 3.3);
+  batch.add(matWhale, 0x9bc9c2, -7.3, 8.68, 0, 1.4, 0.18, 2.1);
+  const group = batch.build({ castShadow: true, receiveShadow: true });
+  group.position.set(-44, -0.2, 0);
+  whaleRoot.add(group);
+  return group;
+}
+const tailGroup = buildTail();
+
+/* ============================================================
+   WHALE-BACK TERRACE — a floating island of stone and moss
+   ============================================================ */
+const DECK_RX = 24.2;
+const DECK_RZ = 9.4;
+const deckEdgePoints = [];
+const inDeck = function (x, z) {
+  const nx = x / DECK_RX;
+  const nz = z / DECK_RZ;
+  return nx * nx + nz * nz <= 1;
+};
+
+for (let x = -25; x <= 25; x++) {
+  for (let z = -10; z <= 10; z++) {
+    if (!inDeck(x, z)) continue;
+    const nx = x / DECK_RX;
+    const nz = z / DECK_RZ;
+    const d = Math.sqrt(nx * nx + nz * nz);
+    let col;
+    if (d > 0.92) {
+      col = hash2(x * 2.1, z * 3.3) > 0.5 ? PAL.stoneDark : 0x435b5e;
+    } else if (d > 0.7 && hash2(x + 44, z + 13) > 0.47) {
+      col = hash2(x * 4.1, z * 2.7) > 0.5 ? PAL.moss : PAL.mossDark;
+    } else if (z > 1.2 && z < 4.2 && Math.abs(x) < 18) {
+      col = hash2(x * 1.7, z * 5.3) > 0.35 ? 0xb8ab8d : 0x9d967f;
+    } else if (hash2(x * 1.1, z * 1.3) > 0.76) {
+      col = 0x6f8483;
+    } else {
+      col = hash2(x * 2.4, z * 4.1) > 0.5 ? 0x81908b : 0x728280;
+    }
+    staticBatch.add(matSolid, col, x, DECK_Y - 0.23, z, 1.03, 0.46, 1.03);
+    if (d > 0.9) {
+      staticBatch.add(matSolid, 0x3e5557, x, DECK_Y - 0.56, z, 1.0, 0.28, 1.0);
+      if (hash2(x * 3.4, z * 3.1) > 0.8) {
+        staticBatch.add(matSolid, PAL.mossDark, x, DECK_Y - 0.72, z, 0.85, 0.2, 0.85);
+      }
+    }
+
+    if (d > 0.86) deckEdgePoints.push([x, z, d]);
+  }
+}
+
+/* the astrolabe inlaid into the plaza */
+const plazaX = 0;
+const plazaZ = 5.0;
+for (let x = -8; x <= 8; x++) {
+  for (let z = -3; z <= 13; z++) {
+    const dist = Math.hypot(x - plazaX, z - plazaZ);
+    const ang = Math.atan2(z - plazaZ, x - plazaX);
+    if (Math.abs(dist - 6.8) < 0.22 || Math.abs(dist - 4.9) < 0.18 || dist < 0.6) {
+      staticBatch.add(matMetal, PAL.gold, x, DECK_Y + 0.025, z, 0.46, 0.09, 0.46);
+    }
+    if (Math.abs(dist - 5.9) < 0.16 && Math.abs(Math.sin(ang * 6)) < 0.18) {
+      staticBatch.add(matMetal, 0x7da7a3, x, DECK_Y + 0.02, z, 0.4, 0.08, 0.4);
+    }
+    if (dist > 7.5 && dist < 7.7 && Math.abs(Math.cos(ang * 12)) > 0.86) {
+      staticBatch.add(matGlow, 0xd6fff5, x, DECK_Y + 0.045, z, 0.22, 0.1, 0.22);
+    }
+  }
+}
+
+/* a small path from the plaza toward the tail */
+for (let x = -22; x <= 21; x++) {
+  const z = -6.1 + Math.sin(x * 0.16) * 1.35;
+  if (!inDeck(x, z)) continue;
+  if (x % 2 === 0) staticBatch.add(matSolid, 0xa59a80, x, DECK_Y + 0.01, z, 0.7, 0.12, 0.7);
+}
+for (let i = 0; i < 34; i++) {
+  const x = -22 + rng() * 44;
+  const z = (rng() > 0.5 ? 1 : -1) * (5.8 + rng() * 2.8);
+  if (!inDeck(x, z)) continue;
+  if (hash2(x * 5, z * 5) > 0.64) {
+    staticBatch.add(matSolid, hash2(x, z) > 0.5 ? PAL.moss : 0x5e8770, x, DECK_Y + 0.02, z, rr(0.25, 0.7), 0.2, rr(0.25, 0.7));
+  }
+}
+
+/* hanging vines at the island rim */
+for (let i = 0; i < 42; i++) {
+  const p = deckEdgePoints[Math.floor(rng() * deckEdgePoints.length)];
+  if (!p) continue;
+  const x = p[0] + rr(-0.35, 0.35);
+  const z = p[1] + rr(-0.35, 0.35);
+  const height = rr(0.6, 3.4);
+  const col = hash2(x * 3, z * 2) > 0.5 ? 0x53785e : 0x6f9270;
+  for (let k = 0; k < height; k += 0.48) {
+    if (rng() < 0.34) continue;
+    staticBatch.add(matSolid, col, x + Math.sin(k * 0.9) * 0.25, DECK_Y - 0.45 - k, z, 0.28, 0.46, 0.28);
+  }
+}
+
+/* terraces and a bridge to a floating garden island */
+function addStoneTerrace(cx, cz, rx, rz, top, topColor) {
+  for (let x = Math.floor(cx - rx); x <= Math.ceil(cx + rx); x++) {
+    for (let z = Math.floor(cz - rz); z <= Math.ceil(cz + rz); z++) {
+      const nx = (x - cx) / rx;
+      const nz = (z - cz) / rz;
+      const d = nx * nx + nz * nz;
+      if (d > 1) continue;
+      const edge = d > 0.78;
+      const col = edge ? 0x536769 : (hash2(x * 3.1, z * 4.7) > 0.58 ? topColor : 0x78907c);
+      staticBatch.add(matSolid, col, x, top - 0.22, z, 1.0, 0.44, 1.0);
+      if (edge) {
+        staticBatch.add(matSolid, 0x475b5d, x, top - 0.52, z, 0.98, 0.24, 0.98);
+        const t = whaleTopAt(x, z);
+        if (t < top - 1.3) {
+          staticBatch.add(matSolid, 0x485855, x, (t + top - 0.6) * 0.5, z, 0.75, Math.max(0.4, top - t - 1.4), 0.75);
+        }
+      }
+    }
+  }
+}
+addStoneTerrace(28.2, -0.2, 8.2, 5.8, 8.1, 0x78906f);
+addStoneTerrace(-27.2, 0.0, 8.0, 6.0, 7.7, 0x698469);
+
+/* short stair from main deck to the head terrace */
+for (let i = 0; i < 4; i++) {
+  staticBatch.add(matSolid, 0x8d8978, 23.2 + i * 0.65, DECK_Y - 0.16 - i * 0.18, 5.2, 0.8, 0.3, 3.0);
+}
+for (let i = 0; i < 4; i++) {
+  staticBatch.add(matSolid, 0x8d8978, 23.2 + i * 0.65, DECK_Y - 0.16 - i * 0.18, -5.2, 0.8, 0.3, 3.0);
+}
+
+/* bridge to the little floating garden island, at the tailward port side */
+const bridgeStart = new THREE.Vector3(-21.0, DECK_Y - 0.15, 6.1);
+const bridgeEnd = new THREE.Vector3(-33.0, 2.2, 17.2);
+const bridgeDeltaX = bridgeEnd.x - bridgeStart.x;
+const bridgeDeltaZ = bridgeEnd.z - bridgeStart.z;
+const bridgeYaw = Math.atan2(bridgeDeltaX, bridgeDeltaZ);
+for (let i = 0; i <= 26; i++) {
+  const t = i / 26;
+  const x = lerp(bridgeStart.x, bridgeEnd.x, t);
+  const z = lerp(bridgeStart.z, bridgeEnd.z, t);
+  const y = lerp(bridgeStart.y, bridgeEnd.y, t) + Math.sin(t * Math.PI) * 2.5;
+  staticBatch.add(matSolid, hash2(i, 3) > 0.5 ? 0x735039 : 0x805a40, x, y, z, 2.1, 0.2, 1.15, 0, bridgeYaw, 0);
+  if (i % 2 === 0) {
+    const sideX = Math.cos(bridgeYaw) * 0.1;
+    const sideZ = -Math.sin(bridgeYaw);
+    [-1, 1].forEach(function (s) {
+      const px = x + Math.cos(bridgeYaw) * 0.95 * s;
+      const pz = z - Math.sin(bridgeYaw) * 0.95 * s;
+      staticBatch.add(matSolid, 0x3d2e25, px, y + 0.55, pz, 0.14, 1.1, 0.14);
+      staticBatch.add(matMetal, PAL.gold, px, y + 1.12, pz, 0.2, 0.12, 0.2);
+    });
+    if (i % 6 === 0) {
+      const px = x;
+      const pz = z;
+      staticBatch.add(matSolid, 0x403229, px, y + 1.02, pz, 0.17, 2.0, 0.17);
+    }
+  }
+}
+for (const t of [0.33, 0.67]) {
+  const x = lerp(bridgeStart.x, bridgeEnd.x, t);
+  const z = lerp(bridgeStart.z, bridgeEnd.z, t);
+  const y = lerp(bridgeStart.y, bridgeEnd.y, t) + Math.sin(t * Math.PI) * 2.5;
+  cityLanternPositions.push([x, y + 1.35, z, 'warm', 0.85]);
+}
+
+/* floating island under the bridge */
+const islandCX = -36.3;
+const islandCZ = 20.0;
+const islandTop = 2.0;
+for (let x = -44; x <= -29; x++) {
+  for (let z = 13; z <= 27; z++) {
+    const nx = (x - islandCX) / 7.2;
+    const nz = (z - islandCZ) / 6.2;
+    const d = nx * nx + nz * nz;
+    if (d > 1) continue;
+    if (hash2(x * 3.7, z * 2.9) > 0.22) {
+      staticBatch.add(matSolid, hash2(x * 5, z) > 0.55 ? 0x6f8c71 : 0x4f715f, x, islandTop + rr(-0.05, 0.05), z, 1.0, 0.42, 1.0);
+    }
+    if (d > 0.62) {
+      const depth = Math.floor((1 - d) * 6 + rr(0, 2));
+      for (let k = 0; k < depth; k++) {
+        const taper = 1 - k / (depth + 1.2);
+        if (hash2(x + k * 2.2, z - k * 1.1) < 0.22) continue;
+        staticBatch.add(matSolid, hash2(x, z + k) > 0.5 ? 0x59615b : 0x444f4f, x * 0.985 + islandCX * 0.015, islandTop - 0.4 - k, z * 0.985 + islandCZ * 0.015, 0.9 * taper, 0.8, 0.9 * taper);
+      }
+    }
+  }
+}
+/* little pavilion and lantern on the island */
+staticBatch.add(matSolid, 0x6e5340, -38.6, islandTop + 1.2, 20.2, 3.2, 0.25, 3.2);
+for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+  staticBatch.add(matSolid, PAL.vermilionDark, -38.6 + sx * 1.4, islandTop + 1.7, 20.2 + sz * 1.4, 0.22, 1.0, 0.22);
+}
+for (let i = 0; i < 3; i++) {
+  staticBatch.add(matSolid, PAL.roof, -38.6, islandTop + 2.15 + i * 0.22, 20.2, 4.1 - i * 0.9, 0.18, 4.1 - i * 0.9);
+}
+staticBatch.add(matGlow, PAL.glowWarm, -38.6, islandTop + 1.5, 20.2, 0.5, 0.5, 0.5);
+cityLanternPositions.push([-34.2, islandTop + 2.2, 22.6, 'warm', 1.05]);
+cityLanternPositions.push([-42.5, islandTop + 2.1, 17.1, 'cyan', 0.85]);
+
+
+/* ============================================================
+   THE ASTRAL WHEEL — a hollow machine of brass and starlight
+   ============================================================ */
+const wheelAssembly = new THREE.Group();
+wheelAssembly.position.set(0, WHEEL_Y, WHEEL_Z);
+wheelAssembly.name = 'Astral wheel';
+whaleRoot.add(wheelAssembly);
+
+const outerWheelBatch = new VoxBatch('astral wheel frame');
+const wheelR = 11.55;
+for (let gx = -13; gx <= 13; gx++) {
+  for (let gy = -13; gy <= 13; gy++) {
+    const rad = Math.hypot(gx, gy);
+    if (rad < 9.95 || rad > wheelR) continue;
+    const ang = Math.atan2(gy, gx);
+    const sector = Math.floor((ang + Math.PI) / TAU * 48);
+    let col = sector % 8 === 0 ? PAL.wheelSteel : (sector % 2 === 0 ? PAL.wheelDeep : 0x1d4858);
+    if (rad > 11.22) col = sector % 4 === 0 ? PAL.gold : PAL.wheelSteel;
+    if (rad < 10.35 && sector % 6 === 0) col = PAL.brass;
+    outerWheelBatch.add(matMetal, col, gx, gy, 0, 0.98, 0.98, 2.5);
+    if (rad > 11.18 && rad < 11.5 && sector % 12 === 0) {
+      outerWheelBatch.add(matGlow, sector % 24 === 0 ? PAL.glowGold : PAL.glowCyan, gx, gy, 1.3, 0.34, 0.34, 0.16);
+      outerWheelBatch.add(matGlow, sector % 24 === 0 ? PAL.glowGold : PAL.glowCyan, gx, gy, -1.3, 0.34, 0.34, 0.16);
+    }
+  }
+}
+/* gear teeth beyond the rim */
+for (let i = 0; i < 24; i++) {
+  const ang = i / 24 * TAU;
+  const col = i % 2 === 0 ? PAL.brass : PAL.gold;
+  outerWheelBatch.add(matMetal, col,
+    Math.cos(ang) * 12.15, Math.sin(ang) * 12.15, 0,
+    1.0, 0.78, 1.8, 0, 0, ang);
+  if (i % 3 === 0) {
+    outerWheelBatch.add(matMetal, PAL.goldLight,
+      Math.cos(ang) * 12.72, Math.sin(ang) * 12.72, 0.96,
+      0.24, 0.24, 0.2);
+    outerWheelBatch.add(matMetal, PAL.goldLight,
+      Math.cos(ang) * 12.72, Math.sin(ang) * 12.72, -0.96,
+      0.24, 0.24, 0.2);
+  }
+}
+/* cardinal ornaments */
+for (let i = 0; i < 4; i++) {
+  const a = i / 4 * TAU + Math.PI / 4;
+  outerWheelBatch.add(matMetal, PAL.gold, Math.cos(a) * 10.6, Math.sin(a) * 10.6, 1.26, 0.8, 0.8, 0.3, 0, 0, a);
+  outerWheelBatch.add(matMetal, PAL.brass, Math.cos(a) * 10.6, Math.sin(a) * 10.6, -1.26, 0.8, 0.8, 0.3, 0, 0, a);
+}
+const outerWheelGroup = outerWheelBatch.build({ castShadow: true, receiveShadow: true });
+wheelAssembly.add(outerWheelGroup);
+
+/* the illuminated zodiac band, visible from both sides */
+const zodiacMaterials = [];
+function addZodiacFace(z, flip) {
+  const mat = new THREE.MeshBasicMaterial({
+    map: zodiacTexture,
+    transparent: true,
+    opacity: 0.92,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+    toneMapped: false,
+    blending: THREE.NormalBlending,
+    color: new THREE.Color(1, 1, 1)
+  });
+  zodiacMaterials.push(mat);
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(23.1, 23.1), mat);
+  mesh.position.z = z;
+  if (flip) mesh.rotation.y = Math.PI;
+  mesh.renderOrder = 4;
+  return mesh;
+}
+const zodiacGroup = new THREE.Group();
+zodiacGroup.add(addZodiacFace(1.39, false));
+zodiacGroup.add(addZodiacFace(-1.39, true));
+wheelAssembly.add(zodiacGroup);
+
+/* twelve medallions: a legible zodiac belt laid over the open ring */
+function makeZodiacPlaque(glyph) {
+  return canvasTexture(160, 160, function (ctx, w, h) {
+    ctx.clearRect(0, 0, w, h);
+    ctx.translate(w / 2, h / 2);
+    const bg = ctx.createRadialGradient(0, 0, 8, 0, 0, 76);
+    bg.addColorStop(0, 'rgba(7,22,37,0.96)');
+    bg.addColorStop(0.72, 'rgba(6,20,35,0.92)');
+    bg.addColorStop(0.92, 'rgba(19,49,65,0.85)');
+    bg.addColorStop(1, 'rgba(15,37,51,0)');
+    ctx.fillStyle = bg;
+    ctx.beginPath();
+    ctx.arc(0, 0, 76, 0, TAU);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(245,211,141,0.82)';
+    ctx.lineWidth = 2.4;
+    ctx.beginPath(); ctx.arc(0, 0, 64, 0, TAU); ctx.stroke();
+    ctx.strokeStyle = 'rgba(245,211,141,0.32)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(0, 0, 55, 0, TAU); ctx.stroke();
+    for (let i = 0; i < 12; i++) {
+      const a = i / 12 * TAU;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * 64, Math.sin(a) * 64);
+      ctx.lineTo(Math.cos(a) * 70, Math.sin(a) * 70);
+      ctx.stroke();
+    }
+    ctx.fillStyle = 'rgba(255,240,198,1)';
+    ctx.shadowColor = 'rgba(255,190,92,0.9)';
+    ctx.shadowBlur = 9;
+    ctx.font = '600 68px "KaiTi","STKaiti","Songti SC",serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(glyph, 0, 4);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(161,241,255,0.9)';
+    ctx.beginPath(); ctx.arc(0, -45, 2.4, 0, TAU); ctx.fill();
+    ctx.strokeStyle = 'rgba(161,241,255,0.38)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, -43); ctx.lineTo(-12, -31); ctx.lineTo(-4, -25); ctx.stroke();
+  });
+}
+const zodiacPlaqueGlyphs = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+for (let i = 0; i < 12; i++) {
+  const a = i / 12 * TAU - Math.PI / 2;
+  const px = Math.cos(a) * 10.62;
+  const py = Math.sin(a) * 10.62;
+  const tex = makeZodiacPlaque(zodiacPlaqueGlyphs[i]);
+  const mat = new THREE.MeshBasicMaterial({
+    map: tex, transparent: true, opacity: 0.98, side: THREE.DoubleSide,
+    depthWrite: false, depthTest: true, toneMapped: false
+  });
+  zodiacMaterials.push(mat);
+  const front = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 1.9), mat);
+  front.position.set(px, py, 1.57);
+  front.renderOrder = 5;
+  zodiacGroup.add(front);
+  const back = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 1.9), mat);
+  back.position.set(px, py, -1.57);
+  back.rotation.y = Math.PI;
+  back.renderOrder = 5;
+  zodiacGroup.add(back);
+}
+
+animatedBits.wheelRings.push({ object: zodiacGroup, speed: 0.024, phase: 0.2, name: 'zodiac' });
+
+/* a dark astrolabe band makes the gilded zodiac legible against the sky */
+const zodiacBackMats = [];
+const zodiacBackMat = new THREE.MeshBasicMaterial({
+  color: 0x0a1b2a,
+  transparent: true,
+  opacity: 0.3,
+  side: THREE.DoubleSide,
+  depthWrite: false
+});
+zodiacBackMats.push(zodiacBackMat);
+const zodiacBack = new THREE.Mesh(new THREE.RingGeometry(8.5, 10.3, 96), zodiacBackMat);
+zodiacBack.position.z = 1.31;
+zodiacBack.renderOrder = 3;
+wheelAssembly.add(zodiacBack);
+const zodiacBackMat2 = zodiacBackMat.clone();
+zodiacBackMats.push(zodiacBackMat2);
+zodiacBackMat2.opacity = 0.2;
+const zodiacBack2 = new THREE.Mesh(new THREE.RingGeometry(8.5, 10.3, 96), zodiacBackMat2);
+zodiacBack2.position.z = -1.31;
+zodiacBack2.rotation.y = Math.PI;
+zodiacBack2.renderOrder = 3;
+wheelAssembly.add(zodiacBack2);
+
+/* four openwork spokes give the great ring its mechanical spine */
+const spokeBatch = new VoxBatch('astral wheel spokes');
+for (let i = 0; i < 4; i++) {
+  const a = Math.PI / 4 + i * Math.PI / 2;
+  const ca = Math.cos(a), sa = Math.sin(a);
+  for (const offset of [-0.36, 0.36]) {
+    const px = -sa * offset, py = ca * offset;
+    addBeamLocal(spokeBatch, matMetal, 0x224754,
+      [ca * 2.1 + px, sa * 2.1 + py, -0.55], [ca * 9.9 + px, sa * 9.9 + py, -0.55], null, 0.2, 0.72);
+  }
+  for (let k = 0; k < 5; k++) {
+    const r1 = 2.9 + k * 1.43;
+    const r2 = r1 + 1.43;
+    addBeamLocal(spokeBatch, matMetal, PAL.brass,
+      [ca * r1 - sa * 0.34, sa * r1 + ca * 0.34, -0.55], [ca * r2 + sa * 0.34, sa * r2 - ca * 0.34, -0.55], null, 0.12, 0.24);
+  }
+  spokeBatch.add(matGlow, i % 2 === 0 ? PAL.glowGold : PAL.glowCyan,
+    ca * 9.15, sa * 9.15, 0.38, 0.32, 0.32, 0.16);
+}
+const spokeGroup = spokeBatch.build({ castShadow: true, receiveShadow: false });
+wheelAssembly.add(spokeGroup);
+
+
+/* counter-rotating gear ring */
+const gearRingGroup = new THREE.Group();
+wheelAssembly.add(gearRingGroup);
+const gearBatch = new VoxBatch('inner gear ring');
+for (let gx = -10; gx <= 10; gx++) {
+  for (let gy = -10; gy <= 10; gy++) {
+    const rad = Math.hypot(gx, gy);
+    if (rad >= 7.8 && rad <= 8.45) {
+      const ang = Math.atan2(gy, gx);
+      const sector = Math.floor((ang + Math.PI) / TAU * 36);
+      const col = sector % 6 === 0 ? PAL.gold : (sector % 2 === 0 ? PAL.wheelSteel : PAL.wheelDeep);
+      gearBatch.add(matMetal, col, gx, gy, 0.55, 0.96, 0.96, 1.1);
+      if (sector % 6 === 0) gearBatch.add(matGlow, PAL.glowGold, gx * 0.985, gy * 0.985, 1.15, 0.3, 0.3, 0.18);
+    }
+  }
+}
+for (let i = 0; i < 24; i++) {
+  const ang = i / 24 * TAU;
+  gearBatch.add(matMetal, i % 2 === 0 ? PAL.gold : PAL.brass,
+    Math.cos(ang) * 8.75, Math.sin(ang) * 8.75, 0.55,
+    0.25, 0.65, 1.0, 0, 0, ang);
+}
+for (let i = 0; i < 6; i++) {
+  const a = i / 6 * TAU;
+  gearBatch.add(matMetal, PAL.brass, Math.cos(a) * 5.3, Math.sin(a) * 5.3, 0.52,
+    5.0, 0.22, 0.44, 0, 0, a);
+  gearBatch.add(matMetal, PAL.gold, Math.cos(a) * 7.55, Math.sin(a) * 7.55, 1.13, 0.45, 0.45, 0.25, 0, 0, a);
+}
+gearRingGroup.add(gearBatch.build({ castShadow: true, receiveShadow: false }));
+animatedBits.wheelRings.push({ object: gearRingGroup, speed: -0.075, phase: 0, name: 'gear' });
+
+/* the slender inner orrery */
+const innerRingGroup = new THREE.Group();
+wheelAssembly.add(innerRingGroup);
+const innerBatch = new VoxBatch('inner orrery');
+for (let gx = -7; gx <= 7; gx++) {
+  for (let gy = -7; gy <= 7; gy++) {
+    const rad = Math.hypot(gx, gy);
+    if (rad >= 4.85 && rad <= 5.35) {
+      const sector = Math.floor((Math.atan2(gy, gx) + Math.PI) / TAU * 32);
+      innerBatch.add(matMetal, sector % 4 === 0 ? PAL.goldLight : PAL.gold, gx, gy, 0.9, 0.72, 0.72, 0.8);
+    }
+  }
+}
+for (let i = 0; i < 4; i++) {
+  const a = i / 4 * TAU + Math.PI / 4;
+  innerBatch.add(matMetal, PAL.wheelEdge, Math.cos(a) * 3.05, Math.sin(a) * 3.05, 0.92, 4.1, 0.13, 0.3, 0, 0, a);
+  innerBatch.add(matGlow, PAL.glowCyan, Math.cos(a) * 4.75, Math.sin(a) * 4.75, 1.35, 0.34, 0.34, 0.2);
+}
+for (let i = 0; i < 8; i++) {
+  const a = i / 8 * TAU;
+  innerBatch.add(matGlow, i % 2 === 0 ? PAL.glowGold : PAL.star, Math.cos(a) * 5.85, Math.sin(a) * 5.85, 1.3, 0.22, 0.22, 0.16);
+}
+innerRingGroup.add(innerBatch.build({ castShadow: true, receiveShadow: false }));
+animatedBits.wheelRings.push({ object: innerRingGroup, speed: 0.16, phase: 1.1, name: 'orrery' });
+
+/* a tilted armillary circle */
+const armillaryGroup = new THREE.Group();
+wheelAssembly.add(armillaryGroup);
+const armillaryBatch = new VoxBatch('armillary');
+const armR = 6.8;
+for (let i = 0; i < 96; i++) {
+  const a = i / 96 * TAU;
+  armillaryBatch.add(matMetal, i % 8 === 0 ? PAL.goldLight : PAL.brass,
+    Math.cos(a) * armR, Math.sin(a) * armR, 0, 0.34, 0.34, 0.3, 0, 0, a);
+}
+for (let i = 0; i < 4; i++) {
+  const a = i / 4 * TAU;
+  armillaryBatch.add(matGlow, PAL.glowCyan, Math.cos(a) * armR, Math.sin(a) * armR, 0.22, 0.48, 0.48, 0.22);
+}
+const armillary = armillaryBatch.build({ castShadow: false, receiveShadow: false });
+armillary.rotation.set(1.14, 0.3, 0);
+armillaryGroup.add(armillary);
+animatedBits.wheelRings.push({ object: armillaryGroup, speed: 0.06, phase: 2.2, name: 'armillary' });
+
+/* the star core */
+const coreGroup = new THREE.Group();
+wheelAssembly.add(coreGroup);
+const coreBatch = new VoxBatch('star core');
+for (let x = -2.1; x <= 2.1; x += 0.52) {
+  for (let y = -2.1; y <= 2.1; y += 0.52) {
+    for (let z = -2.1; z <= 2.1; z += 0.52) {
+      const rad = Math.sqrt(x * x + y * y + z * z);
+      if (rad > 1.85) continue;
+      if (rad < 1.1 && rng() < 0.35) continue;
+      let col = rad < 0.7 ? PAL.star : (rad < 1.35 ? PAL.glowCyan : PAL.starGold);
+      if (rng() > 0.9) col = PAL.starGold;
+      coreBatch.add(matGlow, col, x, y, z, 0.45, 0.45, 0.45);
+    }
+  }
+}
+for (let i = 0; i < 6; i++) {
+  const a = i / 6 * TAU;
+  coreBatch.add(matMetal, PAL.gold, Math.cos(a) * 2.55, Math.sin(a) * 2.55, 0.1, 0.8, 0.25, 0.28, 0, 0, a);
+}
+const coreMesh = coreBatch.build({ castShadow: false, receiveShadow: false });
+coreGroup.add(coreMesh);
+const coreGlow = addGlowSprite(coreGroup, 0x9bf4ff, 7.2, 0, 0, 1.3, 0.42);
+const coreGlow2 = addGlowSprite(coreGroup, 0xffe1a3, 12.5, 0, 0, 0.4, 0.16);
+animatedBits.coreGroup = coreGroup;
+animatedBits.coreGlows = [coreGlow, coreGlow2];
+
+/* constellations that drift within the hollow wheel */
+const constellationGroup = new THREE.Group();
+constellationGroup.position.z = 1.65;
+wheelAssembly.add(constellationGroup);
+const constellationPositions = [];
+const constellationIndices = [];
+const starPositions = [];
+const starColors = [];
+let cursor = 0;
+for (let c = 0; c < 4; c++) {
+  const baseAngle = c / 4 * TAU + 0.4;
+  const baseRadius = 4.4 + c * 1.35;
+  const count = 4 + (c % 2);
+  const local = [];
+  for (let i = 0; i < count; i++) {
+    const a = baseAngle + (i - (count - 1) / 2) * 0.28 + rr(-0.08, 0.08);
+    const rad = baseRadius + rr(-0.65, 0.65);
+    const x = Math.cos(a) * rad;
+    const y = Math.sin(a) * rad;
+    local.push([x, y]);
+    constellationPositions.push(x, y, rr(-0.1, 0.1));
+    starPositions.push(x, y, rr(0.05, 0.3));
+    const col = new THREE.Color(i === 0 ? PAL.starGold : PAL.starBlue);
+    starColors.push(col.r, col.g, col.b);
+  }
+  for (let i = 1; i < local.length; i++) {
+    constellationIndices.push(cursor + i - 1, cursor + i);
+  }
+  cursor += count;
+}
+const constellationGeo = new THREE.BufferGeometry();
+constellationGeo.setAttribute('position', new THREE.Float32BufferAttribute(constellationPositions, 3));
+constellationGeo.setIndex(constellationIndices);
+const constellationMat = new THREE.LineBasicMaterial({
+  color: 0xb5f3ff, transparent: true, opacity: 0.25,
+  blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false
+});
+const constellationLines = new THREE.LineSegments(constellationGeo, constellationMat);
+constellationGroup.add(constellationLines);
+const constellationStarGeo = new THREE.BufferGeometry();
+constellationStarGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPositions, 3));
+constellationStarGeo.setAttribute('color', new THREE.Float32BufferAttribute(starColors, 3));
+const constellationStarMat = new THREE.PointsMaterial({
+  size: 0.68, map: glowTexture, transparent: true, opacity: 0.5,
+  vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false,
+  sizeAttenuation: true, fog: false, toneMapped: false
+});
+const constellationPoints = new THREE.Points(constellationStarGeo, constellationStarMat);
+constellationGroup.add(constellationPoints);
+animatedBits.wheelRings.push({ object: constellationGroup, speed: -0.036, phase: 0.8, name: 'constellations' });
+animatedBits.constellationMat = constellationMat;
+animatedBits.constellationStarMat = constellationStarMat;
+
+/* a chain of little lamps slung beneath the great wheel */
+function addCatenaryLampString(x1, y1, z1, x2, y2, z2, sag, count, color) {
+  const points = [];
+  for (let i = 0; i <= count * 2; i++) {
+    const t = i / (count * 2);
+    const x = lerp(x1, x2, t);
+    const z = lerp(z1, z2, t);
+    const y = lerp(y1, y2, t) - Math.sin(t * Math.PI) * sag;
+    points.push([x, y, z]);
+  }
+  for (let i = 1; i < points.length; i++) {
+    addBeamWorld(staticBatch, matMetal, 0x473a2a, points[i - 1], points[i], 0.055, 0.055);
+  }
+  for (let i = 1; i < count; i++) {
+    const t = i / count;
+    const x = lerp(x1, x2, t);
+    const z = lerp(z1, z2, t);
+    const y = lerp(y1, y2, t) - Math.sin(t * Math.PI) * sag;
+    staticBatch.add(matSolid, 0x3d2d20, x, y - 0.22, z, 0.38, 0.26, 0.38);
+    staticBatch.add(matGlow, color, x, y - 0.48, z, 0.27, 0.4, 0.27);
+    if (i % 2 === 0) cityLanternPositions.push([x, y - 0.5, z, color === PAL.glowGold ? 'warm' : 'cyan', 0.7]);
+  }
+}
+addCatenaryLampString(-14.7, WHEEL_Y - 6.4, 5.1, 14.7, WHEEL_Y - 6.4, 5.1, 1.15, 12, PAL.glowGold);
+
+/* ============================================================
+   TWIN PAGODAS — timber, vermilion and flying eaves
+   ============================================================ */
+const X_AXIS = new THREE.Vector3(1, 0, 0);
+const beamDir = new THREE.Vector3();
+const beamMid = new THREE.Vector3();
+const beamQuat = new THREE.Quaternion();
+const beamEuler = new THREE.Euler();
+function addBeamWorld(batch, material, color, p1, p2, thickY, thickZ) {
+  const dir = new THREE.Vector3(p2[0] - p1[0], p2[1] - p1[1], p2[2] - p1[2]);
+  const len = dir.length();
+  if (len < 0.001) return;
+  dir.normalize();
+  const midX = (p1[0] + p2[0]) * 0.5;
+  const midY = (p1[1] + p2[1]) * 0.5;
+  const midZ = (p1[2] + p2[2]) * 0.5;
+  const quat = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1, 0, 0), dir);
+  const e = new THREE.Euler().setFromQuaternion(quat);
+  batch.add(material, color, midX, midY, midZ, len, thickY, thickZ, e.x, e.y, e.z);
+}
+function addBeamLocal(batch, material, color, p1, p2, localGroup, thickY, thickZ) {
+  const dx = p2[0] - p1[0], dy = p2[1] - p1[1], dz = p2[2] - p1[2];
+  const len = Math.sqrt(dx * dx + dy * dy + dz * dz);
+  if (len < 0.001) return;
+  const dir = new THREE.Vector3(dx, dy, dz).normalize();
+  const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(1, 0, 0), dir);
+  const e = new THREE.Euler().setFromQuaternion(q);
+  batch.add(material, color, (p1[0] + p2[0]) * 0.5, (p1[1] + p2[1]) * 0.5, (p1[2] + p2[2]) * 0.5,
+    len, thickY === undefined ? 0.35 : thickY, thickZ === undefined ? 0.35 : thickZ, e.x, e.y, e.z);
+}
+
+function pagodaWindow(cx, cy, cz, half, w, h, face, glowColor) {
+  const frame = 0x352321;
+  const wood = 0x4b2f29;
+  if (face === 'z+' || face === 'z-') {
+    const sign = face === 'z+' ? 1 : -1;
+    const zz = cz + sign * (half + 0.04);
+    staticBatch.add(matSolid, frame, cx, cy, zz, w + 0.42, h + 0.42, 0.14);
+    staticBatch.add(matGlow, glowColor, cx, cy, zz + sign * 0.08, w, h, 0.08);
+    staticBatch.add(matSolid, wood, cx, cy, zz + sign * 0.14, 0.08, h, 0.08);
+    staticBatch.add(matSolid, wood, cx, cy, zz + sign * 0.14, w, 0.07, 0.08);
+    staticBatch.add(matMetal, PAL.gold, cx, cy - h * 0.56, zz + sign * 0.09, w + 0.3, 0.08, 0.12);
+  } else {
+    const sign = face === 'x+' ? 1 : -1;
+    const xx = cx + sign * (half + 0.04);
+    staticBatch.add(matSolid, frame, xx, cy, cz, 0.14, h + 0.42, w + 0.42);
+    staticBatch.add(matGlow, glowColor, xx + sign * 0.08, cy, cz, 0.08, h, w);
+    staticBatch.add(matSolid, wood, xx + sign * 0.14, cy, cz, 0.08, h, 0.08);
+    staticBatch.add(matSolid, wood, xx + sign * 0.14, cy, cz, 0.08, 0.07, w);
+    staticBatch.add(matMetal, PAL.gold, xx + sign * 0.09, cy - h * 0.56, cz, 0.12, 0.08, w + 0.3);
+  }
+}
+
+let pagodaDetails = [];
+function buildPagoda(cx, cz, levels, variant) {
+  let y = DECK_Y;
+  /* plinth */
+  for (let i = 0; i < 3; i++) {
+    const half = 4.55 - i * 0.32;
+    staticBatch.add(matSolid, i === 0 ? 0x4d5f5c : (i === 1 ? 0x7c8980 : 0x9a9987),
+      cx, y + 0.18 + i * 0.28, cz, half * 2, 0.3, half * 2);
+  }
+  y += 1.05;
+  for (let i = 0; i < 5; i++) {
+    staticBatch.add(matSolid, i % 2 === 0 ? 0x6c766d : 0x7e877a,
+      cx, y - 0.05 - i * 0.24, cz + 4.7 + i * 0.58, 3.2 + i * 0.7, 0.24, 0.9);
+    staticBatch.add(matSolid, 0x495754,
+      cx, y - 0.15 - i * 0.24, cz + 4.7 + i * 0.58, 3.0 + i * 0.7, 0.18, 0.84);
+  }
+  const baseBody = 3.05;
+  for (let lev = 0; lev < levels; lev++) {
+    const half = baseBody * Math.pow(0.86, lev) + (variant === 'left' ? lev * 0.035 : 0);
+    const bodyH = 2.35 - lev * 0.035;
+    /* balcony and railing */
+    if (lev > 0) {
+      staticBatch.add(matSolid, 0x4c332a, cx, y + 0.02, cz, half * 2 + 1.35, 0.28, half * 2 + 1.35);
+      const railHalf = half + 0.58;
+      for (let s = -1; s <= 1; s += 2) {
+        for (let k = -2; k <= 2; k++) {
+          staticBatch.add(matSolid, PAL.vermilionDark, cx + k * railHalf / 2.2, y + 0.38, cz + s * railHalf, 0.12, 0.58, 0.12);
+          staticBatch.add(matSolid, PAL.vermilionDark, cx + s * railHalf, y + 0.38, cz + k * railHalf / 2.2, 0.12, 0.58, 0.12);
+        }
+        staticBatch.add(matMetal, PAL.gold, cx, y + 0.69, cz + s * railHalf, railHalf * 2.05, 0.08, 0.08);
+        staticBatch.add(matMetal, PAL.gold, cx + s * railHalf, y + 0.69, cz, 0.08, 0.08, railHalf * 2.05);
+      }
+    }
+    /* walls and timber columns */
+    staticBatch.add(matSolid, lev === 0 ? PAL.plasterLight : PAL.plaster,
+      cx, y + bodyH * 0.5, cz, half * 2 - 0.3, bodyH, half * 2 - 0.3);
+    staticBatch.add(matSolid, 0xdbc9ad,
+      cx, y + bodyH * 0.52, cz, half * 2 - 0.22, 0.32, half * 2 - 0.22);
+    const corners = [-1, 1];
+    for (let sx of corners) {
+      for (let sz of corners) {
+        staticBatch.add(matSolid, PAL.vermilion, cx + sx * (half - 0.2), y + bodyH * 0.5, cz + sz * (half - 0.2),
+          0.52, bodyH + 0.12, 0.52);
+        staticBatch.add(matSolid, PAL.vermilionDark, cx + sx * (half - 0.15), y + bodyH * 0.98, cz + sz * (half - 0.15),
+          0.64, 0.2, 0.64);
+      }
+    }
+    /* bracket sets under eaves */
+    for (let i = -2; i <= 2; i++) {
+      for (const side of [-1, 1]) {
+        const xx = cx + i * half * 0.36;
+        const zz = cz + side * (half + 0.14);
+        staticBatch.add(matSolid, PAL.vermilionDark, xx, y + bodyH + 0.1, zz, 0.22, 0.3, 0.25);
+        staticBatch.add(matSolid, PAL.gold, xx, y + bodyH + 0.24, zz + side * 0.08, 0.36, 0.09, 0.36);
+        staticBatch.add(matSolid, PAL.vermilionDark, cx + side * (half + 0.14), y + bodyH + 0.1, cz + i * half * 0.36, 0.25, 0.3, 0.22);
+        staticBatch.add(matSolid, PAL.gold, cx + side * (half + 0.22), y + bodyH + 0.24, cz + i * half * 0.36, 0.36, 0.09, 0.36);
+      }
+    }
+    /* windows */
+    const glowColors = [PAL.glowWarm, PAL.glowSoft, 0xffb55c, PAL.glowWarm];
+    const wcol = glowColors[(lev + (variant === 'left' ? 1 : 0)) % glowColors.length];
+    if (lev === 0 && variant === 'right') {
+      pagodaWindow(cx, y + 0.95, cz, half, 1.25, 1.55, 'z+', 0xffc471);
+      pagodaWindow(cx, y + 1.9, cz, half, 1.0, 1.25, 'z+', wcol);
+    } else if (lev === 0) {
+      pagodaWindow(cx, y + 0.92, cz, half, 1.35, 1.55, 'z+', 0xffd18a);
+      pagodaWindow(cx, y + 1.9, cz, half, 0.9, 1.1, 'z+', wcol);
+    } else {
+      pagodaWindow(cx, y + bodyH * 0.53, cz, half, 1.12, 1.32, 'z+', wcol);
+      pagodaWindow(cx, y + bodyH * 0.53, cz, half, 1.12, 1.32, 'z-', wcol);
+      pagodaWindow(cx, y + bodyH * 0.53, cz, half, 1.0, 1.18, 'x+', wcol);
+      pagodaWindow(cx, y + bodyH * 0.53, cz, half, 1.0, 1.18, 'x-', wcol);
+    }
+    if (lev > 0) {
+      pagodaWindow(cx, y + bodyH * 0.55, cz, half, 0.82, 0.96, 'x+', wcol);
+      pagodaWindow(cx, y + bodyH * 0.55, cz, half, 0.82, 0.96, 'x-', wcol);
+    }
+    /* roof */
+    const roofY = y + bodyH;
+    const eave = half + 1.62;
+    staticBatch.add(matSolid, PAL.woodDark, cx, roofY + 0.06, cz, eave * 2 + 0.5, 0.22, eave * 2 + 0.5);
+    const roofColors = variant === 'left'
+      ? [0x1e4651, 0x24555d, 0x2b6266, 0x326e6d]
+      : [0x1e4352, 0x24515f, 0x2a5a67, 0x30636c];
+    for (let l = 0; l < 4; l++) {
+      const w = eave - l * 0.56;
+      staticBatch.add(matSolid, roofColors[l], cx, roofY + 0.19 + l * 0.27, cz, w * 2, 0.26, w * 2);
+      if (l === 0) {
+        staticBatch.add(matMetal, PAL.gold, cx, roofY + 0.34, cz + eave - 0.03, eave * 2.02, 0.08, 0.14);
+        staticBatch.add(matMetal, PAL.gold, cx, roofY + 0.34, cz - eave + 0.03, eave * 2.02, 0.08, 0.14);
+        staticBatch.add(matMetal, PAL.gold, cx + eave - 0.03, roofY + 0.34, cz, 0.14, 0.08, eave * 2.02);
+        staticBatch.add(matMetal, PAL.gold, cx - eave + 0.03, roofY + 0.34, cz, 0.14, 0.08, eave * 2.02);
+      }
+    }
+    for (const sx of corners) {
+      for (const sz of corners) {
+        const x0 = cx + sx * (eave + 0.1);
+        const z0 = cz + sz * (eave + 0.1);
+        staticBatch.add(matSolid, PAL.roof, x0, roofY + 0.4, z0, 0.68, 0.22, 0.68);
+        staticBatch.add(matSolid, roofColors[2], x0 + sx * 0.28, roofY + 0.59, z0 + sz * 0.28, 0.48, 0.2, 0.48);
+        staticBatch.add(matMetal, PAL.goldLight, x0 + sx * 0.52, roofY + 0.78, z0 + sz * 0.52, 0.24, 0.16, 0.24);
+        staticBatch.add(matGlow, PAL.glowWarm, x0 + sx * 0.46, roofY + 0.1, z0 + sz * 0.46, 0.2, 0.28, 0.2);
+      }
+    }
+    /* eave bells on front corners */
+    cityLanternPositions.push([cx - eave + 0.15, roofY - 0.12, cz + eave + 0.15, 'warm', 0.56]);
+    cityLanternPositions.push([cx + eave - 0.15, roofY - 0.12, cz + eave + 0.15, 'warm', 0.56]);
+    /* roof crest */
+    staticBatch.add(matMetal, PAL.gold, cx, roofY + 1.23, cz, 0.24, 0.52, 0.24);
+    staticBatch.add(matMetal, PAL.goldLight, cx, roofY + 1.56, cz, 0.64, 0.12, 0.16);
+    y = roofY + 1.55;
+    if (lev < levels - 1) {
+      y += 0.22;
+    }
+  }
+  /* spire */
+  const spireTop = y;
+  staticBatch.add(matMetal, PAL.brass, cx, spireTop + 0.9, cz, 0.3, 1.8, 0.3);
+  for (let i = 0; i < 5; i++) {
+    const s = 0.8 - i * 0.11;
+    staticBatch.add(matMetal, i === 4 ? PAL.goldLight : PAL.gold, cx, spireTop + 0.3 + i * 0.38, cz, s, 0.1, s);
+  }
+  staticBatch.add(matGlow, PAL.glowGold, cx, spireTop + 2.15, cz, 0.45, 0.45, 0.45);
+  addGlowSprite(whaleRoot, 0xffd38c, 3.3, cx, spireTop + 2.15, cz, 0.34);
+  /* a little seal above the top window */
+  staticBatch.add(matGlow, PAL.glowCyan, cx, spireTop + 1.55, cz + 0.2, 0.24, 0.24, 0.12);
+  pagodaDetails.push({ cx: cx, cz: cz, top: spireTop + 2.3 });
+}
+
+buildPagoda(-17.8, -1.5, 6, 'left');
+buildPagoda(17.8, -1.5, 6, 'right');
+
+/* decorative cloth banners hanging from the pagodas */
+function hangBanner(cx, y, cz, glyph, mainColor, bgColor, flip) {
+  const group = new THREE.Group();
+  group.position.set(cx, y, cz);
+  const tex = bannerTexture(glyph, mainColor, bgColor);
+  const plane = addLabelPlane(group, tex, 1.45, 4.6, 0, 0, 0, flip ? Math.PI : 0);
+  plane.material.opacity = 0.95;
+  group.add(plane);
+  whaleRoot.add(group);
+  animatedBits.flags.push({ object: group, phase: rng() * TAU, amp: 0.045 });
+  return group;
+}
+staticBatch.add(matMetal, PAL.gold, -17.8, DECK_Y + 13.9, -1.5, 0.18, 0.18, 4.6);
+staticBatch.add(matMetal, PAL.gold, 17.8, DECK_Y + 13.9, -1.5, 0.18, 0.18, 4.6);
+hangBanner(-17.8, DECK_Y + 12.2, 1.35, '星', '#f2e3c3', '#74302c', false);
+hangBanner(17.8, DECK_Y + 12.2, 1.35, '鲸', '#f2e3c3', '#254e53', false);
+
+/* supporting arms between pagodas and the wheel */
+for (const side of [-1, 1]) {
+  const innerX = side * 14.55;
+  addBeamWorld(staticBatch, matMetal, PAL.brass,
+    [innerX, WHEEL_Y + 5.2, WHEEL_Z], [side * 11.35, WHEEL_Y + 3.5, WHEEL_Z], 0.38, 0.5);
+  addBeamWorld(staticBatch, matMetal, PAL.brass,
+    [innerX, WHEEL_Y - 1.5, WHEEL_Z], [side * 11.55, WHEEL_Y - 3.4, WHEEL_Z], 0.38, 0.5);
+  addBeamWorld(staticBatch, matMetal, PAL.gold,
+    [innerX - side * 0.4, WHEEL_Y + 5.0, WHEEL_Z + 0.7], [side * 11.8, WHEEL_Y + 2.7, WHEEL_Z + 0.7], 0.18, 0.2);
+  staticBatch.add(matMetal, PAL.gold, side * 11.55, WHEEL_Y + 3.5, WHEEL_Z + 0.2, 0.52, 0.52, 0.8);
+  staticBatch.add(matMetal, PAL.gold, side * 11.7, WHEEL_Y - 3.4, WHEEL_Z + 0.2, 0.52, 0.52, 0.8);
+}
+/* the wheel's supporting feet on the deck */
+for (const side of [-1, 1]) {
+  addBeamWorld(staticBatch, matMetal, PAL.brass,
+    [side * 8.1, DECK_Y + 0.1, WHEEL_Z + 0.2], [side * 8.5, WHEEL_Y - 9.7, WHEEL_Z], 0.55, 0.7);
+  addBeamWorld(staticBatch, matMetal, PAL.wheelSteel,
+    [side * 10.2, DECK_Y + 0.05, WHEEL_Z + 0.2], [side * 9.2, WHEEL_Y - 9.2, WHEEL_Z], 0.3, 0.4);
+}
+
+/* two animated drive gears, nestled between wheel and pagodas */
+function makeGear(radius, teeth, thickness) {
+  const batch = new VoxBatch('drive gear');
+  for (let gx = -Math.ceil(radius); gx <= Math.ceil(radius); gx++) {
+    for (let gy = -Math.ceil(radius); gy <= Math.ceil(radius); gy++) {
+      const rad = Math.hypot(gx, gy);
+      if (rad > radius - 0.7 && rad < radius) {
+        const sector = Math.floor((Math.atan2(gy, gx) + Math.PI) / TAU * 24);
+        batch.add(matMetal, sector % 4 === 0 ? PAL.gold : PAL.brass, gx, gy, 0, 0.52, 0.52, thickness);
+      }
+    }
+  }
+  for (let i = 0; i < teeth; i++) {
+    const a = i / teeth * TAU;
+    batch.add(matMetal, i % 2 === 0 ? PAL.gold : PAL.wheelSteel,
+      Math.cos(a) * (radius + 0.32), Math.sin(a) * (radius + 0.32), 0,
+      0.45, 0.6, thickness * 0.85, 0, 0, a);
+  }
+  for (let i = 0; i < 3; i++) {
+    const a = i / 3 * TAU;
+    batch.add(matMetal, PAL.gold, Math.cos(a) * radius * 0.45, Math.sin(a) * radius * 0.45, 0, radius * 1.1, 0.17, thickness * 0.75, 0, 0, a);
+  }
+  batch.add(matMetal, PAL.goldLight, 0, 0, 0.3, 0.7, 0.7, thickness + 0.25);
+  batch.add(matGlow, PAL.glowCyan, 0, 0, thickness * 0.5 + 0.16, 0.3, 0.3, 0.2);
+  return batch.build({ castShadow: true, receiveShadow: false });
+}
+for (const side of [-1, 1]) {
+  const gearGroup = new THREE.Group();
+  gearGroup.position.set(side * 13.35, WHEEL_Y + 2.75, WHEEL_Z + 0.95);
+  gearGroup.add(makeGear(2.25, 18, 0.55));
+  whaleRoot.add(gearGroup);
+  animatedBits.wheelRings.push({ object: gearGroup, speed: side * 0.22, phase: side, name: 'drive gear' });
+  addBeamWorld(staticBatch, matMetal, 0x443529,
+    [side * 14.8, WHEEL_Y + 5.2, WHEEL_Z], [side * 13.35, WHEEL_Y + 3.35, WHEEL_Z + 0.4], 0.22, 0.28);
+  staticBatch.add(matMetal, PAL.gold, side * 13.35, WHEEL_Y + 2.75, WHEEL_Z + 0.95, 2.15, 0.22, 0.3);
+}
+
+
+/* a rocky, mossy skirt beneath the terrace, so the city feels grown onto the whale */
+for (let i = 0; i < 34; i++) {
+  const ang = i / 34 * TAU + rr(-0.06, 0.06);
+  const rx = DECK_RX * rr(0.88, 1.02);
+  const rz = DECK_RZ * rr(0.86, 1.02);
+  const x = Math.cos(ang) * rx;
+  const z = Math.sin(ang) * rz;
+  const down = 1 + Math.floor(rng() * 4);
+  for (let l = 0; l < down; l++) {
+    const y = DECK_Y - 0.62 - l * 0.68;
+    const w = 1.6 - l * 0.24 + rr(-0.3, 0.5);
+    if (rng() < 0.2) continue;
+    staticBatch.add(matSolid, hash2(i, l) > 0.45 ? 0x40585a : (l === 0 ? 0x567164 : 0x4b665b),
+      x + rr(-0.35, 0.35), y, z + rr(-0.35, 0.35), w, 0.82, w);
+  }
+  if (i % 3 === 0) {
+    for (let k = 0; k < 4; k++) {
+      if (rng() < 0.4) continue;
+      staticBatch.add(matSolid, k % 2 ? 0x5b7d62 : 0x426b54,
+        x + Math.sin(k * 1.4 + i) * 0.28, DECK_Y - 1.0 - k * 0.58, z + rr(-0.2, 0.2), 0.24, 0.62, 0.24);
+    }
+  }
+}
+/* rim boulders poking through moss */
+for (let i = 0; i < 24; i++) {
+  const ang = rng() * TAU;
+  const x = Math.cos(ang) * DECK_RX * rr(0.82, 0.98);
+  const z = Math.sin(ang) * DECK_RZ * rr(0.82, 0.98);
+  staticBatch.add(matSolid, hash2(i, 2) > 0.5 ? 0x68756a : 0x55685f,
+    x, DECK_Y + rr(0.0, 0.16), z, rr(0.35, 0.9), rr(0.22, 0.5), rr(0.35, 0.8));
+}
+/* some tiny tufts and flowers at the rim */
+for (let i = 0; i < 28; i++) {
+  const ang = rng() * TAU;
+  const x = Math.cos(ang) * DECK_RX * rr(0.7, 0.94);
+  const z = Math.sin(ang) * DECK_RZ * rr(0.7, 0.94);
+  staticBatch.add(matSolid, PAL.mossDark, x, DECK_Y + 0.18, z, 0.16, 0.38, 0.16);
+  if (i % 3 === 0) staticBatch.add(matGlow, i % 2 ? PAL.glowPink : PAL.glowSoft, x, DECK_Y + 0.4, z, 0.18, 0.18, 0.18);
+}
+
+/* ============================================================
+   assemble the fixed architecture
+   ============================================================ */
+const fixedCityGroup = staticBatch.build({ castShadow: true, receiveShadow: true });
+whaleRoot.add(fixedCityGroup);
+
+/* warm lantern sprites over the deck; their materials breathe with darkness */
+const cityGlowMaterials = [];
+for (let i = 0; i < cityLanternPositions.length; i++) {
+  const l = cityLanternPositions[i];
+  const color = l[3] === 'cyan' ? 0x9be8ff : 0xffbd75;
+  const sprite = addGlowSprite(whaleRoot, color, 2.4 * l[4], l[0], l[1], l[2], 0.26);
+  cityGlowMaterials.push({ mat: sprite.material, base: 0.26 });
+}
+
+
+/* ============================================================
+   A SMALL TOWN ON A LARGE WHALE
+   ============================================================ */
+const townBatch = new VoxBatch('whale town');
+const townGlowPositions = [];
+
+function addLitPanel(cx, cy, cz, w, h, axis, glowColor, faceSign) {
+  if (axis === 'z') {
+    const z = cz + faceSign * 0.045;
+    townBatch.add(matSolid, 0x3a2822, cx, cy, z, w + 0.3, h + 0.3, 0.1);
+    townBatch.add(matGlow, glowColor, cx, cy, z + faceSign * 0.07, w, h, 0.07);
+    townBatch.add(matSolid, 0x4c3028, cx, cy, z + faceSign * 0.12, 0.07, h, 0.05);
+  } else {
+    const x = cx + faceSign * 0.045;
+    townBatch.add(matSolid, 0x3a2822, x, cy, cz, 0.1, h + 0.3, w + 0.3);
+    townBatch.add(matGlow, glowColor, x + faceSign * 0.07, cy, cz, 0.07, h, w);
+    townBatch.add(matSolid, 0x4c3028, x + faceSign * 0.12, cy, cz, 0.05, h, 0.07);
+  }
+  townGlowPositions.push([cx + (axis === 'x' ? faceSign * 0.55 : 0), cy, cz + (axis === 'z' ? faceSign * 0.55 : 0), glowColor]);
+}
+
+function buildHouse(cx, cz, baseY, w, d, roofColor, seed) {
+  const gy = baseY;
+  const floor = gy + 0.38;
+  const h = 2.15;
+  townBatch.add(matSolid, seed % 2 === 0 ? 0x777b70 : 0x6b766e, cx, gy + 0.18, cz, w + 1.25, 0.36, d + 1.1);
+  townBatch.add(matSolid, 0x555f5b, cx, gy - 0.02, cz, w + 0.85, 0.24, d + 0.7);
+  for (let i = 0; i < 2; i++) {
+    townBatch.add(matSolid, i === 0 ? 0x8f8878 : 0x777768, cx, gy - 0.18 - i * 0.18, cz + d * 0.55 + 0.32 + i * 0.18, w * 0.48, 0.18, 0.5 + i * 0.2);
+  }
+  townBatch.add(matSolid, PAL.plaster, cx, floor + h * 0.5, cz, w, h, d);
+  townBatch.add(matSolid, 0xd5c3a8, cx, floor + h * 0.7, cz, w + 0.08, 0.22, d + 0.08);
+  for (const sx of [-1, 1]) {
+    for (const sz of [-1, 1]) {
+      townBatch.add(matSolid, PAL.woodDark, cx + sx * (w / 2 - 0.08), floor + h * 0.5, cz + sz * (d / 2 - 0.08), 0.2, h + 0.05, 0.2);
+    }
+    townBatch.add(matSolid, PAL.wood, cx, floor + h * 0.98, cz + sx * (d / 2 + 0.025), w + 0.15, 0.14, 0.12);
+    townBatch.add(matSolid, PAL.wood, cx + sx * (w / 2 + 0.025), floor + h * 0.98, cz, 0.12, 0.14, d + 0.15);
+  }
+  /* little front door and warm window */
+  addLitPanel(cx - w * 0.18, floor + 0.92, cz, 0.72, 1.48, 'z', 0xffc26e, 1);
+  addLitPanel(cx + w * 0.26, floor + 1.15, cz, 0.72, 0.78, 'z', seed % 3 === 0 ? 0x9fefff : 0xffcf86, 1);
+  addLitPanel(cx + w / 2, floor + 1.18, cz, 0.65, 0.72, 'x', 0xffc67d, 1);
+  /* hip roof */
+  const roofLayers = 3;
+  for (let l = 0; l < roofLayers; l++) {
+    const ww = w + 1.35 - l * 0.55;
+    const dd = d + 1.25 - l * 0.52;
+    townBatch.add(matSolid, l === 1 ? 0x294e55 : roofColor, cx, floor + h + 0.22 + l * 0.24, cz, ww, 0.24, dd);
+  }
+  for (const sx of [-1, 1]) {
+    for (const sz of [-1, 1]) {
+      townBatch.add(matSolid, roofColor, cx + sx * (w / 2 + 0.7), floor + h + 0.36, cz + sz * (d / 2 + 0.66), 0.42, 0.2, 0.42);
+      townBatch.add(matMetal, PAL.gold, cx + sx * (w / 2 + 0.9), floor + h + 0.54, cz + sz * (d / 2 + 0.83), 0.16, 0.14, 0.16);
+    }
+  }
+  townBatch.add(matMetal, PAL.gold, cx, floor + h + 1.08, cz, 0.16, 0.5, 0.16);
+  townBatch.add(matMetal, PAL.goldLight, cx, floor + h + 1.34, cz, 0.45, 0.08, 0.08);
+  if (seed % 2 === 0) {
+    townBatch.add(matSolid, 0x4b4440, cx + w * 0.32, floor + h + 1.4, cz - d * 0.24, 0.42, 1.6, 0.42);
+    townBatch.add(matSolid, 0x615952, cx + w * 0.32, floor + h + 2.2, cz - d * 0.24, 0.54, 0.18, 0.54);
+    townGlowPositions.push([cx + w * 0.6, floor + 0.3, cz + d / 2 + 0.4, 0xffbb6c]);
+  }
+  /* a tiny door lantern */
+  townBatch.add(matGlow, PAL.glowWarm, cx - w * 0.44, floor + 0.72, cz + d / 2 + 0.24, 0.3, 0.3, 0.3);
+  townGlowPositions.push([cx - w * 0.44, floor + 0.72, cz + d / 2 + 0.25, PAL.glowWarm]);
+  return { x: cx, y: floor + h, z: cz };
+}
+
+const houseA = buildHouse(26.2, 1.9, 8.1, 3.6, 2.8, PAL.roofTeal, 1);
+const houseB = buildHouse(30.5, -2.1, 8.1, 3.2, 2.6, 0x2a5059, 2);
+const houseC = buildHouse(32.5, 2.75, 8.1, 2.5, 2.1, PAL.roof, 3);
+const houseD = buildHouse(26.5, -4.3, 8.1, 2.6, 2.0, 0x345c5d, 4);
+const houseE = buildHouse(-24.2, 3.7, 7.7, 3.0, 2.4, 0x2d545b, 5);
+buildHouse(-21.7, 5.25, DECK_Y, 2.2, 1.6, PAL.roof, 6);
+
+/* a pair of tiny tea pavilions on the plaza edge */
+function buildTeaPavilion(cx, cz, baseY, flip) {
+  const w = 2.4, d = 1.9, h = 1.8;
+  townBatch.add(matSolid, 0x64574b, cx, baseY + 0.12, cz, w + 0.8, 0.24, d + 0.8);
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    townBatch.add(matSolid, PAL.vermilion, cx + sx * w * 0.4, baseY + h * 0.58 + 0.2, cz + sz * d * 0.42, 0.16, h, 0.16);
+  }
+  townBatch.add(matSolid, 0x2f484b, cx, baseY + h + 0.38, cz, w + 1.15, 0.18, d + 1.0);
+  townBatch.add(matSolid, 0x203e43, cx, baseY + h + 0.55, cz, w + 0.55, 0.16, d + 0.44);
+  townBatch.add(matGlow, 0xffbe74, cx, baseY + 1.05, cz, w * 0.66, h * 0.7, 0.12);
+  townBatch.add(matSolid, 0x4c3327, cx, baseY + 0.76, cz + d * 0.45 + 0.05, 0.22, 1.3, 0.18);
+  townBatch.add(matSolid, 0xe5d3b6, cx - w * 0.25, baseY + 0.46, cz + d * 0.55, 0.8, 0.2, 0.5);
+  townGlowPositions.push([cx, baseY + 1.0, cz + 0.45, 0xffc77c]);
+  if (flip) {
+    townBatch.add(matMetal, PAL.gold, cx - w * 0.6, baseY + h + 0.1, cz + 0.4, 0.22, 0.22, 0.22);
+  }
+}
+buildTeaPavilion(-8.2, 7.0, DECK_Y, false);
+buildTeaPavilion(8.3, 7.15, DECK_Y, true);
+
+/* ============================================================
+   GARDENS, TREES AND THE TAILWARD WINDMILL
+   ============================================================ */
+function addCherryTree(cx, cz, baseY, scale, seed) {
+  const gy = baseY + 0.02;
+  const trunkH = 3.8 * scale;
+  const leanX = (seed % 2 === 0 ? 1 : -1) * 0.18 * scale;
+  for (let i = 0; i < Math.ceil(trunkH / 0.55); i++) {
+    const t = i / (trunkH / 0.55);
+    const x = cx + Math.sin(t * 2.1) * 0.24 * scale + leanX * t;
+    const z = cz + Math.cos(t * 1.6) * 0.14 * scale;
+    townBatch.add(matSolid, i > trunkH / 1.2 ? 0x5a4234 : 0x493329, x, gy + 0.3 + i * 0.55, z, 0.46 * scale, 0.6, 0.46 * scale);
+  }
+  const topX = cx + leanX + Math.sin(2.1) * 0.24 * scale;
+  const topY = gy + 0.3 + trunkH * 0.92;
+  const boughs = [
+    [-1.2, 0.65, 0.4], [1.3, 1.2, -0.6], [-0.5, 1.55, -1.0], [0.8, 1.8, 0.75]
+  ];
+  for (let i = 0; i < boughs.length; i++) {
+    const b = boughs[i];
+    addBeamWorld(townBatch, matSolid, 0x4d362b,
+      [topX, topY + i * 0.14, cz],
+      [topX + b[0] * scale, topY + b[1] * scale, cz + b[2] * scale],
+      0.13 * scale, 0.13 * scale);
+  }
+  const colors = [PAL.blossom, PAL.blossomLight, 0xf6c7c4, 0xecaeb7, 0xf9d5cc];
+  for (let i = 0; i < 96; i++) {
+    const a = rng() * TAU;
+    const rad = Math.pow(rng(), 0.62) * 2.4 * scale;
+    const vertical = (rng() - 0.35) * 1.7 * scale;
+    const x = topX + Math.cos(a) * rad + (rng() - 0.5) * 1.8 * scale;
+    const z = cz + Math.sin(a) * rad * 0.85 + (rng() - 0.5) * 1.8 * scale;
+    const y = topY + 1.25 * scale + vertical - rad * 0.22;
+    if (rng() < 0.12) continue;
+    townBatch.add(matSolid, colors[(rng() * colors.length) | 0],
+      x, y, z, rr(0.45, 0.92) * scale, rr(0.4, 0.75) * scale, rr(0.45, 0.9) * scale);
+  }
+  for (let i = 0; i < 18; i++) {
+    const a = rng() * TAU;
+    const r = 1.0 + rng() * 2.6;
+    townBatch.add(matSolid, 0xf3bdc1, cx + Math.cos(a) * r, gy + 0.15, cz + Math.sin(a) * r, 0.2, 0.12, 0.2);
+  }
+  townGlowPositions.push([topX - 0.8, topY + 1.2, cz + 0.6, 0xffc8c2]);
+}
+function addPineTree(cx, cz, baseY, scale, seed) {
+  const gy = baseY + 0.04;
+  for (let i = 0; i < 5; i++) {
+    townBatch.add(matSolid, 0x4a3428, cx, gy + 0.3 + i * 0.5, cz, 0.35 * scale, 0.55, 0.35 * scale);
+  }
+  for (let l = 0; l < 5; l++) {
+    const rad = (2.1 - l * 0.32) * scale;
+    const yy = gy + 1.35 + l * 0.62 * scale;
+    for (let x = -Math.ceil(rad); x <= Math.ceil(rad); x++) {
+      for (let z = -Math.ceil(rad); z <= Math.ceil(rad); z++) {
+        const d = Math.hypot(x, z);
+        if (d > rad) continue;
+        if (d > rad - 0.75 && hash2(x + seed * 3, z - l * 2.1) < 0.25) continue;
+        townBatch.add(matSolid, l % 2 === 0 ? 0x396454 : 0x2b574d,
+          cx + x * 0.58, yy + (rng() - 0.5) * 0.18, cz + z * 0.58, 0.62, 0.36, 0.62);
+      }
+    }
+  }
+  townBatch.add(matGlow, PAL.glowCyan, cx + 0.65, gy + 0.8, cz + 0.4, 0.22, 0.22, 0.22);
+}
+function addGardenBed(cx, cz, baseY, radius, seed, count) {
+  for (let i = 0; i < 34; i++) {
+    const a = rng() * TAU;
+    const r = Math.sqrt(rng()) * radius;
+    const x = cx + Math.cos(a) * r;
+    const z = cz + Math.sin(a) * r * 0.62;
+    townBatch.add(matSolid, rng() > 0.5 ? PAL.moss : 0x668a66, x, baseY + 0.03, z, rr(0.22, 0.52), 0.14, rr(0.22, 0.5));
+  }
+  for (let i = 0; i < count; i++) {
+    const a = rng() * TAU;
+    const r = 0.5 + rng() * radius;
+    const x = cx + Math.cos(a) * r;
+    const z = cz + Math.sin(a) * r * 0.7;
+    townBatch.add(matSolid, PAL.mossDark, x, baseY + 0.15, z, 0.1, 0.5, 0.1);
+    townBatch.add(matGlow, rng() > 0.5 ? 0xffc8a2 : PAL.glowPink, x, baseY + 0.42, z, 0.2, 0.2, 0.2);
+    if (i % 4 === 0) townGlowPositions.push([x, baseY + 0.43, z, 0xffc0aa]);
+  }
+}
+function addStoneLantern(x, z, baseY, height) {
+  const h = height || 1.6;
+  townBatch.add(matSolid, 0x717a70, x, baseY + 0.15, z, 0.65, 0.3, 0.65);
+  townBatch.add(matSolid, 0x68736c, x, baseY + h * 0.52, z, 0.25, h, 0.25);
+  townBatch.add(matSolid, 0x7b8378, x, baseY + h + 0.14, z, 0.7, 0.26, 0.7);
+  townBatch.add(matGlow, PAL.glowWarm, x, baseY + h + 0.02, z, 0.3, 0.35, 0.3);
+  townGlowPositions.push([x, baseY + h + 0.02, z, PAL.glowWarm]);
+}
+
+/* headland garden */
+addCherryTree(34.0, 0.9, 8.1, 0.92, 1);
+addCherryTree(23.8, -1.3, 8.2, 0.8, 2);
+addGardenBed(28.5, -5.0, 8.1, 3.4, 3, 14);
+addStoneLantern(29.7, 3.4, 8.1, 1.7);
+/* plaza side gardens */
+addCherryTree(-21.4, -4.3, DECK_Y, 1.0, 3);
+addCherryTree(21.0, 4.6, DECK_Y, 0.92, 4);
+addPineTree(22.3, -3.3, DECK_Y, 0.7, 5);
+addGardenBed(-13.0, 7.35, DECK_Y, 2.2, 6, 9);
+addStoneLantern(13.8, 6.8, DECK_Y, 1.5);
+addStoneLantern(-13.3, 6.7, DECK_Y, 1.5);
+/* tail terrace */
+addStoneLantern(-23.0, -3.3, 7.7, 1.5);
+addGardenBed(-23.5, 1.5, 7.7, 2.6, 7, 12);
+addPineTree(-31.1, 2.4, 7.7, 0.85, 8);
+addCherryTree(-26.0, 4.2, 7.7, 0.72, 9);
+
+/* floating garden island details */
+addCherryTree(-35.5, 19.4, islandTop + 0.05, 0.74, 10);
+addPineTree(-40.0, 22.7, islandTop + 0.05, 0.56, 11);
+addGardenBed(-35.9, 22.1, islandTop + 0.05, 2.3, 12, 8);
+addStoneLantern(-32.4, 18.0, islandTop + 0.05, 1.6);
+
+/* ============================================================
+   A WINDMILL ON THE TAIL — softly turning, all night long
+   ============================================================ */
+const windmillGroup = new THREE.Group();
+windmillGroup.position.set(-28.7, 7.7, -2.6);
+windmillGroup.name = 'tail windmill';
+whaleRoot.add(windmillGroup);
+const windmillBatch = new VoxBatch('windmill');
+for (let i = 0; i < 3; i++) {
+  windmillBatch.add(matSolid, i === 0 ? 0x6a7269 : 0x7b8174, 0, 0.18 + i * 0.18, 0, 4.6 - i * 0.6, 0.26, 4.6 - i * 0.6);
+}
+for (let l = 0; l < 7; l++) {
+  const r = 2.1 - l * 0.11;
+  windmillBatch.add(matSolid, l % 3 === 0 ? 0x938f7e : PAL.plaster, 0, 1.3 + l * 0.83, 0, r * 2, 0.86, r * 2);
+  if (l % 2 === 0) {
+    windmillBatch.add(matSolid, 0x5d4a3c, 0, 1.26 + l * 0.83, 0, r * 2 + 0.14, 0.16, r * 2 + 0.14);
+  }
+}
+for (let i = 0; i < 3; i++) {
+  const w = 4.9 - i * 1.0;
+  windmillBatch.add(matSolid, i === 1 ? 0x284f59 : 0x21434d, 0, 7.2 + i * 0.35, 0, w, 0.34, w);
+}
+windmillBatch.add(matSolid, 0x5c4d3f, 0, 8.35, 0, 0.5, 0.65, 3.1);
+windmillBatch.add(matGlow, PAL.glowWarm, 0, 1.75, 2.12, 0.72, 1.25, 0.1);
+windmillBatch.add(matSolid, 0x3f3027, 0, 1.75, 2.24, 0.92, 1.45, 0.1);
+windmillBatch.add(matGlow, PAL.glowWarm, 0, 1.75, 2.32, 0.62, 1.12, 0.08);
+windmillBatch.add(matGlow, PAL.glowWarm, -1.7, 4.8, 1.4, 0.36, 0.5, 0.18);
+windmillBatch.add(matGlow, PAL.glowWarm, 1.7, 6.1, -1.2, 0.32, 0.46, 0.16);
+const windmillBase = windmillBatch.build({ castShadow: true, receiveShadow: true });
+windmillGroup.add(windmillBase);
+addGlowSprite(windmillGroup, 0xffc47a, 4.2, 0, 2.05, 2.4, 0.32);
+/* turning sail blades */
+const bladeGroup = new THREE.Group();
+bladeGroup.position.set(0, 7.1, 2.55);
+windmillGroup.add(bladeGroup);
+const bladeBatch = new VoxBatch('windmill sails');
+for (let i = 0; i < 4; i++) {
+  const a = i / 4 * TAU;
+  const c = Math.cos(a), s = Math.sin(a);
+  bladeBatch.add(matSolid, 0x4f3d2d, c * 2.2, s * 2.2, 0, 4.8, 0.18, 0.18, 0, 0, a);
+  bladeBatch.add(matSolid, PAL.balloonCream, c * 3.35 + s * 0.55, s * 3.35 - c * 0.55, 0, 2.9, 1.3, 0.13, 0, 0, a);
+  bladeBatch.add(matSolid, 0x6f5a42, c * 3.35 + s * 0.9, s * 3.35 - c * 0.9, 0.08, 2.95, 0.1, 0.16, 0, 0, a);
+  for (let k = 0; k < 4; k++) {
+    bladeBatch.add(matSolid, 0x927c5c, c * (1.8 + k * 0.8), s * (1.8 + k * 0.8), 0.1, 0.12, 1.4, 0.1, 0, 0, a);
+  }
+}
+bladeBatch.add(matMetal, PAL.gold, 0, 0, 0, 0.6, 0.6, 0.6);
+bladeGroup.add(bladeBatch.build({ castShadow: true, receiveShadow: false }));
+addGlowSprite(bladeGroup, 0xffe0a0, 2.6, 0, 0, 0.4, 0.3);
+animatedBits.windmill = { blades: bladeGroup, speed: 0.32 };
+
+/* fence around windmill garden */
+for (let i = 0; i < 12; i++) {
+  const a = -0.2 + i / 12 * Math.PI * 1.55;
+  const x = -28.7 + Math.cos(a) * 5.1;
+  const z = -2.6 + Math.sin(a) * 4.3;
+  townBatch.add(matSolid, 0x5c4633, x, 8.1 + 0.5, z, 0.14, 1.2, 0.14);
+  if (i % 2 === 0) townBatch.add(matSolid, 0x6d5137, x, 8.1 + 0.9, z, 1.25, 0.1, 0.1);
+}
+
+/* ============================================================
+   BOARDWALK — a ribbon of timber at the edge of the sky
+   ============================================================ */
+for (let x = -17; x <= 21; x++) {
+  if (x % 2 === 0) {
+    townBatch.add(matSolid, x % 4 === 0 ? 0x7a5637 : 0x6e4c34, x, DECK_Y - 0.07 + Math.sin(x * 0.4) * 0.04, 10.1, 0.9, 0.18, 2.15);
+  }
+  if (x % 6 === 0) {
+    townBatch.add(matSolid, 0x6b4b32, x, DECK_Y + 0.55, 11.03, 0.16, 1.25, 0.16);
+    townBatch.add(matSolid, 0x65452f, x, DECK_Y - 0.6, 10.1, 0.17, 1.4, 0.17);
+    const surface = whaleTopAt(x, 10);
+    if (surface < DECK_Y - 1.2) {
+      townBatch.add(matSolid, 0x5a4432, x, DECK_Y - 0.95, 10.6, 0.22, 1.2, 0.22);
+      townBatch.add(matMetal, PAL.brass, x, DECK_Y - 1.5, 10.5, 0.32, 0.08, 0.32);
+    }
+  }
+}
+townBatch.add(matSolid, 0x523b2c, 4.5, DECK_Y + 1.05, 11.03, 38.5, 0.12, 0.13);
+for (let x = -15; x <= 21; x += 7) {
+  townBatch.add(matGlow, PAL.glowWarm, x, DECK_Y + 0.65, 10.95, 0.3, 0.36, 0.3);
+  townGlowPositions.push([x, DECK_Y + 0.65, 10.96, PAL.glowWarm]);
+}
+for (let i = 0; i < 8; i++) {
+  townBatch.add(matSolid, 0x867d69, 21.2 + i * 0.32, DECK_Y - 0.04 - i * 0.23, 9.6, 0.5, 0.22, 2.1);
+}
+/* a stair down to the port-side bridge */
+for (let i = 0; i < 5; i++) {
+  townBatch.add(matSolid, 0x897d67, -20.9 - i * 0.4, DECK_Y - 0.14 - i * 0.18, 8.2, 0.5, 0.2, 2.7);
+}
+/* boardwalk lanterns */
+townGlowPositions.push([19.2, DECK_Y + 0.6, 10.7, PAL.glowCyan]);
+townGlowPositions.push([-16.3, DECK_Y + 0.6, 10.7, PAL.glowWarm]);
+
+/* ============================================================
+   HOT AIR BALLOONS — tiny worlds tied with thread
+   ============================================================ */
+function createBalloon(opts) {
+  const group = new THREE.Group();
+  const batch = new VoxBatch('hot air balloon');
+  const Rx = opts.radius, Ry = opts.radius * 1.55, Rz = opts.radius;
+  const step = 0.92;
+  for (let x = -Math.ceil(Rx); x <= Math.ceil(Rx); x += step) {
+    for (let y = 3.0; y <= 3.0 + Ry * 2; y += step) {
+      for (let z = -Math.ceil(Rz); z <= Math.ceil(Rz); z += step) {
+        const nx = x / Rx;
+        const ny = (y - (3.0 + Ry)) / Ry;
+        const nz = z / Rz;
+        const d = nx * nx + ny * ny + nz * nz;
+        if (d > 1 || d < 0.69) continue;
+        if (y < 3.55 && d > 0.8) continue;
+        const ang = Math.atan2(z, x);
+        const sector = Math.floor((ang + Math.PI) / TAU * 12);
+        let col = opts.colors[sector % opts.colors.length];
+        if (Math.abs(y - (3.0 + Ry)) < 0.5) col = opts.band;
+        if (y > 3 + Ry * 1.55) col = opts.top;
+        batch.add(matSolid, col, x, y, z, step * 0.99, step * 0.99, step * 0.99);
+      }
+    }
+  }
+  for (let i = 0; i < 16; i++) {
+    const a = i / 16 * TAU;
+    batch.add(matMetal, i % 4 === 0 ? PAL.goldLight : opts.band, Math.cos(a) * Rx * 0.97, 4.45, Math.sin(a) * Rz * 0.97, 0.38, 0.2, 0.38);
+  }
+  /* basket */
+  batch.add(matSolid, 0x4a3123, 0, 0.55, 0, 0.96, 0.8, 0.96);
+  batch.add(matSolid, 0x6e4a30, 0, 1.05, 0, 1.05, 0.2, 1.05);
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    addBeamLocal(batch, matSolid, 0x75604a, [sx * 0.38, 1.05, sz * 0.38], [sx * Rx * 0.5, 3.45, sz * Rz * 0.5], null, 0.055, 0.04);
+    batch.add(matSolid, 0x3b2c20, sx * 0.52, 0.32, sz * 0.52, 0.24, 0.4, 0.24);
+  }
+  batch.add(matGlow, opts.glow, 0, 1.95, 0, 0.32, 0.4, 0.32);
+  batch.add(matGlow, opts.glow, 0, 3.35, 0, 0.48, 0.3, 0.48);
+  for (let i = 0; i < 3; i++) {
+    const a = i / 3 * TAU;
+    batch.add(matGlow, opts.glow, Math.cos(a) * 0.6, 2.6, Math.sin(a) * 0.6, 0.2, 0.2, 0.2);
+  }
+  batch.add(matMetal, PAL.gold, 0, 3 + Ry * 2 + 0.2, 0, 0.16, 0.6, 0.16);
+  const mesh = batch.build({ castShadow: true, receiveShadow: true });
+  group.add(mesh);
+  addGlowSprite(group, opts.glow, 4.0, 0, 2.0, 0, 0.3);
+  group.position.set(opts.x, opts.y, opts.z);
+  group.scale.setScalar(opts.scale);
+  group.name = 'balloon';
+  scene.add(group);
+  const ref = {
+    group: group,
+    baseX: opts.x, baseY: opts.y, baseZ: opts.z,
+    phase: opts.phase, drift: opts.drift, spin: opts.spin,
+    basketCenterY: 0.55 * opts.scale,
+    scale: opts.scale
+  };
+  animatedBits.balloons.push(ref);
+  return ref;
+}
+const balloonA = createBalloon({
+  x: -25.5, y: 28.5, z: 20.5, scale: 0.94, radius: 3.2,
+  colors: [PAL.balloonCream, PAL.balloonRed, PAL.balloonCream, 0xc9b696],
+  band: 0x7b3c34, top: PAL.balloonCream, glow: 0xffbe72, phase: 0.3, drift: 2.2, spin: 0.04
+});
+createBalloon({
+  x: 34.5, y: 25.5, z: -19.0, scale: 0.72, radius: 2.8,
+  colors: [PAL.balloonCream, PAL.balloonTeal, PAL.balloonCream, 0xaeb7a1],
+  band: 0x27535a, top: PAL.balloonCream, glow: 0x9ff2ff, phase: 2.0, drift: 1.7, spin: -0.035
+});
+createBalloon({
+  x: -48.0, y: 35.0, z: -24.0, scale: 0.55, radius: 2.9,
+  colors: [0xf1dfbc, 0x9c6f4e, 0xe8d4b0, 0xb08860],
+  band: 0x6b4a38, top: 0xf1dfbc, glow: 0xffd196, phase: 4.1, drift: 2.6, spin: 0.03
+});
+/* a rope from the nearest balloon to the boardwalk */
+const tetherAnchorLocal = new THREE.Vector3(17.0, DECK_Y + 1.4, 10.5);
+const tetherPositions = new Float32Array(12 * 3);
+const tetherGeometry = new THREE.BufferGeometry();
+tetherGeometry.setAttribute('position', new THREE.BufferAttribute(tetherPositions, 3));
+const tetherLine = new THREE.Line(tetherGeometry, new THREE.LineBasicMaterial({
+  color: 0x7d6a52, transparent: true, opacity: 0.66, depthWrite: false, fog: true
+}));
+tetherLine.frustumCulled = false;
+scene.add(tetherLine);
+const tetherBalloon = balloonA;
+animatedBits.tether = { line: tetherLine, balloon: tetherBalloon, anchorLocal: tetherAnchorLocal };
+
+/* ============================================================
+   BIRDS & BUTTERFLIES — small lives around a huge machine
+   ============================================================ */
+const birdBodyGeo = new THREE.BoxGeometry(0.42, 0.25, 1.0);
+const birdWingGeo = new THREE.BoxGeometry(1.28, 0.09, 0.52);
+const birdTailGeo = new THREE.BoxGeometry(0.5, 0.08, 0.42);
+const birdMat = new THREE.MeshStandardMaterial({ color: 0x142c36, roughness: 0.78, metalness: 0.02, flatShading: true });
+const birdWingMat = new THREE.MeshStandardMaterial({ color: 0x1c3d48, roughness: 0.72, metalness: 0.02, flatShading: true });
+const birdBeakMat = new THREE.MeshStandardMaterial({ color: 0xc7a260, roughness: 0.6 });
+const birdGeoRefs = [];
+function createBird(scale, phase) {
+  const group = new THREE.Group();
+  const body = new THREE.Mesh(birdBodyGeo, birdMat);
+  group.add(body);
+  const leftPivot = new THREE.Group();
+  leftPivot.position.x = -0.3;
+  const leftWing = new THREE.Mesh(birdWingGeo, birdWingMat);
+  leftWing.position.x = -0.64;
+  leftPivot.add(leftWing);
+  group.add(leftPivot);
+  const rightPivot = new THREE.Group();
+  rightPivot.position.x = 0.3;
+  const rightWing = new THREE.Mesh(birdWingGeo, birdWingMat);
+  rightWing.position.x = 0.64;
+  rightPivot.add(rightWing);
+  group.add(rightPivot);
+  const tail = new THREE.Mesh(birdTailGeo, birdWingMat);
+  tail.position.z = -0.62;
+  tail.rotation.x = 0.18;
+  group.add(tail);
+  const beak = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.35, 3), birdBeakMat);
+  beak.rotation.x = Math.PI / 2;
+  beak.position.z = 0.6;
+  group.add(beak);
+  group.scale.setScalar(scale);
+  group.userData = { leftPivot: leftPivot, rightPivot: rightPivot, phase: phase };
+  scene.add(group);
+  animatedBits.birds.push({
+    group: group, phase: phase, leftPivot: leftPivot, rightPivot: rightPivot,
+    radiusX: rr(23, 58), radiusZ: rr(16, 42), centerY: rr(27, 52),
+    speed: rr(0.08, 0.18) * (rng() > 0.5 ? 1 : -1),
+    bob: rr(1.0, 3.4), scale: scale
+  });
+}
+for (let i = 0; i < 13; i++) {
+  createBird(0.65 + rng() * 0.65, rng() * TAU);
+}
+const butterflyColors = [0xffc4d4, 0x9ef0ff, 0xffd894, 0xf3b7ff];
+const butterflies = [];
+function createButterfly(x, y, z, color, phase) {
+  const group = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.3, 0.08), new THREE.MeshBasicMaterial({ color: 0x4a332d }));
+  group.add(body);
+  const mat = new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.88, side: THREE.DoubleSide, depthWrite: false, toneMapped: false });
+  const wingGeo = new THREE.PlaneGeometry(0.52, 0.34);
+  const left = new THREE.Mesh(wingGeo, mat);
+  left.position.x = -0.3;
+  left.rotation.y = 0.35;
+  group.add(left);
+  const right = new THREE.Mesh(wingGeo, mat);
+  right.position.x = 0.3;
+  right.rotation.y = -0.35;
+  group.add(right);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture, color: color, transparent: true, opacity: 0.34, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  glow.scale.set(1.3, 1.3, 1);
+  group.add(glow);
+  group.position.set(x, y, z);
+  group.scale.setScalar(rr(1.35, 1.7));
+  group.rotation.x = -0.85;
+  whaleRoot.add(group);
+  butterflies.push({ group: group, left: left, right: right, center: new THREE.Vector3(x, y, z), phase: phase, radius: rr(0.8, 2.6), speed: rr(0.7, 1.5), wingPhase: rng() * TAU });
+}
+for (let i = 0; i < 10; i++) {
+  const cx = i < 4 ? rr(22, 33) : (i < 7 ? rr(-30, -20) : rr(-14, 14));
+  const cz = i < 4 ? rr(-5, 4) : (i < 7 ? rr(-5, 5) : rr(4, 8));
+  createButterfly(cx, (i < 7 ? 10.3 : 10.1) + rr(0, 1.4), cz, butterflyColors[i % butterflyColors.length], rng() * TAU);
+}
+animatedBits.butterflies = butterflies;
+
+/* ============================================================
+   FLOATING ROCKS — fragments of a former mountain
+   ============================================================ */
+function createFloatingRock(opts) {
+  const group = new THREE.Group();
+  const batch = new VoxBatch('floating rock');
+  const glowBatch = new VoxBatch('floating crystal');
+  const rx = opts.rx, rz = opts.rz;
+  for (let level = 0; level < opts.depth; level++) {
+    const shrink = 1 - level / (opts.depth + 1);
+    const yy = -level * 0.82;
+    const crx = rx * shrink * (0.78 + hash2(level + 1, opts.seed) * 0.28);
+    const crz = rz * shrink * (0.78 + hash2(level + 3, opts.seed) * 0.28);
+    for (let x = -Math.ceil(crx); x <= Math.ceil(crx); x++) {
+      for (let z = -Math.ceil(crz); z <= Math.ceil(crz); z++) {
+        if ((x * x) / (crx * crx) + (z * z) / (crz * crz) > 1) continue;
+        if (hash3(x + opts.seed, yy, z) < 0.15) continue;
+        const col = hash3(x, level, z) > 0.62 ? 0x59625d : (level === 0 ? 0x596f60 : 0x444f4e);
+        batch.add(matSolid, col, x, yy, z, rr(0.7, 1.15), 0.9, rr(0.7, 1.15));
+      }
+    }
+  }
+  for (let x = -Math.ceil(rx); x <= Math.ceil(rx); x++) {
+    for (let z = -Math.ceil(rz); z <= Math.ceil(rz); z++) {
+      if ((x * x) / (rx * rx) + (z * z) / (rz * rz) > 0.9) continue;
+      if (hash2(x + opts.seed, z) < 0.2) continue;
+      batch.add(matSolid, hash2(x, z) > 0.5 ? 0x6f8b6c : 0x51755e, x, 0.55, z, 1.02, 0.28, 1.02);
+    }
+  }
+  if (opts.tree) addMiniPineOnRock(batch, glowBatch, opts.seed);
+  if (opts.crystal) {
+    for (let i = 0; i < 5; i++) {
+      const a = rng() * TAU;
+      const r = rr(0.4, rx * 0.6);
+      const h = rr(1.0, 2.3);
+      glowBatch.add(matGlow, i % 2 ? PAL.glowCyan : PAL.glowPink,
+        Math.cos(a) * r, 0.8 + h * 0.5, Math.sin(a) * r,
+        0.24, h, 0.24, rr(-0.16, 0.16), 0, rr(-0.16, 0.16));
+    }
+  }
+  for (let i = 0; i < opts.depth; i++) {
+    if (rng() < 0.4) {
+      const a = rng() * TAU;
+      const r = rx * 0.7;
+      const vineLen = rr(1, 4);
+      for (let k = 0; k < vineLen; k++) {
+        batch.add(matSolid, 0x4f7459, Math.cos(a) * r + Math.sin(k) * 0.2, -k * 0.5, Math.sin(a) * r, 0.22, 0.48, 0.22);
+      }
+    }
+  }
+  group.add(batch.build({ castShadow: true, receiveShadow: true }));
+  if (glowBatch.count) group.add(glowBatch.build({ castShadow: false, receiveShadow: false }));
+  if (opts.tree) {
+    townBatch; // no-op: keeps the local painter simple
+  }
+  group.position.set(opts.x, opts.y, opts.z);
+  group.name = 'floating rock';
+  scene.add(group);
+  animatedBits.rocks.push({ group: group, baseY: opts.y, phase: rr(0, TAU), amp: rr(0.35, 1.0), spin: rr(-0.014, 0.014) });
+}
+function addMiniPineOnRock(batch, glowBatch, seed) {
+  batch.add(matSolid, 0x4a3429, 0, 1.4, 0, 0.26, 2.0, 0.26);
+  for (let i = 0; i < 4; i++) {
+    const rad = 1.1 - i * 0.22;
+    for (let x = -2; x <= 2; x++) {
+      for (let z = -2; z <= 2; z++) {
+        if (Math.hypot(x, z) > rad) continue;
+        batch.add(matSolid, i % 2 ? 0x2e5a49 : 0x3d6c55, x * 0.52, 2.4 + i * 0.55, z * 0.52, 0.5, 0.3, 0.5);
+      }
+    }
+  }
+  glowBatch.add(matGlow, PAL.glowGold, 0.8, 1.9, 0.7, 0.2, 0.2, 0.2);
+}
+createFloatingRock({ x: -58, y: 21, z: 32, rx: 6.2, rz: 5.1, depth: 8, seed: 4.2, tree: true, crystal: false });
+createFloatingRock({ x: 49, y: 33, z: -25, rx: 4.0, rz: 3.4, depth: 6, seed: 8.8, tree: false, crystal: true });
+createFloatingRock({ x: -46, y: 2, z: -36, rx: 5.2, rz: 4.2, depth: 9, seed: 7.1, tree: true, crystal: true });
+createFloatingRock({ x: 61, y: 9, z: 34, rx: 3.2, rz: 2.8, depth: 5, seed: 2.9, tree: false, crystal: false });
+createFloatingRock({ x: 22, y: 47, z: -48, rx: 3.4, rz: 3.0, depth: 4, seed: 5.4, tree: false, crystal: true });
+createFloatingRock({ x: -18, y: -7, z: 48, rx: 4.8, rz: 4.0, depth: 7, seed: 9.6, tree: true, crystal: false });
+
+/* finish the town batch */
+const townMesh = townBatch.build({ castShadow: true, receiveShadow: true });
+whaleRoot.add(townMesh);
+for (let i = 0; i < townGlowPositions.length; i++) {
+  if (i % 3 === 0) {
+    const g = townGlowPositions[i];
+    addGlowSprite(whaleRoot, g[3], 1.55, g[0], g[1], g[2] + 0.15, 0.22);
+  }
+}
+
+
+/* ============================================================
+   CLOUD SEA & HIGH HAZE — the breathing floor of the world
+   ============================================================ */
+const nearCloudBatch = new VoxBatch('near cloud sea');
+const farCloudBatch = new VoxBatch('far cloud sea');
+const cloudColorTop = [0xfffdf2, 0xfaf8ec, 0xf1f5f1, 0xe7f0f1];
+const cloudColorMid = [0xe4eef2, 0xd6e5ee, 0xeaf2f2, 0xcfe0ea];
+const cloudColorLow = [0xc0d5e2, 0xb7cee1, 0xcbdee8, 0xaec8da];
+function addCloudPuff(batch, cx, cy, cz, rx, ry, rz, step) {
+  const nx = Math.max(1, Math.ceil(rx / step));
+  const ny = Math.max(1, Math.ceil(ry / step));
+  const nz = Math.max(1, Math.ceil(rz / step));
+  for (let ix = -nx; ix <= nx; ix++) {
+    for (let iy = -ny; iy <= ny; iy++) {
+      for (let iz = -nz; iz <= nz; iz++) {
+        const px = ix * step, py = iy * step, pz = iz * step;
+        const q = (px / rx) * (px / rx) + (py / ry) * (py / ry) + (pz / rz) * (pz / rz);
+        if (q > 1) continue;
+        const qx = ((Math.abs(px) + step) / rx);
+        const qy = ((Math.abs(py) + step) / ry);
+        const qz = ((Math.abs(pz) + step) / rz);
+        const boundary = qx * qx + (py / ry) * (py / ry) + (pz / rz) * (pz / rz) > 1 ||
+          (px / rx) * (px / rx) + qy * qy + (pz / rz) * (pz / rz) > 1 ||
+          (px / rx) * (px / rx) + (py / ry) * (py / ry) + qz * qz > 1;
+        if (!boundary && q < 0.4 && rng() > 0.22) continue;
+        const vertical = clamp((py / ry + 1) * 0.5, 0, 1);
+        let score = rng() + vertical * 0.6;
+        let col;
+        if (score > 1.06) col = cloudColorTop[(rng() * cloudColorTop.length) | 0];
+        else if (score > 0.62) col = cloudColorMid[(rng() * cloudColorMid.length) | 0];
+        else col = cloudColorLow[(rng() * cloudColorLow.length) | 0];
+        const s = step * rr(1.04, 1.28);
+        batch.add(matCloud, col,
+          cx + px + rr(-0.25, 0.25) * step,
+          cy + py + rr(-0.15, 0.22) * step,
+          cz + pz + rr(-0.25, 0.25) * step,
+          s, s * rr(0.58, 0.78), s);
+        if (iy > 0 && vertical > 0.55 && rng() < 0.16) {
+          batch.add(matCloud, cloudColorTop[(rng() * cloudColorTop.length) | 0],
+            cx + px + rr(-0.5, 0.5) * step, cy + py + rr(0.25, 0.75) * step, cz + pz + rr(-0.5, 0.5) * step,
+            s * 0.55, s * 0.34, s * 0.55);
+        }
+      }
+    }
+  }
+}
+/* foreground cloud bank — a slow ocean below the whale */
+for (let i = 0; i < 82; i++) {
+  const ang = rng() * TAU;
+  const dist = 28 + Math.pow(rng(), 0.62) * 150;
+  const cx = Math.cos(ang) * dist;
+  const cz = Math.sin(ang) * dist * 0.82;
+  const highCloud = rng() > 0.8;
+  const cy = (highCloud ? -16 : -24) + rr(-7, 6);
+  const rx = rr(5.5, 13);
+  const ry = rr(1.8, 4.1);
+  const rz = rr(4.5, 11);
+  addCloudPuff(nearCloudBatch, cx, cy, cz, rx, ry, rz, rr(1.75, 2.8));
+}
+/* a few large slow lifts of cloud around the whale's flanks */
+for (let i = 0; i < 12; i++) {
+  const side = i % 2 === 0 ? 1 : -1;
+  const ang = rr(-1.0, 1.0);
+  const cx = side * rr(44, 84);
+  const cz = side * rr(-25, 38) + ang * 20;
+  const cy = rr(-19, -11);
+  addCloudPuff(nearCloudBatch, cx, cy, cz, rr(7, 14), rr(3, 5.8), rr(6, 12), rr(1.8, 2.6));
+}
+/* far horizon, larger and softer */
+for (let i = 0; i < 85; i++) {
+  const ang = rng() * TAU;
+  const dist = 135 + Math.pow(rng(), 0.55) * 270;
+  const cx = Math.cos(ang) * dist;
+  const cz = Math.sin(ang) * dist * 0.75;
+  const cy = -34 + rr(-7, 7);
+  addCloudPuff(farCloudBatch, cx, cy, cz, rr(12, 31), rr(4, 9), rr(10, 25), rr(3.0, 4.8));
+}
+/* spray-like little clouds suspended at the edges */
+for (let i = 0; i < 26; i++) {
+  const ang = rng() * TAU;
+  const dist = rr(30, 100);
+  addCloudPuff(nearCloudBatch, Math.cos(ang) * dist, rr(-10, 5), Math.sin(ang) * dist * 0.8,
+    rr(2, 4.2), rr(0.9, 2.0), rr(1.8, 4), rr(1.1, 1.7));
+}
+
+/* overlapping cloud banks give the sea a rolling, lived-in horizon */
+for (let i = 0; i < 28; i++) {
+  const ang = rng() * TAU;
+  const dist = 36 + Math.pow(rng(), 0.7) * 115;
+  const cx = Math.cos(ang) * dist;
+  const cz = Math.sin(ang) * dist * 0.82;
+  const cy = rr(-25, -13);
+  addCloudPuff(nearCloudBatch, cx, cy, cz, rr(7, 16), rr(2.3, 4.7), rr(6, 13), rr(1.8, 2.6));
+}
+for (let i = 0; i < 14; i++) {
+  const ang = rng() * TAU;
+  const dist = 118 + rng() * 220;
+  addCloudPuff(farCloudBatch, Math.cos(ang) * dist, rr(-35, -22), Math.sin(ang) * dist * 0.8,
+    rr(17, 36), rr(7, 15), rr(14, 30), rr(3.6, 5.2));
+}
+/* low distant sea-floor banks */
+for (let i = 0; i < 16; i++) {
+  const ang = rng() * TAU;
+  const dist = 190 + rng() * 230;
+  addCloudPuff(farCloudBatch, Math.cos(ang) * dist, -37 + rr(-4, 3), Math.sin(ang) * dist * 0.82,
+    rr(25, 48), rr(4.5, 8), rr(20, 42), rr(4.4, 6.0));
+}
+
+const nearCloudGroup = nearCloudBatch.build({ castShadow: false, receiveShadow: false });
+const farCloudGroup = farCloudBatch.build({ castShadow: false, receiveShadow: false });
+nearCloudGroup.name = 'near cloud sea';
+farCloudGroup.name = 'far cloud sea';
+scene.add(nearCloudGroup);
+scene.add(farCloudGroup);
+
+/* the soft atmospheric veils */
+const hazeMats = [];
+const hazeSprites = [];
+for (let i = 0; i < 12; i++) {
+  const mat = new THREE.SpriteMaterial({
+    map: softCloudTexture,
+    color: i % 3 === 0 ? 0xfff0d7 : 0xe9f4f4,
+    transparent: true,
+    opacity: 0.16,
+    depthWrite: false,
+    depthTest: true,
+    blending: THREE.NormalBlending,
+    fog: true
+  });
+  hazeMats.push(mat);
+  mat.opacity = 0.11;
+  const s = new THREE.Sprite(mat);
+  s.scale.set(rr(55, 135), rr(24, 48), 1);
+  s.position.set(rr(-120, 120), rr(-12, 18), rr(-100, -30));
+  s.userData = { baseX: s.position.x, baseZ: s.position.z, baseY: s.position.y, drift: rr(0.4, 1.2), phase: rng() * TAU };
+  scene.add(s);
+  hazeSprites.push(s);
+}
+/* a low veil just under the whale */
+for (let i = 0; i < 7; i++) {
+  const mat = new THREE.SpriteMaterial({
+    map: softCloudTexture, color: 0xf4fbff, transparent: true, opacity: 0.2,
+    depthWrite: false, depthTest: true, blending: THREE.NormalBlending, fog: true
+  });
+  hazeMats.push(mat);
+  const s = new THREE.Sprite(mat);
+  s.scale.set(rr(38, 76), rr(10, 20), 1);
+  s.position.set(rr(-55, 55), rr(-17, -10), rr(-30, 35));
+  s.userData = { baseX: s.position.x, baseZ: s.position.z, baseY: s.position.y, drift: rr(0.2, 0.5), phase: rng() * TAU };
+  scene.add(s);
+  hazeSprites.push(s);
+}
+
+/* ============================================================
+   PARTICLES, FIREFLIES, SPARKS AND THE ODD FALLEN PETAL
+   ============================================================ */
+function pointTexture() { return glowTexture; }
+function makeMoteField(count, range, colors, size, opacity) {
+  const positions = new Float32Array(count * 3);
+  const colorArray = new Float32Array(count * 3);
+  const speeds = new Float32Array(count);
+  const phases = new Float32Array(count);
+  const c = new THREE.Color();
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = rr(range.x[0], range.x[1]);
+    positions[i * 3 + 1] = rr(range.y[0], range.y[1]);
+    positions[i * 3 + 2] = rr(range.z[0], range.z[1]);
+    c.set(colors[(rng() * colors.length) | 0]);
+    c.multiplyScalar(rr(0.7, 1.3));
+    colorArray[i * 3] = c.r; colorArray[i * 3 + 1] = c.g; colorArray[i * 3 + 2] = c.b;
+    speeds[i] = rr(0.18, 1.2);
+    phases[i] = rng() * TAU;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+  const mat = new THREE.PointsMaterial({
+    size: size, map: glowTexture, transparent: true, opacity: opacity,
+    vertexColors: true, blending: THREE.AdditiveBlending,
+    depthWrite: false, depthTest: true, sizeAttenuation: true, fog: true, toneMapped: false
+  });
+  const points = new THREE.Points(geo, mat);
+  points.frustumCulled = false;
+  return { points: points, positions: positions, speeds: speeds, phases: phases, count: count, mat: mat };
+}
+const dustField = makeMoteField(360, {
+  x: [-52, 56], y: [-4, 42], z: [-45, 48]
+}, [0xffdf9b, 0xb8f4ff, 0x9ce4ff, 0xffe9c2], 0.4, 0.55);
+scene.add(dustField.points);
+const fireflyField = makeMoteField(140, {
+  x: [-32, 37], y: [7, 19], z: [-12, 19]
+}, [0xffca83, 0xffe1a3, 0xa6fff2, 0xffb1cb], 0.32, 0.65);
+whaleRoot.add(fireflyField.points);
+const petalField = makeMoteField(100, {
+  x: [-32, 36], y: [4, 20], z: [-10, 24]
+}, [0xf8b8c0, 0xffd0ce, 0xf4a8b8], 0.22, 0.72);
+whaleRoot.add(petalField.points);
+const wheelSparkField = makeMoteField(150, {
+  x: [-13.8, 13.8], y: [-13.8, 13.8], z: [-2.5, 3.2]
+}, [0xffe1a0, 0xa8f4ff, 0xffffff], 0.45, 0.75);
+wheelAssembly.add(wheelSparkField.points);
+
+/* soft halo behind the wheel — barely there in daylight */
+const wheelAuraMat = new THREE.SpriteMaterial({
+  map: glowTexture, color: 0x6dd9e8, transparent: true, opacity: 0.07,
+  blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false
+});
+const wheelAura = new THREE.Sprite(wheelAuraMat);
+wheelAura.scale.set(48, 48, 1);
+wheelAura.position.set(0, 0, -2.7);
+wheelAssembly.add(wheelAura);
+
+/* ============================================================
+   METEORS — thin silver scratches across the night
+   ============================================================ */
+const meteorHeadMat = function (color) {
+  return new THREE.SpriteMaterial({
+    map: glowTexture, color: color, transparent: true, opacity: 0,
+    blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false
+  });
+};
+function createMeteor(index) {
+  const group = new THREE.Group();
+  const span = 52 + index * 16;
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, 0, 0, -span], 3));
+  const mat = new THREE.LineBasicMaterial({
+    color: 0xcfe9ff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending,
+    depthWrite: false, toneMapped: false
+  });
+  const line = new THREE.Line(geo, mat);
+  group.add(line);
+  const headMat = meteorHeadMat(index === 1 ? 0xffe1a8 : 0xbfeeff);
+  const head = new THREE.Sprite(headMat);
+  head.scale.set(1.4, 1.4, 1);
+  group.add(head);
+  group.visible = false;
+  scene.add(group);
+  animatedBits.meteors.push({
+    group: group, lineMat: mat, headMat: headMat, head: head, index: index,
+    timer: 3.5 + index * 3.7, active: false, progress: 0, duration: 1.15,
+    start: new THREE.Vector3(), end: new THREE.Vector3()
+  });
+}
+createMeteor(0);
+createMeteor(1);
+createMeteor(2);
+
+/* ============================================================
+   CAMERA PRESETS & INTRO
+   ============================================================ */
+const VIEW_PRESETS = {
+  overview: { position: new THREE.Vector3(63, 35.5, 94), target: new THREE.Vector3(0, 19.5, 0) },
+  wheel: { position: new THREE.Vector3(2.4, 22.5, 61), target: new THREE.Vector3(0, 21, 0) },
+  tower: { position: new THREE.Vector3(44, 29, 50), target: new THREE.Vector3(13, 22, 1) },
+  cloud: { position: new THREE.Vector3(-27, 9, 62), target: new THREE.Vector3(0, 16, 0) },
+  top: { position: new THREE.Vector3(50, 67, 58), target: new THREE.Vector3(0, 12, 0) }
+};
+const cameraTween = {
+  active: true,
+  fromPosition: camera.position.clone(),
+  toPosition: VIEW_PRESETS.overview.position.clone(),
+  fromTarget: controls.target.clone(),
+  toTarget: VIEW_PRESETS.overview.target.clone(),
+  start: performance.now(),
+  duration: 3600,
+  pendingPreset: 'overview'
+};
+controls.autoRotate = true;
+
+
+
+/* ============================================================
+   INTERACTION, LIGHTING AND THE BREATHING OF THE SCENE
+   ============================================================ */
+const appState = {
+  isNight: false,
+  autoRotate: true,
+  keys: Object.create(null),
+  elapsed: 0,
+  booted: false,
+  lastNightApplied: -1,
+  view: 'overview'
+};
+controls.autoRotate = false;
+controls.autoRotateSpeed = 0.22;
+
+const ui = {
+  modeButtons: $$('.mode-btn'),
+  viewButtons: $$('.view-btn'),
+  autoBtn: $('#autoBtn'),
+  aboutBtn: $('#aboutBtn'),
+  aboutPanel: $('#aboutPanel'),
+  aboutClose: $('#aboutClose'),
+  fullBtn: $('#fullBtn'),
+  timeLabel: $('#timeLabel'),
+  voxelValue: $('#voxelValue'),
+  loader: $('#loader')
+};
+
+function clearViewSelection() {
+  ui.viewButtons.forEach(function (btn) {
+    btn.classList.remove('active');
+    btn.setAttribute('aria-pressed', 'false');
+  });
+  appState.view = null;
+}
+function markView(name) {
+  ui.viewButtons.forEach(function (btn) {
+    const on = btn.getAttribute('data-view') === name;
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  appState.view = name;
+}
+function setAutoRotate(on) {
+  appState.autoRotate = on;
+  controls.autoRotate = on && !cameraTween.active;
+  ui.autoBtn.classList.toggle('is-on', on);
+  ui.autoBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+}
+
+function updateCameraFov() {
+  const aspect = window.innerWidth / window.innerHeight;
+  const fov = aspect < 0.9 ? 50 : (aspect < 1.2 ? 46 : 42);
+  if (Math.abs(camera.fov - fov) > 0.01) {
+    camera.fov = fov;
+    camera.updateProjectionMatrix();
+  }
+}
+function fitView(name) {
+  const preset = VIEW_PRESETS[name];
+  const pos = preset.position.clone();
+  const target = preset.target.clone();
+  const aspect = camera.aspect;
+  if (aspect < 1.25) {
+    const scale = 1 + (1.25 - aspect) * 1.1;
+    pos.sub(target).multiplyScalar(scale).add(target);
+  }
+  return { position: pos, target: target };
+}
+
+function startCameraMove(position, target, duration, opts) {
+  opts = opts || {};
+  cameraTween.active = true;
+  cameraTween.intro = !!opts.intro;
+  cameraTween.fromPosition.copy(camera.position);
+  cameraTween.toPosition.copy(position);
+  cameraTween.fromTarget.copy(controls.target);
+  cameraTween.toTarget.copy(target);
+  cameraTween.start = performance.now();
+  cameraTween.duration = duration || 1900;
+  cameraTween.pendingPreset = opts.name || null;
+  controls.autoRotate = false;
+}
+function goToView(name, opts) {
+  const preset = VIEW_PRESETS[name];
+  if (!preset) return;
+  opts = opts || {};
+  if (!opts.keepAuto) setAutoRotate(false);
+  markView(name);
+  const fitted = fitView(name);
+  startCameraMove(fitted.position, fitted.target, opts.duration || 1950, { name: name, intro: false });
+}
+function setMode(mode) {
+  const isNight = mode === 'night';
+  appState.isNight = isNight;
+  daylightState.target = isNight ? 1 : 0;
+  document.body.dataset.theme = mode;
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', isNight ? '#06111f' : '#d2eaf2');
+  ui.modeButtons.forEach(function (btn) {
+    const on = btn.getAttribute('data-mode') === mode;
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  ui.timeLabel.textContent = isNight ? '星夜 / 21:16' : '晨光 / 06:42';
+}
+function toggleMode() { setMode(appState.isNight ? 'day' : 'night'); }
+function openAbout(open) {
+  if (ui.aboutPanel) {
+    ui.aboutPanel.classList.toggle('open', open);
+    ui.aboutBtn.classList.toggle('is-on', open);
+    ui.aboutBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+}
+function toggleFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      const p = document.documentElement.requestFullscreen();
+      if (p && p.catch) p.catch(function () {});
+    } else {
+      document.exitFullscreen();
+    }
+  } catch (err) {}
+}
+
+ui.modeButtons.forEach(function (btn) {
+  btn.addEventListener('click', function () { setMode(btn.getAttribute('data-mode')); });
+});
+ui.viewButtons.forEach(function (btn) {
+  btn.addEventListener('click', function () { goToView(btn.getAttribute('data-view')); });
+});
+ui.autoBtn.addEventListener('click', function () {
+  setAutoRotate(!appState.autoRotate);
+  if (appState.autoRotate) clearViewSelection();
+});
+ui.aboutBtn.addEventListener('click', function () { openAbout(!ui.aboutPanel.classList.contains('open')); });
+ui.aboutClose.addEventListener('click', function () { openAbout(false); });
+ui.aboutPanel.addEventListener('pointerdown', function (event) { event.stopPropagation(); });
+ui.fullBtn.addEventListener('click', toggleFullscreen);
+ui.aboutPanel.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') openAbout(false);
+});
+
+canvas.addEventListener('contextmenu', function (event) { event.preventDefault(); });
+controls.addEventListener('start', function () {
+  if (cameraTween.active) cameraTween.active = false;
+  setAutoRotate(false);
+  clearViewSelection();
+  openAbout(false);
+});
+window.addEventListener('blur', function () { appState.keys = Object.create(null); });
+
+const moveKeys = ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'ShiftLeft', 'ShiftRight'];
+window.addEventListener('keydown', function (event) {
+  if (event.ctrlKey || event.metaKey || event.altKey) return;
+  if (ui.aboutPanel.classList.contains('open') && event.code !== 'Escape') return;
+  if (moveKeys.indexOf(event.code) !== -1) {
+    if (!event.repeat) {
+      setAutoRotate(false);
+      clearViewSelection();
+      cameraTween.active = false;
+    }
+    appState.keys[event.code] = true;
+    event.preventDefault();
+    return;
+  }
+  if (event.repeat) return;
+  if (event.code === 'KeyN') { toggleMode(); event.preventDefault(); }
+  else if (event.code === 'KeyO') { setAutoRotate(!appState.autoRotate); if (appState.autoRotate) clearViewSelection(); }
+  else if (event.code === 'KeyI') { openAbout(!ui.aboutPanel.classList.contains('open')); }
+  else if (event.code === 'KeyR') { goToView('overview'); }
+  else if (event.code === 'Escape') { openAbout(false); }
+  else if (/^Digit[1-5]$/.test(event.code)) {
+    const views = { Digit1: 'overview', Digit2: 'wheel', Digit3: 'tower', Digit4: 'cloud', Digit5: 'top' };
+    goToView(views[event.code]);
+  }
+});
+window.addEventListener('keyup', function (event) {
+  if (moveKeys.indexOf(event.code) !== -1) appState.keys[event.code] = false;
+});
+
+/* ---------- day and night palette application ---------- */
+const lightPosDay = new THREE.Vector3(94, 82, -104);
+const lightPosNight = new THREE.Vector3(-82, 74, -128);
+const hemiNightSky = new THREE.Color(0x273950);
+const hemiNightGround = new THREE.Color(0x081220);
+const fillColorDay = new THREE.Color(0xafd9f3);
+const fillColorNight = new THREE.Color(0x566f9e);
+const bounceColorDay = new THREE.Color(0x7fb4d9);
+const bounceColorNight = new THREE.Color(0x1b3257);
+const cloudTintDay = new THREE.Color(0xffffff);
+const cloudTintNight = new THREE.Color(0x879cc0);
+const cloudEmissiveDay = new THREE.Color(0x0f2130);
+const cloudEmissiveNight = new THREE.Color(0x0d1930);
+const hazeWarmDay = new THREE.Color(0xfff0d7);
+const hazeCoolDay = new THREE.Color(0xe9f4f4);
+const hazeNight = new THREE.Color(0x5f779b);
+const wheelAuraDay = 0.04;
+const wheelAuraNight = 0.16;
+const starColorDay = new THREE.Color(0xffffff);
+
+function applyDayNight(night) {
+  const e = smooth(night);
+  skyUniforms.uTop.value.lerpColors(skyTopDay, skyTopNight, e);
+  skyUniforms.uMid.value.lerpColors(skyMidDay, skyMidNight, e);
+  skyUniforms.uLow.value.lerpColors(skyLowDay, skyLowNight, e);
+  skyUniforms.uSunColor.value.lerpColors(sunColorDay, sunColorNight, e);
+  skyUniforms.uSunDir.value.copy(sunPositionDay).lerp(sunPositionNight, e).normalize();
+  skyUniforms.uNight.value = e;
+  skyUniforms.uHaze.value = 1 - e * 0.35;
+
+  hemiLight.color.lerpColors(hemiSkyDay, hemiNightSky, e);
+  hemiLight.groundColor.lerpColors(hemiGroundDay, hemiNightGround, e);
+  hemiLight.intensity = lerp(0.82, 0.38, e);
+
+  sunLight.color.lerpColors(sunColorDay, sunColorNight, e);
+  sunLight.intensity = lerp(3.75, 1.25, e);
+  sunLight.position.lerpVectors(lightPosDay, lightPosNight, e);
+
+  fillLight.color.lerpColors(fillColorDay, fillColorNight, e);
+  fillLight.intensity = lerp(0.82, 0.52, e);
+  bounceLight.color.lerpColors(bounceColorDay, bounceColorNight, e);
+  bounceLight.intensity = lerp(0.26, 0.18, e);
+
+  scene.fog.color.lerpColors(dayFogColor, nightFogColor, e);
+  scene.fog.density = lerp(0.00105, 0.00118, e);
+  renderer.toneMappingExposure = lerp(1.045, 0.98, e);
+
+  sunHalo.material.opacity = lerp(0.92, 0, e);
+  sunDisc.material.opacity = lerp(1, 0, e);
+  moonHalo.material.opacity = e * 0.82;
+  moonDisc.material.opacity = e * 0.98;
+
+  starMatBig.opacity = e * e * 0.95;
+  starMatSmall.opacity = e * e * 0.82;
+  galaxyMat.opacity = e * e * 0.46;
+
+  MAT.whale.envMapIntensity = lerp(0.7, 0.26, e);
+  MAT.metal.envMapIntensity = lerp(1.15, 0.5, e);
+  MAT.solid.envMapIntensity = lerp(0.45, 0.18, e);
+  MAT.glow.color.setScalar(lerp(1.45, 1.85, e));
+  MAT.cloud.color.lerpColors(cloudTintDay, cloudTintNight, e);
+  MAT.cloud.emissive.lerpColors(cloudEmissiveDay, cloudEmissiveNight, e);
+  MAT.cloud.emissiveIntensity = lerp(0.16, 0.27, e);
+
+  for (let i = 0; i < softGlowMaterials.length; i++) {
+    const entry = softGlowMaterials[i];
+    entry.mat.opacity = Math.min(0.95, entry.base * lerp(0.84, 1.42, e));
+  }
+  for (let i = 0; i < hazeMats.length; i++) {
+    const mat = hazeMats[i];
+    mat.color.lerpColors(i % 3 === 0 ? hazeWarmDay : hazeCoolDay, hazeNight, e);
+    mat.opacity = lerp(i < 12 ? 0.11 : 0.16, 0.065, e);
+  }
+  for (let i = 0; i < zodiacMaterials.length; i++) {
+    zodiacMaterials[i].opacity = lerp(0.92, 1, e);
+    zodiacMaterials[i].color.setScalar(lerp(0.98, 1.3, e));
+  }
+  if (animatedBits.constellationMat) animatedBits.constellationMat.opacity = lerp(0.14, 0.83, e);
+  if (animatedBits.constellationStarMat) animatedBits.constellationStarMat.opacity = lerp(0.32, 0.92, e);
+  wheelAuraMat.opacity = lerp(wheelAuraDay, wheelAuraNight, e);
+  if (zodiacBackMats) {
+    zodiacBackMats[0].opacity = lerp(0.08, 0.16, e);
+    if (zodiacBackMats[1]) zodiacBackMats[1].opacity = lerp(0.05, 0.12, e);
+  }
+
+  towerLightL.intensity = 26 * e * e;
+  towerLightR.intensity = 30 * e * e;
+  coreLight.intensity = 32 * e * e;
+  townLight.intensity = 18 * e * e;
+
+  bloomPass.strength = lerp(0.3, 0.47, e);
+  bloomPass.radius = lerp(0.46, 0.5, e);
+  bloomPass.threshold = lerp(1.08, 1.28, e);
+
+  appState.lastNightApplied = night;
+}
+
+/* ---------- resize ---------- */
+function resizeScene() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  camera.aspect = w / h;
+  updateCameraFov();
+  camera.updateProjectionMatrix();
+  renderer.setPixelRatio(pixelRatio);
+  renderer.setSize(w, h);
+  composer.setPixelRatio(pixelRatio);
+  composer.setSize(w, h);
+  bloomPass.setSize(w, h);
+}
+window.addEventListener('resize', resizeScene);
+document.addEventListener('fullscreenchange', function () {
+  window.setTimeout(resizeScene, 80);
+});
+
+/* ---------- animated helpers ---------- */
+const clock = new THREE.Clock();
+let elapsed = 0;
+const moveForward = new THREE.Vector3();
+const moveRight = new THREE.Vector3();
+const moveVector = new THREE.Vector3();
+const WORLD_UP = new THREE.Vector3(0, 1, 0);
+const tetherAnchorWorld = new THREE.Vector3();
+const tetherBasketWorld = new THREE.Vector3();
+const tetherPoint = new THREE.Vector3();
+const meteorDirection = new THREE.Vector3();
+const meteorStart = new THREE.Vector3();
+const Z_AXIS = new THREE.Vector3(0, 0, 1);
+const cameraTweenEase = function (t) { return t * t * (3 - 2 * t); };
+
+function updateCameraTween() {
+  if (!cameraTween.active) return;
+  const progress = clamp((performance.now() - cameraTween.start) / cameraTween.duration, 0, 1);
+  const eased = cameraTweenEase(progress);
+  camera.position.lerpVectors(cameraTween.fromPosition, cameraTween.toPosition, eased);
+  controls.target.lerpVectors(cameraTween.fromTarget, cameraTween.toTarget, eased);
+  if (progress >= 1) {
+    cameraTween.active = false;
+    cameraTween.intro = false;
+    if (appState.autoRotate) controls.autoRotate = true;
+  }
+}
+function updateFreeMovement(dt) {
+  const keys = appState.keys;
+  const wants =
+    keys.KeyW || keys.KeyA || keys.KeyS || keys.KeyD || keys.KeyQ || keys.KeyE;
+  if (!wants) return;
+  camera.getWorldDirection(moveForward);
+  moveForward.y = 0;
+  if (moveForward.lengthSq() < 0.0001) moveForward.set(0, 0, -1);
+  moveForward.normalize();
+  moveRight.crossVectors(moveForward, WORLD_UP).normalize();
+  moveVector.set(0, 0, 0);
+  if (keys.KeyW) moveVector.add(moveForward);
+  if (keys.KeyS) moveVector.sub(moveForward);
+  if (keys.KeyD) moveVector.add(moveRight);
+  if (keys.KeyA) moveVector.sub(moveRight);
+  if (keys.KeyE) moveVector.y += 1;
+  if (keys.KeyQ) moveVector.y -= 1;
+  if (moveVector.lengthSq() === 0) return;
+  moveVector.normalize();
+  const distance = controls.getDistance();
+  const speed = (13 + Math.min(distance, 160) * 0.105) * ((keys.ShiftLeft || keys.ShiftRight) ? 2.15 : 1);
+  const step = speed * dt;
+  camera.position.addScaledVector(moveVector, step);
+  controls.target.addScaledVector(moveVector, step);
+  if (camera.position.y < -4) {
+    const diff = -4 - camera.position.y;
+    camera.position.y += diff;
+    controls.target.y += diff;
+  }
+  if (camera.position.y > 120) {
+    const diff = 120 - camera.position.y;
+    camera.position.y += diff;
+    controls.target.y += diff;
+  }
+}
+
+function updateWhale(dt) {
+  const t = elapsed;
+  whaleRoot.position.y = Math.sin(t * 0.24 + 0.6) * 0.63 + Math.sin(t * 0.11 + 2.4) * 0.22;
+  whaleRoot.rotation.z = Math.sin(t * 0.17 + 1.1) * 0.0045;
+  whaleRoot.rotation.x = Math.sin(t * 0.13 + 0.5) * 0.0025;
+  const flap = Math.sin(t * 0.62 + 0.8) * 0.055;
+  finLeft.rotation.x = -0.035 + flap;
+  finRight.rotation.x = 0.035 - flap;
+  tailGroup.rotation.z = Math.sin(t * 0.41 + 1.1) * 0.026;
+  tailGroup.rotation.y = 0.33 + Math.sin(t * 0.255 + 0.2) * 0.033;
+  tailGroup.position.y = -0.2 + Math.sin(t * 0.34 + 0.4) * 0.1;
+}
+
+function updateWheel(dt) {
+  const t = elapsed;
+  for (let i = 0; i < animatedBits.wheelRings.length; i++) {
+    const ring = animatedBits.wheelRings[i];
+    if (ring.name === 'armillary') {
+      ring.object.rotation.z = t * ring.speed + ring.phase;
+      ring.object.rotation.x = Math.sin(t * 0.075 + ring.phase) * 0.18;
+    } else {
+      ring.object.rotation.z = t * ring.speed + ring.phase;
+    }
+  }
+  if (animatedBits.coreGroup) {
+    const pulse = 1 + Math.sin(t * 1.35) * 0.035 + Math.sin(t * 0.74) * 0.016;
+    animatedBits.coreGroup.scale.setScalar(pulse);
+    animatedBits.coreGroup.rotation.z = t * 0.03;
+  }
+  wheelSparkField.points.rotation.z = t * 0.09;
+  wheelSparkField.mat.size = 0.41 + Math.sin(t * 1.3) * 0.06;
+  if (animatedBits.constellationMat) {
+    animatedBits.constellationMat.opacity = clamp(animatedBits.constellationMat.opacity * 0.92 + (0.17 + daylightState.night * 0.66) * 0.08, 0, 1);
+  }
+}
+
+function updateBalloons(dt) {
+  const t = elapsed;
+  for (let i = 0; i < animatedBits.balloons.length; i++) {
+    const b = animatedBits.balloons[i];
+    b.group.position.x = b.baseX + Math.sin(t * 0.075 + b.phase) * b.drift;
+    b.group.position.z = b.baseZ + Math.cos(t * 0.061 + b.phase * 0.8) * b.drift * 0.8;
+    b.group.position.y = b.baseY + Math.sin(t * 0.23 + b.phase) * 1.0;
+    b.group.rotation.y = Math.sin(t * 0.1 + b.phase) * 0.22 + b.spin * t;
+    b.group.rotation.z = Math.sin(t * 0.17 + b.phase) * 0.025;
+    b.group.rotation.x = Math.sin(t * 0.14 + b.phase * 1.7) * 0.018;
+  }
+  const tether = animatedBits.tether;
+  if (tether) {
+    tetherAnchorWorld.copy(tether.anchorLocal).applyEuler(whaleRoot.rotation).add(whaleRoot.position);
+    tetherBasketWorld.copy(tether.balloon.group.position);
+    tetherBasketWorld.y += 0.55 * tether.balloon.scale;
+    const count = 12;
+    for (let i = 0; i < count; i++) {
+      const t01 = i / (count - 1);
+      tetherPoint.lerpVectors(tetherAnchorWorld, tetherBasketWorld, t01);
+      tetherPoint.y -= Math.sin(t01 * Math.PI) * 1.9;
+      tetherPositions[i * 3] = tetherPoint.x;
+      tetherPositions[i * 3 + 1] = tetherPoint.y;
+      tetherPositions[i * 3 + 2] = tetherPoint.z;
+    }
+    tether.line.geometry.attributes.position.needsUpdate = true;
+  }
+}
+
+function updateBirds(dt) {
+  const t = elapsed;
+  for (let i = 0; i < animatedBits.birds.length; i++) {
+    const b = animatedBits.birds[i];
+    const a = t * b.speed + b.phase;
+    const x = Math.cos(a) * b.radiusX + Math.sin(a * 2.2) * 2.8;
+    const z = Math.sin(a) * b.radiusZ + Math.cos(a * 1.7) * 2.2;
+    const y = b.centerY + Math.sin(a * 2.4 + b.phase) * b.bob + Math.sin(t * 0.37 + b.phase) * 1.3;
+    b.group.position.set(x, y, z);
+    const tx = -Math.sin(a) * b.radiusX;
+    const tz = Math.cos(a) * b.radiusZ;
+    b.group.rotation.y = Math.atan2(tx, tz);
+    b.group.rotation.z = Math.sin(a * 2.2) * 0.11;
+    const flap = Math.sin(t * 8.5 + b.phase * 2.2) * 0.62;
+    b.leftPivot.rotation.z = flap + 0.08;
+    b.rightPivot.rotation.z = -flap - 0.08;
+  }
+}
+function updateButterflies(dt) {
+  const t = elapsed;
+  for (let i = 0; i < animatedBits.butterflies.length; i++) {
+    const b = animatedBits.butterflies[i];
+    const a = t * b.speed + b.phase;
+    b.group.position.x = b.center.x + Math.cos(a) * b.radius;
+    b.group.position.z = b.center.z + Math.sin(a * 1.35) * b.radius * 0.8;
+    b.group.position.y = b.center.y + Math.sin(t * 2.0 + b.phase) * 0.38 + Math.cos(a * 1.6) * 0.18;
+    b.group.rotation.y = a + Math.PI / 2;
+    b.group.rotation.z = Math.sin(t * 1.7 + b.phase) * 0.12;
+    const wing = Math.sin(t * 14 + b.wingPhase) * 0.8;
+    b.left.rotation.y = 0.3 + wing;
+    b.right.rotation.y = -0.3 - wing;
+  }
+}
+function updateRocks(dt) {
+  const t = elapsed;
+  for (let i = 0; i < animatedBits.rocks.length; i++) {
+    const r = animatedBits.rocks[i];
+    r.group.position.y = r.baseY + Math.sin(t * 0.22 + r.phase) * r.amp;
+    r.group.rotation.y += r.spin * dt;
+    r.group.rotation.z = Math.sin(t * 0.16 + r.phase) * 0.009;
+  }
+}
+function updateCloudsAndHaze(dt) {
+  const t = elapsed;
+  nearCloudGroup.position.x = Math.sin(t * 0.024) * 4.2;
+  nearCloudGroup.position.z = Math.cos(t * 0.019) * 3.4;
+  nearCloudGroup.position.y = Math.sin(t * 0.028) * 0.8;
+  farCloudGroup.rotation.y = t * 0.00075;
+  for (let i = 0; i < hazeSprites.length; i++) {
+    const s = hazeSprites[i];
+    const d = s.userData;
+    s.position.x = d.baseX + Math.sin(t * 0.023 + d.phase) * d.drift * 9;
+    s.position.z = d.baseZ + Math.cos(t * 0.017 + d.phase * 1.4) * d.drift * 5;
+    s.position.y = d.baseY + Math.sin(t * 0.035 + d.phase) * 1.2;
+  }
+  if (animatedBits.windmill) {
+    animatedBits.windmill.blades.rotation.z = -t * animatedBits.windmill.speed;
+  }
+  for (let i = 0; i < animatedBits.flags.length; i++) {
+    const f = animatedBits.flags[i];
+    f.object.rotation.y = Math.sin(t * 0.9 + f.phase) * f.amp;
+    f.object.rotation.z = Math.sin(t * 0.64 + f.phase * 1.3) * 0.012;
+  }
+}
+function updateParticleFields(dt) {
+  const t = elapsed;
+  const dust = dustField;
+  for (let i = 0; i < dust.count; i++) {
+    const yIndex = i * 3 + 1;
+    dust.positions[yIndex] += (0.16 + dust.speeds[i] * 0.35) * dt;
+    dust.positions[i * 3] += Math.sin(t * 0.38 + dust.phases[i]) * dt * 0.18;
+    dust.positions[i * 3 + 2] += Math.cos(t * 0.27 + dust.phases[i] * 1.4) * dt * 0.1;
+    if (dust.positions[yIndex] > 43) {
+      dust.positions[yIndex] = -5;
+      dust.positions[i * 3] = rr(-52, 56);
+      dust.positions[i * 3 + 2] = rr(-45, 48);
+    }
+  }
+  dust.points.geometry.attributes.position.needsUpdate = true;
+  const flowers = fireflyField;
+  for (let i = 0; i < flowers.count; i++) {
+    const yIndex = i * 3 + 1;
+    flowers.positions[i * 3] += Math.sin(t * 0.72 + flowers.phases[i]) * dt * 0.32;
+    flowers.positions[yIndex] += Math.cos(t * 1.1 + flowers.phases[i] * 1.7) * dt * 0.16;
+    flowers.positions[i * 3 + 2] += Math.cos(t * 0.61 + flowers.phases[i]) * dt * 0.24;
+  }
+  flowers.points.geometry.attributes.position.needsUpdate = true;
+  const petals = petalField;
+  for (let i = 0; i < petals.count; i++) {
+    const yIndex = i * 3 + 1;
+    petals.positions[i * 3] += Math.sin(t * 0.6 + petals.phases[i]) * dt * 0.55;
+    petals.positions[yIndex] -= (0.45 + petals.speeds[i] * 0.4) * dt;
+    petals.positions[i * 3 + 2] += dt * 0.16;
+    if (petals.positions[yIndex] < 4.5) {
+      petals.positions[yIndex] = 19 + rng() * 5;
+      petals.positions[i * 3] = rr(-32, 36);
+      petals.positions[i * 3 + 2] = rr(-10, 24);
+    }
+  }
+  petals.points.geometry.attributes.position.needsUpdate = true;
+  const n = smooth(daylightState.night);
+  dust.mat.opacity = 0.27 + n * 0.58;
+  fireflyField.mat.opacity = 0.3 + n * 0.66;
+  petals.mat.opacity = 0.65 * (0.45 + n * 0.55);
+}
+function updateMeteors(dt) {
+  const night = smooth(daylightState.night);
+  for (let i = 0; i < animatedBits.meteors.length; i++) {
+    const m = animatedBits.meteors[i];
+    if (night < 0.25) {
+      m.group.visible = false;
+      m.active = false;
+      m.timer = Math.max(m.timer, 1.5 + i);
+      continue;
+    }
+    if (!m.active) {
+      m.timer -= dt;
+      if (m.timer <= 0) {
+        meteorStart.set(rr(-300, 160), rr(92, 182), rr(-340, -190));
+        m.start.copy(meteorStart);
+        m.end.set(
+          meteorStart.x + rr(60, 150),
+          meteorStart.y - rr(42, 98),
+          meteorStart.z + rr(-30, 40)
+        );
+        m.group.position.copy(m.start);
+        meteorDirection.subVectors(m.end, m.start).normalize();
+        m.group.quaternion.setFromUnitVectors(Z_AXIS, meteorDirection);
+        m.active = true;
+        m.progress = 0;
+        m.duration = rr(0.8, 1.35);
+        m.group.visible = true;
+      }
+    } else {
+      m.progress += dt / m.duration;
+      if (m.progress >= 1) {
+        m.active = false;
+        m.group.visible = false;
+        m.timer = rr(5.5, 12);
+      } else {
+        const p = smooth(m.progress);
+        m.group.position.lerpVectors(m.start, m.end, p);
+        const fade = Math.sin(m.progress * Math.PI);
+        m.lineMat.opacity = fade * 0.78 * night;
+        m.headMat.opacity = fade * 0.95 * night;
+        const scale = (1.0 + Math.sin(m.progress * Math.PI) * 0.8) * (i === 1 ? 1.4 : 1.1);
+        m.head.scale.set(scale, scale, 1);
+      }
+    }
+  }
+}
+function updateStarsAndSky(dt) {
+  const night = smooth(daylightState.night);
+  const t = elapsed;
+  starGroup.rotation.y = t * 0.0016;
+  starGroup.rotation.x = Math.sin(t * 0.004) * 0.02;
+  const twinkle = 0.91 + Math.sin(t * 1.1) * 0.08;
+  starMatBig.opacity = night * night * 0.95 * twinkle;
+  starMatSmall.opacity = night * night * 0.82 * (0.88 + Math.sin(t * 1.7 + 1.2) * 0.12);
+  galaxyMat.opacity = night * night * 0.46 * (0.9 + Math.sin(t * 0.4) * 0.1);
+}
+function updateDaylightTransition(dt) {
+  if (Math.abs(daylightState.night - daylightState.target) > 0.0005) {
+    daylightState.night = damp(daylightState.night, daylightState.target, 1.3, dt);
+    if (Math.abs(daylightState.night - daylightState.target) < 0.001) {
+      daylightState.night = daylightState.target;
+    }
+    applyDayNight(daylightState.night);
+  } else if (daylightState.night !== appState.lastNightApplied) {
+    daylightState.night = daylightState.target;
+    applyDayNight(daylightState.night);
+  }
+}
+
+function countVoxels() {
+  let total = 0;
+  scene.traverse(function (obj) {
+    if (obj.isInstancedMesh) total += obj.count;
+  });
+  if (ui.voxelValue) ui.voxelValue.innerHTML = '<b>' + total.toLocaleString('en-US') + '</b> cubes';
+  return total;
+}
+function startIntro() {
+  updateCameraFov();
+  cameraTween.active = true;
+  cameraTween.intro = true;
+  cameraTween.fromPosition.copy(camera.position);
+  cameraTween.fromTarget.copy(controls.target);
+  const fittedIntro = fitView('overview');
+  cameraTween.toPosition.copy(fittedIntro.position);
+  cameraTween.toTarget.copy(fittedIntro.target);
+  cameraTween.start = performance.now() + 420;
+  cameraTween.duration = 3700;
+  cameraTween.pendingPreset = 'overview';
+  controls.autoRotate = false;
+  markView('overview');
+}
+function markSceneReady() {
+  if (appState.booted) return;
+  appState.booted = true;
+  window.__SCENE_READY__ = true;
+  document.body.dataset.ready = 'true';
+  const fallback = document.getElementById('fallback');
+  if (fallback) fallback.classList.remove('show');
+  countVoxels();
+  startIntro();
+  window.setTimeout(function () {
+    ui.loader.classList.add('hide');
+  }, 360);
+}
+function animate() {
+  const dt = Math.min(clock.getDelta(), 0.05);
+  elapsed += dt;
+  updateCameraTween();
+  updateFreeMovement(dt);
+  updateWhale(dt);
+  updateWheel(dt);
+  updateBalloons(dt);
+  updateBirds(dt);
+  updateButterflies(dt);
+  updateRocks(dt);
+  updateCloudsAndHaze(dt);
+  updateParticleFields(dt);
+  updateMeteors(dt);
+  updateDaylightTransition(dt);
+  updateStarsAndSky(dt);
+  controls.update();
+  composer.render();
+  renderer.info.reset();
+  if (!appState.booted) markSceneReady();
+}
+
+/* initial state, then launch */
+setMode('day');
+setAutoRotate(true);
+applyDayNight(0);
+daylightState.night = 0;
+markView('overview');
+window.__WHALE_SCENE__ = {
+  scene: scene,
+  camera: camera,
+  renderer: renderer,
+  controls: controls,
+  composer: composer,
+  bloomPass: bloomPass,
+  whaleRoot: whaleRoot,
+  state: appState,
+  daylight: daylightState,
+  setMode: setMode,
+  goToView: goToView,
+  setAutoRotate: setAutoRotate,
+  countVoxels: countVoxels
+};
+clock.start();
+renderer.setAnimationLoop(animate);
+
+console.log('Cloud Whale ready. Cubes on the breeze: ' + countVoxels());
+
+</script>
+</body>
+</html>

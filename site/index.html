@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>六个世界 · 大肥鱼神了？！</title>
+<meta name="description" content="六个可交互的体素世界，全部由 DeepSeek V4.1 flash 1017 在 PTC 模式下从一个提示词直接写成。点开就能玩。">
+<meta name="theme-color" content="#070b0c">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23070b0c'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23c9a86a' stroke-width='2'/%3E%3Cpath d='M32 12v40M12 32h40' stroke='%23c9a86a' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#070b0c; --bg2:#0b1112; --ink:#f4efe4; --muted:#9aa7a2; --dim:#6c7a75;
+    --gold:#c9a86a; --gold-strong:#e0c08a; --line:rgba(244,239,228,.14); --line-soft:rgba(244,239,228,.08);
+    --serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+    --sans:"Inter","PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+    --mono:"Cascadia Mono","Consolas","SFMono-Regular",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink)}
+  body{font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:3;opacity:.05;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E")}
+  .glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:
+    radial-gradient(70% 55% at 78% 8%, rgba(46,108,100,.16), transparent 60%),
+    radial-gradient(55% 45% at 8% 30%, rgba(201,168,106,.10), transparent 60%)}
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;
+    padding:22px clamp(20px,4vw,56px);mix-blend-mode:normal;
+    background:linear-gradient(180deg,rgba(7,11,12,.9),rgba(7,11,12,0));pointer-events:none}
+  header.nav>*{pointer-events:auto}
+  .brand{font-family:var(--serif);font-size:17px;letter-spacing:.18em;color:var(--ink)}
+  .brand b{color:var(--gold);font-weight:600}
+  nav.top{display:flex;gap:26px;align-items:center}
+  nav.top a{font-family:var(--mono);font-size:12px;letter-spacing:.16em;color:var(--muted);transition:color .2s}
+  nav.top a:hover{color:var(--gold)}
+  main{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+  .hero{min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding-top:96px;position:relative}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.34em;color:var(--gold)}
+  .hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(64px,9.2vw,132px);line-height:1.02;letter-spacing:.04em;margin:26px 0 0}
+  .hero h1 em{font-style:normal;color:var(--gold-strong);display:block}
+  .hero p{max-width:660px;margin:34px 0 0;font-size:clamp(15px,1.3vw,18px);line-height:1.95;color:var(--muted)}
+  .hero .meta{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--dim);margin-top:26px}
+  .hero .jump{display:inline-flex;align-items:center;gap:10px;margin-top:44px;font-family:var(--mono);font-size:12px;
+    letter-spacing:.2em;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:8px;width:max-content;transition:border-color .2s}
+  .hero .jump:hover{border-color:var(--gold)}
+  .hero .ring{position:absolute;right:-4%;top:16%;width:min(46vw,620px);aspect-ratio:1;opacity:.22;pointer-events:none}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,34px);padding:20px 0 40px}
+  .card{text-align:left;position:relative;background:var(--bg2);border:1px solid var(--line-soft);overflow:hidden;
+    transition:border-color .35s,transform .35s;display:flex;flex-direction:column}
+  .card:hover{border-color:rgba(201,168,106,.55);transform:translateY(-4px)}
+  .thumb{position:relative;aspect-ratio:16/9;overflow:hidden;background:#000}
+  .thumb img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.01);transition:transform .8s ease,filter .5s;filter:saturate(.92) brightness(.88)}
+  .card:hover .thumb img{transform:scale(1.055);filter:saturate(1.05) brightness(1)}
+  .thumb:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,8,9,.15),transparent 35%,rgba(4,8,9,.72));pointer-events:none}
+  .idx{position:absolute;left:16px;top:14px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--gold)}
+  .play{position:absolute;right:14px;bottom:12px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    color:var(--ink);border:1px solid rgba(244,239,228,.35);padding:8px 12px;background:rgba(7,11,12,.35);backdrop-filter:blur(4px);
+    opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+  .card:hover .play{opacity:1;transform:none}
+  .cap{padding:20px 20px 22px;display:flex;flex-direction:column;gap:8px}
+  .cap h2{font-family:var(--serif);font-weight:600;font-size:clamp(24px,2vw,30px);letter-spacing:.08em;margin:0}
+  .cap p{margin:0;font-size:13.5px;line-height:1.7;color:var(--muted)}
+  .cap .en{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);margin-top:4px}
+  .foot{padding:40px 0 70px;border-top:1px solid var(--line-soft);display:flex;flex-wrap:wrap;gap:18px 40px;justify-content:space-between;align-items:baseline}
+  .foot p{margin:0;font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--dim);line-height:2}
+  .foot a{color:var(--gold)}
+  /* viewer */
+  #viewer{position:fixed;inset:0;z-index:100;background:#040708;display:none;flex-direction:column}
+  #viewer.on{display:flex}
+  .vbar{height:56px;flex:0 0 56px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:0 clamp(14px,2.5vw,28px);border-bottom:1px solid var(--line-soft);background:#070b0c}
+  .vbar .left,.vbar .right{display:flex;align-items:center;gap:18px;min-width:0}
+  .vbar button,.vbar a{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted);white-space:nowrap;transition:color .2s}
+  .vbar button:hover,.vbar a:hover{color:var(--gold)}
+  .vbar .title{font-family:var(--serif);font-size:16px;letter-spacing:.14em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .vbar .hint{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--dim);display:none}
+  .stage-wrap{position:relative;flex:1;min-height:0;background:#000}
+  #stage{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+  #loading{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    background:#05090a;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:.16em;transition:opacity .5s}
+  #loading.hide{opacity:0;pointer-events:none}
+  #loading .sub{font-family:var(--sans);font-size:12.5px;letter-spacing:.02em;color:var(--dim)}
+  #rotateTip{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:3;display:none;pointer-events:none;
+    background:rgba(7,11,12,.74);border:1px solid rgba(244,239,228,.22);color:var(--ink);padding:9px 14px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;white-space:nowrap;backdrop-filter:blur(6px);transition:opacity .6s}
+  .spin{width:34px;height:34px;border:1px solid rgba(201,168,106,.25);border-top-color:var(--gold);border-radius:50%;animation:sp 1s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  @media (max-width:1040px){.grid{grid-template-columns:repeat(2,1fr)}.hero{min-height:auto;padding-top:150px;padding-bottom:40px}.hero .ring{display:none}}
+  @media (max-width:680px){
+    .grid{grid-template-columns:1fr}.hero h1{font-size:clamp(46px,14vw,64px)}.hero{padding-top:128px}
+    .cap h2{font-size:24px}.play{opacity:1;transform:none;padding:6px 9px}
+    .vbar .hint{display:none}.vbar .right a{display:none}.vbar{height:50px;flex-basis:50px}
+    .vbar .title{font-size:14px}
+  }
+  @media (orientation:portrait) and (max-width:760px){ #rotateTip{display:block} }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="grain"></div>
+<header class="nav">
+  <a class="brand" href="./"><b>大肥鱼</b>神了？！</a>
+  <nav class="top">
+    <a href="#worlds">六个世界</a>
+    <a href="archive.html">制作档案</a>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="eyebrow">VOXEL DIORAMA / 06 WORLDS</div>
+    <h1>六个世界<em>点开就玩</em></h1>
+    <p>全部由 DeepSeek V4.1 flash 1017 在 PTC 模式下，从一个提示词直接写成可交互的体素场景。
+       没有预渲染视频，也没有贴图素材——你看到的每一帧，都是浏览器实时算出来的。</p>
+    <div class="meta">6 个场景 · 6 个单文件 HTML · 0 张贴图 · 全部程序化</div>
+    <a class="jump" href="#worlds">从 01 开始 ↓</a>
+    <svg class="ring" viewBox="0 0 600 600" fill="none" stroke="#c9a86a" stroke-width="1">
+      <circle cx="300" cy="300" r="280" opacity=".5"/><circle cx="300" cy="300" r="214" opacity=".35"/><circle cx="300" cy="300" r="86" opacity=".55"/>
+      <g id="ticks"></g>
+    </svg>
+  </section>
+  <section class="grid" id="worlds">
+    <button class="card" data-scene="scenes/cloud-whale.html" data-title="01 · 云鲸星轮">
+      <div class="thumb"><img src="assets/thumbs/cloud-whale.jpg" alt="云鲸星轮"><span class="idx">01 / 06</span><span class="play">进入世界 →</span></div>
+      <div class="cap"><h2>云鲸星轮</h2><p>一头驮着星象城邦的巨鲸，在云海之上巡航</p><span class="en">THE CLOUD WHALE &amp; THE ASTRAL WHEEL</span></div>
+    </button>
+    <button class="card" data-scene="scenes/ice-lake.html" data-title="02 · 冰湖留声机">
+      <div class="thumb"><img src="assets/thumbs/ice-lake.jpg" alt="冰湖留声机"><span class="idx">02 / 06</span><span class="play">进入世界 →</span></div>
+      <div class="cap"><h2>冰湖留声机</h2><p>冰面是一张唱片，倾斜的灯塔是唱针</p><span class="en">THE FROZEN GRAMOPHONE</span></div>
+    </button>
+    <button class="card" data-scene="scenes/jellyfish.html" data-title="03 · 沉钟水母城">
+      <div class="thumb"><img src="assets/thumbs/jellyfish.jpg" alt="沉钟水母城"><span class="idx">03 / 06</span><span class="play">进入世界 →</span></div>
+      <div class="cap"><h2>沉钟水母城</h2><p>一座钟楼城，漂在巨型水母的钟形体内</p><span class="en">THE SUNKEN BELL</span></div>
+    </button>
+    <button class="card" data-scene="scenes/observatory.html" data-title="04 · 倒木观星台">
+      <div class="thumb"><img src="assets/thumbs/observatory.jpg" alt="倒木观星台"><span class="idx">04 / 06</span><span class="play">进入世界 →</span></div>
+      <div class="cap"><h2>倒木观星台</h2><p>一棵横倒的世界树，长成了一座苗寨</p><span class="en">THE FALLEN WORLD TREE</span></div>
+    </button>
+    <button class="card" data-scene="scenes/sundial.html" data-title="05 · 沙海晷城">
+      <div class="thumb"><img src="assets/thumbs/sundial.jpg" alt="沙海晷城"><span class="idx">05 / 06</span><span class="play">进入世界 →</span></div>
+      <div class="cap"><h2>沙海晷城</h2><p>驮在陆龟背上的日晷之城，随太阳转</p><span class="en">THE SUNDIAL CITY</span></div>
+    </button>
+    <button class="card" data-scene="scenes/kestrel.html" data-title="06 · 星舰龙骨村">
+      <div class="thumb"><img src="assets/thumbs/kestrel.jpg" alt="星舰龙骨村"><span class="idx">06 / 06</span><span class="play">进入世界 →</span></div>
+      <div class="cap"><h2>星舰龙骨村</h2><p>坠毁星舰的龙骨里，住进了一整个村子</p><span class="en">THE KESTREL WRECK</span></div>
+    </button>
+  </section>
+  <footer class="foot">
+    <p>拖拽旋转 · 滚轮缩放 · 右键平移 · WASD 漫游 · 昼夜切换<br>手机端可单指旋转、双指缩放</p>
+    <p><a href="archive.html">制作档案 / 提示词与流程 →</a></p>
+  </footer>
+</main>
+
+<div id="viewer" aria-hidden="true">
+  <div class="vbar">
+    <div class="left">
+      <button id="back">← 返回展厅</button>
+      <span class="title" id="vtitle"></span>
+    </div>
+    <div class="right">
+      <span class="hint">拖拽 / 滚轮 / WASD / 昼夜</span>
+      <a id="openNew" href="#" target="_blank" rel="noopener">新标签打开 ↗</a>
+    </div>
+  </div>
+  <div class="stage-wrap">
+    <div id="loading"><div class="spin"></div><div id="loadText">正在唤醒世界…</div><div class="sub">首次进入需要加载 1–3 MB</div></div>
+    <iframe id="stage" title="可交互体素场景" allow="fullscreen; autoplay; xr-spatial-tracking"></iframe>
+    <div id="rotateTip">手机建议横屏 · 双指缩放</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var ticks = document.getElementById('ticks');
+  for (var i = 0; i < 72; i++) {
+    var a = i / 72 * Math.PI * 2, r1 = i % 6 === 0 ? 244 : 260, r2 = 276;
+    var l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1', 300 + Math.cos(a)*r1); l.setAttribute('y1', 300 + Math.sin(a)*r1);
+    l.setAttribute('x2', 300 + Math.cos(a)*r2); l.setAttribute('y2', 300 + Math.sin(a)*r2);
+    l.setAttribute('opacity', i % 6 === 0 ? '.8' : '.32');
+    ticks.appendChild(l);
+  }
+})();
+(function(){
+  var viewer = document.getElementById('viewer');
+  var stage = document.getElementById('stage');
+  var loading = document.getElementById('loading');
+  var loadText = document.getElementById('loadText');
+  var vtitle = document.getElementById('vtitle');
+  var openNew = document.getElementById('openNew');
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var current = null;
+  var loadTimer = null;
+
+  function findCard(slug){
+    for (var i=0;i<cards.length;i++){
+      if (cards[i].getAttribute('data-scene').indexOf(slug) >= 0) return cards[i];
+    }
+    return null;
+  }
+  function openScene(slug, push){
+    var card = findCard(slug);
+    if (!card) return;
+    current = slug;
+    var title = card.getAttribute('data-title');
+    var src = card.getAttribute('data-scene');
+    vtitle.textContent = title;
+    openNew.href = src;
+    loading.classList.remove('hide');
+    loadText.textContent = '正在唤醒世界…';
+    stage.src = 'about:blank';
+    // let the blank paint, then load the heavy scene
+    setTimeout(function(){ stage.src = src; }, 30);
+    viewer.classList.add('on');
+    viewer.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+    var tip = document.getElementById('rotateTip');
+    if (tip) { tip.style.opacity = '1'; clearTimeout(window.__tipTimer); window.__tipTimer = setTimeout(function(){ tip.style.opacity = '0'; }, 5200); }
+    clearTimeout(loadTimer);
+    loadTimer = setTimeout(function(){
+      loadText.textContent = '这个场景有点重，再等一会儿…';
+    }, 9000);
+    if (push !== false) history.pushState({scene: slug}, '', '#' + slug);
+  }
+  function closeScene(push){
+    viewer.classList.remove('on');
+    viewer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    stage.src = 'about:blank';
+    current = null;
+    clearTimeout(loadTimer);
+    if (push !== false) history.pushState({scene: null}, '', location.pathname + location.search);
+  }
+  stage.addEventListener('load', function(){
+    if (!current) return;
+    clearTimeout(loadTimer);
+    setTimeout(function(){ loading.classList.add('hide'); }, 260);
+  });
+  cards.forEach(function(card){
+    card.addEventListener('click', function(){
+      var slug = card.getAttribute('data-scene').split('/').pop().replace('.html','');
+      openScene(slug, true);
+    });
+  });
+  document.getElementById('back').addEventListener('click', function(){
+    if (history.state && history.state.scene) history.back(); else closeScene(false);
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && current) {
+      if (history.state && history.state.scene) history.back(); else closeScene(false);
+    }
+  });
+  window.addEventListener('popstate', function(){
+    var slug = (location.hash || '').replace('#','');
+    if (slug && findCard(slug)) { if (current !== slug) openScene(slug, false); }
+    else if (current) closeScene(false);
+  });
+  var initial = (location.hash || '').replace('#','');
+  if (initial && findCard(initial)) setTimeout(function(){ openScene(initial, false); }, 120);
+})();
+</script>
+</body>
+</html>
